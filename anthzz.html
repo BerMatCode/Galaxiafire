@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#38bdf8" />
+  <meta name="theme-color" content="#0ea5e9" />
   <title>BerMatCode — Admin Galaxy</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-    :root{--bg:#f0f5fa;--surface:#ffffff;--card:#f8fbff;--card-hover:#eef5ff;--primary:#0ea5e9;--primary-dark:#0284c7;--primary-light:#38bdf8;--glow:rgba(14,165,233,.25);--text:#0f172a;--text-sec:#475569;--text-muted:#94a3b8;--border:#e2e8f0;--danger:#ef4444;--danger-bg:rgba(239,68,68,.12);--success:#10b981;--success-bg:rgba(16,185,129,.12);--warn:#f59e0b;--warn-bg:rgba(245,158,11,.12);--radius:16px;--shadow:0 4px 24px rgba(0,0,0,.06);--shadow-lg:0 12px 48px rgba(14,165,233,.12);--transition:all .25s cubic-bezier(.4,0,.2,1)}
+    :root{--bg:#f0f9ff;--surface:#ffffff;--card:#f0f9ff;--card-hover:#e0f2fe;--primary:#0ea5e9;--primary-dark:#0284c7;--primary-light:#38bdf8;--glow:rgba(14,165,233,.25);--text:#0f172a;--text-sec:#475569;--text-muted:#64748b;--border:#cbd5e1;--danger:#ef4444;--danger-bg:rgba(239,68,68,.12);--success:#22c55e;--success-bg:rgba(34,197,94,.12);--warn:#f59e0b;--warn-bg:rgba(245,158,11,.12);--radius:16px;--shadow:0 4px 24px rgba(0,0,0,.06);--shadow-lg:0 12px 48px rgba(14,165,233,.12);--transition:all .25s cubic-bezier(.4,0,.2,1)}
     body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px}
     ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:8px}
-    .login-page{position:fixed;inset:0;background:linear-gradient(140deg,#f0f5fa 0%,#e0f2fe 50%,#f0f5fa 100%);display:flex;align-items:center;justify-content:center;z-index:9999}
+    .login-page{position:fixed;inset:0;background:linear-gradient(140deg,#f0f9ff 0%,#e0f2fe 50%,#f0f9ff 100%);display:flex;align-items:center;justify-content:center;z-index:9999}
     .login-page.hide{display:none}
     .login-card{background:var(--surface);border-radius:22px;padding:48px 40px;width:400px;max-width:90vw;box-shadow:0 20px 60px rgba(14,165,233,.12);text-align:center;animation:fadeUp .5s ease;border:1.5px solid var(--border)}
     @keyframes fadeUp{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
@@ -42,7 +42,7 @@
     .btn-d{background:var(--danger-bg);color:var(--danger)}
     .btn-d:hover{background:rgba(239,68,68,.2)}
     .btn-s{background:var(--success-bg);color:var(--success)}
-    .btn-s:hover{background:rgba(16,185,129,.2)}
+    .btn-s:hover{background:rgba(34,197,94,.2)}
     .btn-i{background:var(--card);color:var(--primary);border:1.5px solid var(--border)}
     .btn-i:hover{border-color:var(--primary);background:var(--card-hover)}
     .container{max-width:720px;margin:0 auto;padding:28px 20px 80px;display:flex;flex-direction:column;align-items:center}
@@ -51,14 +51,14 @@
     .search-inp{width:100%;padding:13px 16px 13px 42px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:.9rem;outline:none;transition:var(--transition)}
     .search-inp:focus{border-color:var(--primary);box-shadow:0 0 0 4px var(--glow)}
     .list{width:100%;display:flex;flex-direction:column;gap:12px}
-    .card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;align-items:center;justify-content:space-between;gap:16px;transition:var(--transition);width:100%}
+    .card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;transition:var(--transition);width:100%;flex-wrap:wrap}
     .card:hover{box-shadow:var(--shadow-lg);border-color:var(--primary-light)}
-    .card-left{flex:1;min-width:0}
+    .card-left{flex:1;min-width:200px}
     .card-left h3{font-size:.96rem;font-weight:600;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .card-left .meta{font-size:.76rem;color:var(--text-muted);display:flex;align-items:center;gap:10px;margin-bottom:7px}
     .card-left .meta>i{font-size:.5rem;color:var(--primary)}
     .card-left .prev{font-size:.84rem;color:var(--text-muted);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-    .tags{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+    .tags{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
     .tag{font-size:.68rem;padding:4px 10px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);color:var(--text-muted);cursor:pointer;transition:var(--transition);display:inline-flex;align-items:center;gap:4px;user-select:none;font-weight:500}
     .tag:hover{transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,.08)}
     .tag.neutral{background:var(--surface);border-color:var(--border);color:var(--text-muted)}
@@ -66,9 +66,9 @@
     .tag.is-24h{background:var(--danger-bg);border-color:var(--danger);color:var(--danger);font-weight:600}
     .tag.is-24h:hover{background:rgba(239,68,68,.2)}
     .tag.is-permanent{background:var(--success-bg);border-color:var(--success);color:var(--success);font-weight:600}
-    .tag.is-permanent:hover{background:rgba(16,185,129,.2)}
+    .tag.is-permanent:hover{background:rgba(34,197,94,.2)}
     .tag i{font-size:.6rem}
-    .card-right{display:flex;flex-direction:column;gap:6px;min-width:105px}
+    .card-right{display:flex;flex-direction:column;gap:6px;min-width:105px;flex-shrink:0}
     .card-right .btn{width:100%;justify-content:center;font-size:.76rem;padding:8px 10px}
     .empty{text-align:center;padding:70px 20px;color:var(--text-muted)}
     .empty i{font-size:3rem;margin-bottom:16px;display:block;opacity:.15;color:var(--primary)}
@@ -102,7 +102,7 @@
     .d-block .d-val.msg{white-space:pre-line;max-height:200px;overflow-y:auto}
     .d-block .d-val a{color:var(--primary);text-decoration:none}
     .d-block .d-val a:hover{text-decoration:underline}
-    .d-block .d-val.phrases{font-size:.82rem;max-height:150px}
+    .d-block .d-val.phrases{font-size:.82rem;max-height:150px;overflow-y:auto}
     .d-link-box{background:var(--card);border:1.5px solid var(--primary);border-radius:12px;padding:14px;text-align:center}
     .d-link-box .d-label{justify-content:center;margin-bottom:8px}
     .d-link-box a{color:var(--primary);font-size:.82rem;word-break:break-all;text-decoration:none}
@@ -143,6 +143,18 @@
     .s-row .s-label{font-size:.84rem;font-weight:500;color:var(--text);display:flex;align-items:center;gap:8px}
     .s-row .s-label>i{color:var(--primary);width:18px;text-align:center}
     .s-row .s-val{font-size:.82rem;color:var(--text-muted);text-align:right}
+    
+    /* 🎵 TikTok en admin - tema celeste */
+    .admin-tiktok { margin-top: 20px; padding-top: 15px; border-top: 1px dashed var(--border); text-align: center; }
+    .admin-tiktok p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px; }
+    .admin-tiktok-profile { display: inline-flex; align-items: center; gap: 10px; background: var(--card); border: 2px solid var(--primary-light); border-radius: 14px; padding: 8px 14px; cursor: pointer; transition: all 0.25s ease; }
+    .admin-tiktok-profile:hover { transform: translateY(-2px); box-shadow: 0 5px 15px var(--glow); border-color: var(--primary); }
+    .admin-tiktok-avatar { width: 32px; height: 32px; border-radius: 50%; overflow: hidden; border: 2px solid var(--primary); flex-shrink: 0; }
+    .admin-tiktok-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .admin-tiktok-info { text-align: left; }
+    .admin-tiktok-username { font-weight: 600; color: var(--text); font-size: 0.9rem; }
+    .admin-tiktok-handle { font-size: 0.75rem; color: var(--text-muted); }
+    
     @media(max-width:600px){.card{flex-direction:column;align-items:flex-start}.card-right{flex-direction:row;width:100%;min-width:0}.header-inner{padding:0 16px}.container{padding:20px 16px 60px}.tags{margin-top:8px}}
   </style>
 </head>
@@ -203,8 +215,6 @@
         <div class="fg"><label>Frase corazón central</label><input class="fi" id="eCenterText"></div>
         <div class="fg"><label>Frase corazones orbitales</label><input class="fi" id="eHeartText"></div>
         <div class="fg"><label>Frases flotantes (una por línea)</label><textarea class="ft" id="ePhrases"></textarea><div class="hint">Una frase por línea</div></div>
-        <div class="fg"><label>Color interior</label><input class="fi" type="color" id="eInsideColor" style="height:45px;width:100%;padding:5px"></div>
-        <div class="fg"><label>Color exterior</label><input class="fi" type="color" id="eOutsideColor" style="height:45px;width:100%;padding:5px"></div>
         <div class="fg"><label>Música (URL MP3)</label><input class="fi" id="eMusic"></div>
         <div class="fg"><label>Créditos</label><input class="fi" id="eCredits"></div>
       </div>
@@ -248,6 +258,22 @@
         <div class="s-row"><div class="s-label"><i class="fas fa-project-diagram"></i> Proyecto</div><div class="s-val">galaxia-2026</div></div>
         <div class="s-row"><div class="s-label"><i class="fas fa-code"></i> Desarrollador</div><div class="s-val">BerMatCode<br><span style="font-size:.74rem">AnthZz Berrocal</span></div></div>
         <div class="s-row"><div class="s-label"><i class="fas fa-copyright"></i> Licencia</div><div class="s-val">Gratuito &copy; 2026</div></div>
+        
+        <!-- 🎵 TikTok en settings -->
+        <div class="admin-tiktok">
+          <p>¡Sígueme para más Proyectos!</p>
+          <div class="admin-tiktok-profile" onclick="openTikTok()">
+            <div class="admin-tiktok-avatar">
+              <img src="https://raw.githubusercontent.com/BerMatCode/Galafire/main/Multimedia/Screenshot_20260225-092058.jpg" alt="TikTok" onerror="this.src='https://via.placeholder.com/32/38bdf8/ffffff?text=💙'">
+            </div>
+            <div class="admin-tiktok-info">
+              <div class="admin-tiktok-username">BerMatCode</div>
+              <div class="admin-tiktok-handle">@bermatcode</div>
+            </div>
+            <i class="fab fa-tiktok" style="color:#0ea5e9;font-size:1.1rem;margin-left:5px"></i>
+          </div>
+        </div>
+        
       </div>
       <div class="m-foot"><button class="btn btn-g" onclick="cm('ovSettings')"><i class="fas fa-xmark"></i> Cerrar</button></div>
     </div>
@@ -259,7 +285,6 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, getDocs, doc, deleteDoc, updateDoc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // 🔹 NUEVA CONFIGURACIÓN FIREBASE
     const firebaseConfig = {
       apiKey: "AIzaSyAVQn_t-gwbA75W6c1FLLP7OnzuU2jhbs0",
       authDomain: "galaxia-2026.firebaseapp.com",
@@ -276,6 +301,7 @@
     window.__items = [];
     window.__editId = null;
     window.__delId = null;
+    window.TIKTOK_PROFILE = "https://www.tiktok.com/@bermatcode";
     
     const TAGS_KEY = "galaxy_project_tags";
     const BASE_LINK = "https://bermatcode.github.io/Galafire/index.html";
@@ -324,6 +350,7 @@
       } catch(e) { toast("Error: " + e.message, "error"); }
     };
 
+    // 🔹 FIX: Layout mejorado para evitar superposición
     window.renderList = function() {
       const term = (document.getElementById("searchInput").value || "").toLowerCase();
       const list = document.getElementById("msgList");
@@ -395,7 +422,6 @@
         </div>
         <div class="d-block"><div class="d-label"><i class="fas fa-heart"></i> Frase corazones orbitales</div><div class="d-val">${esc(i.heartText || "Ninguna")}</div></div>
         <div class="d-block"><div class="d-label"><i class="fas fa-comments"></i> Frases flotantes (${i.romanticPhrases?.length || 0})</div><div class="d-val phrases">${(i.romanticPhrases || []).map(p => `• ${esc(p)}`).join("<br>") || "Ninguna"}</div></div>
-        <div class="d-block"><div class="d-label"><i class="fas fa-palette"></i> Colores</div><div class="d-val"><span style="display:inline-flex;align-items:center;gap:8px"><span style="width:24px;height:24px;border-radius:50%;background:${esc(i.insideColor||'#ff0055')};border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.2)"></span> Interior: ${esc(i.insideColor||'#ff0055')}</span><br><span style="display:inline-flex;align-items:center;gap:8px;margin-top:4px"><span style="width:24px;height:24px;border-radius:50%;background:${esc(i.outsideColor||'#ff3088')};border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.2)"></span> Exterior: ${esc(i.outsideColor||'#ff3088')}</span></div></div>
         <div class="d-block"><div class="d-label"><i class="fas fa-music"></i> Música</div><div class="d-val">${i.musicUrl ? `<a href="${esc(i.musicUrl)}" target="_blank">${esc(i.musicUrl)}</a>` : "Ninguna"}</div></div>
         <div class="d-block"><div class="d-label"><i class="fas fa-signature"></i> Créditos</div><div class="d-val">${esc(i.credits || "BerMatCode")}</div></div>
         <div class="d-link-box"><div class="d-label"><i class="fas fa-link"></i> Link de acceso</div><a href="${BASE_LINK}?id=${i.id}" target="_blank">${BASE_LINK}?id=${i.id}</a></div>`;
@@ -409,8 +435,6 @@
       document.getElementById("eCenterText").value = i.centerText || "";
       document.getElementById("eHeartText").value = i.heartText || "";
       document.getElementById("ePhrases").value = (i.romanticPhrases || []).join("\n");
-      document.getElementById("eInsideColor").value = i.insideColor || "#ff0055";
-      document.getElementById("eOutsideColor").value = i.outsideColor || "#ff3088";
       document.getElementById("eMusic").value = i.musicUrl || "";
       document.getElementById("eCredits").value = i.credits || "BerMatCode";
       om("ovEdit");
@@ -423,8 +447,6 @@
         centerText: document.getElementById("eCenterText").value.trim(),
         heartText: document.getElementById("eHeartText").value.trim(),
         romanticPhrases: document.getElementById("ePhrases").value.split("\n").map(s => s.trim()).filter(Boolean),
-        insideColor: document.getElementById("eInsideColor").value,
-        outsideColor: document.getElementById("eOutsideColor").value,
         musicUrl: document.getElementById("eMusic").value.trim(),
         credits: document.getElementById("eCredits").value.trim(),
         updatedAt: serverTimestamp()
@@ -479,6 +501,7 @@
       navigator.clipboard.writeText(link).then(() => toast("🔗 Link copiado al portapapeles", "info")).catch(() => toast("❌ No se pudo copiar el link", "error"));
     };
 
+    window.openTikTok = function() { window.open(window.TIKTOK_PROFILE, '_blank'); };
     window.doAskLogout = function() { closeSettings(); om("ovLogout"); };
     document.getElementById("confirmLogoutBtn").addEventListener("click", function() { localStorage.removeItem("bmc_admin"); location.reload(); });
     window.doOpenSettings = function() { closeSettings(); om("ovSettings"); };
