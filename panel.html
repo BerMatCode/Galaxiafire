@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0ea5e9" id="theme-color" />
   <title>✨ Personaliza tu Galaxy - BerMatCode</title>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,12 +12,12 @@
     body { font-family: 'Roboto', sans-serif; background: linear-gradient(135deg, #0f172a, #1e3a5f, #0c1929); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; position: relative; overflow-x: hidden; color: #fff; }
     body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(circle at 20% 35%, rgba(14,165,233,0.15) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(56,189,248,0.1) 0%, transparent 50%); z-index: -1; pointer-events: none; animation: floatBg 20s ease-in-out infinite; }
     @keyframes floatBg { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
-    .panel-container { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-radius: 24px; padding: 25px; width: 100%; max-width: 520px; box-shadow: 0 20px 60px rgba(14,165,233,0.3), 0 0 0 1px rgba(56,189,248,0.2); border: 2px solid #38bdf8; position: relative; z-index: 10; animation: slideIn 0.4s ease; }
+    .panel-container { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-radius: 24px; padding: 25px; width: 100%; max-width: 540px; box-shadow: 0 20px 60px rgba(14,165,233,0.3), 0 0 0 1px rgba(56,189,248,0.2); border: 2px solid #38bdf8; position: relative; z-index: 10; animation: slideIn 0.4s ease; }
     @keyframes slideIn { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
     .panel-header { text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px dashed #93c5fd; }
     .panel-title { font-family: 'Pacifico', cursive; font-size: 1.8rem; color: #0ea5e9; text-shadow: 0 0 10px rgba(14,165,233,0.5); margin-bottom: 5px; }
     .panel-subtitle { font-size: 0.9rem; color: #64748b; }
-    .form-scroll { max-height: 60vh; overflow-y: auto; padding-right: 5px; scrollbar-width: thin; scrollbar-color: #38bdf8 #e0f2fe; }
+    .form-scroll { max-height: 62vh; overflow-y: auto; padding-right: 5px; scrollbar-width: thin; scrollbar-color: #38bdf8 #e0f2fe; }
     .form-scroll::-webkit-scrollbar { width: 6px; }
     .form-scroll::-webkit-scrollbar-track { background: #e0f2fe; border-radius: 10px; }
     .form-scroll::-webkit-scrollbar-thumb { background: #38bdf8; border-radius: 10px; }
@@ -26,9 +27,10 @@
     .form-group input, .form-group textarea { width: 100%; padding: 11px 14px; border: 2px solid #93c5fd; border-radius: 12px; font-size: 0.95rem; background: #fff; font-family: 'Roboto', sans-serif; transition: all 0.25s ease; color: #1e293b; }
     .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #0ea5e9; box-shadow: 0 0 0 4px rgba(14,165,233,0.15); transform: translateY(-1px); }
     .form-group textarea { min-height: 100px; resize: vertical; line-height: 1.5; }
+    .form-group input:disabled { background: #f1f5f9; color: #64748b; cursor: not-allowed; }
     .form-hint { font-size: 0.78rem; color: #64748b; margin-top: 5px; display: block; padding-left: 3px; }
     
-    /* 🔹 Token para créditos */
+    /* 🔹 Token para créditos - Campo visible pero bloqueado */
     .token-section { background: linear-gradient(135deg, #f0f9ff, #e0f2fe); border: 2px dashed #38bdf8; border-radius: 14px; padding: 14px; margin: 10px 0; }
     .token-section label { display: flex; align-items: center; gap: 8px; font-size: 0.88rem; color: #0c4a6e; font-weight: 600; margin-bottom: 8px; }
     .token-section label i { color: #0ea5e9; }
@@ -41,8 +43,16 @@
     .token-status.valid { display: block; color: #16a34a; font-weight: 500; }
     .token-status.invalid { display: block; color: #dc2626; font-weight: 500; }
     
-    .credits-field { display: none; }
-    .credits-field.active { display: block; }
+    /* 🔹 Créditos: visible siempre, editable solo con token */
+    .credits-field input:disabled { background: #f1f5f9; color: #64748b; cursor: not-allowed; opacity: 0.7; }
+    .credits-field input:not(:disabled) { border-color: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,0.15); }
+    
+    /* 🔹 Selector de colores de partículas */
+    .color-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .color-input { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 140px; }
+    .color-input input[type="color"] { width: 50px; height: 40px; border: 2px solid #93c5fd; border-radius: 8px; cursor: pointer; padding: 2px; background: #fff; }
+    .color-input input[type="color"]::-webkit-color-swatch { border: none; border-radius: 6px; }
+    .color-input label { font-size: 0.85rem; color: #555; margin: 0; font-weight: 500; }
     
     .phrase-list { display: flex; flex-direction: column; gap: 8px; }
     .phrase-item { display: flex; gap: 8px; align-items: center; }
@@ -57,16 +67,17 @@
     .loading { text-align: center; padding: 18px; color: #0ea5e9; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 10px; }
     .loading i { animation: spin 1s linear infinite; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 20px; opacity: 0; visibility: hidden; transition: all 0.35s ease; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 20px; opacity: 0; visibility: hidden; transition: all 0.35s ease; animation: modalFade 0.3s ease; }
+    @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
     .modal-overlay.active { opacity: 1; visibility: visible; }
-    .loading-modal { background: linear-gradient(145deg, #ffffff, #f0f9ff); border: 3px solid #38bdf8; border-radius: 24px; padding: 32px 28px; width: 100%; max-width: 420px; text-align: center; color: #1e293b; box-shadow: 0 25px 80px rgba(14,165,233,0.5); transform: scale(0.95) translateY(15px); opacity: 0; transition: all 0.4s cubic-bezier(0.175,0.885,0.32,1.275); position: relative; overflow: hidden; }
-    .modal-overlay.active .loading-modal { transform: scale(1) translateY(0); opacity: 1; }
+    .loading-modal { background: linear-gradient(145deg, #ffffff, #f0f9ff); border: 3px solid #38bdf8; border-radius: 24px; padding: 32px 28px; width: 100%; max-width: 420px; text-align: center; color: #1e293b; box-shadow: 0 25px 80px rgba(14,165,233,0.5); transform: scale(0.95) translateY(15px); opacity: 0; transition: all 0.4s cubic-bezier(0.175,0.885,0.32,1.275); position: relative; overflow: hidden; animation: modalSlide 0.4s ease forwards; }
+    @keyframes modalSlide { to { transform: scale(1) translateY(0); opacity: 1; } }
     .loading-spinner { width: 70px; height: 70px; margin: 0 auto 20px; border: 5px solid rgba(14,165,233,0.2); border-top-color: #0ea5e9; border-radius: 50%; animation: spin 1s linear infinite; }
     .loading-modal h3 { font-family: 'Pacifico', cursive; font-size: 1.4rem; color: #0ea5e9; margin-bottom: 8px; }
     .loading-modal p { font-size: 0.95rem; color: #475569; }
-    .success-modal { background: linear-gradient(145deg, #ffffff, #f0f9ff); border: 3px solid #22c55e; border-radius: 24px; padding: 28px; width: 100%; max-width: 460px; text-align: center; color: #166534; box-shadow: 0 25px 80px rgba(34,197,94,0.5); transform: scale(0.9) translateY(20px); opacity: 0; transition: all 0.45s cubic-bezier(0.175,0.885,0.32,1.275); position: relative; overflow: hidden; }
-    .modal-overlay.active .success-modal { transform: scale(1) translateY(0); opacity: 1; }
-    .modal-close { position: absolute; top: 15px; right: 18px; background: rgba(255,255,255,0.9); border: 2px solid #38bdf8; font-size: 1.4rem; color: #0ea5e9; cursor: pointer; transition: all 0.25s ease; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10; font-weight: 700; }
+    .success-modal { background: linear-gradient(145deg, #ffffff, #f0f9ff); border: 3px solid #22c55e; border-radius: 24px; padding: 28px; width: 100%; max-width: 460px; text-align: center; color: #166534; box-shadow: 0 25px 80px rgba(34,197,94,0.5); transform: scale(0.9) translateY(20px); opacity: 0; transition: all 0.45s cubic-bezier(0.175,0.885,0.32,1.275); position: relative; overflow: hidden; animation: modalSlide 0.45s ease forwards; }
+    .modal-close { position: absolute; top: 15px; right: 18px; background: rgba(255,255,255,0.9); border: 2px solid #38bdf8; font-size: 1.4rem; color: #0ea5e9; cursor: pointer; transition: all 0.25s ease; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10; font-weight: 700; animation: pulseBtn 2s infinite; }
+    @keyframes pulseBtn { 0%,100%{transform:scale(1);} 50%{transform:scale(1.1);} }
     .modal-close:hover { background: #0ea5e9; color: white; transform: rotate(90deg) scale(1.1); }
     .success-modal .check-icon { width: 75px; height: 75px; background: linear-gradient(135deg, #22c55e, #38bdf8); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; box-shadow: 0 12px 35px rgba(34,197,94,0.5); animation: popIn 0.5s ease; }
     @keyframes popIn { 0%{transform:scale(0);} 50%{transform:scale(1.2);} 100%{transform:scale(1);} }
@@ -82,7 +93,8 @@
     .btn-square:active { transform: translateY(1px); }
     .btn-copy { background: linear-gradient(135deg, #64748b, #475569); color: white; }
     .btn-view { background: linear-gradient(135deg, #22c55e, #38bdf8); color: white; }
-    .permanent-notice { background: linear-gradient(135deg, #fffbeb, #fef3c7); border: 2px solid #f59e0b; border-radius: 14px; padding: 14px; margin: 12px 0; text-align: left; font-size: 0.9rem; color: #92400e; }
+    .permanent-notice { background: linear-gradient(135deg, #fffbeb, #fef3c7); border: 2px solid #f59e0b; border-radius: 14px; padding: 14px; margin: 12px 0; text-align: left; font-size: 0.9rem; color: #92400e; animation: gentlePulse 3s infinite; }
+    @keyframes gentlePulse { 0%,100%{box-shadow:0 0 0 rgba(245,158,11,0);} 50%{box-shadow:0 0 20px rgba(245,158,11,0.3);} }
     .permanent-notice strong { color: #b45309; }
     .btn-contact { width: 100%; padding: 14px; margin-top: 10px; background: linear-gradient(135deg, #7c3aed, #38bdf8); color: white; border: none; border-radius: 16px; font-size: 1rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.28s ease; font-family: 'Roboto', sans-serif; box-shadow: 0 5px 18px rgba(124,58,237,0.35); }
     .btn-contact:hover { transform: translateY(-3px); box-shadow: 0 9px 28px rgba(124,58,237,0.55); }
@@ -93,18 +105,20 @@
     .dec-2 { bottom: 40px; right: 30px; animation-delay: 1s; width: 45px; }
     @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px) rotate(5deg);} }
     
-    /* 🎵 TikTok opcional - tema celeste */
-    .tiktok-optional { margin-top: 15px; padding-top: 15px; border-top: 1px dashed #93c5fd; text-align: center; }
+    /* 🎵 TikTok opcional - tema celeste con animaciones */
+    .tiktok-optional { margin-top: 15px; padding-top: 15px; border-top: 1px dashed #93c5fd; text-align: center; animation: fadeInUp 0.5s ease; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .tiktok-optional p { font-size: 0.85rem; color: #64748b; margin-bottom: 10px; }
     .tiktok-mini-profile { display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #fff, #f0f9ff); border: 2px solid #93c5fd; border-radius: 14px; padding: 8px 14px; cursor: pointer; transition: all 0.25s ease; }
-    .tiktok-mini-profile:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(14,165,233,0.3); border-color: #38bdf8; }
-    .tiktok-mini-avatar { width: 32px; height: 32px; border-radius: 50%; overflow: hidden; border: 2px solid #38bdf8; flex-shrink: 0; }
+    .tiktok-mini-profile:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 5px 15px rgba(14,165,233,0.3); border-color: #38bdf8; }
+    .tiktok-mini-avatar { width: 32px; height: 32px; border-radius: 50%; overflow: hidden; border: 2px solid #38bdf8; flex-shrink: 0; animation: pulseAvatar 2s infinite; }
+    @keyframes pulseAvatar { 0%,100%{transform:scale(1);} 50%{transform:scale(1.05);} }
     .tiktok-mini-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .tiktok-mini-info { text-align: left; }
     .tiktok-mini-username { font-weight: 600; color: #1e293b; font-size: 0.9rem; }
     .tiktok-mini-handle { font-size: 0.75rem; color: #64748b; }
     
-    @media (max-width: 520px) { .panel-container { padding: 20px 18px; border-radius: 20px; } .panel-title { font-size: 1.5rem; } .modal-buttons { grid-template-columns: 1fr; } .decoration { width: 40px; } }
+    @media (max-width: 520px) { .panel-container { padding: 20px 18px; border-radius: 20px; } .panel-title { font-size: 1.5rem; } .modal-buttons { grid-template-columns: 1fr; } .decoration { width: 40px; } .color-row { flex-direction: column; align-items: flex-start; } }
   </style>
 </head>
 <body>
@@ -114,7 +128,7 @@
   <div class="panel-container">
     <div class="panel-header">
       <div class="panel-title">🌌 Personaliza tu Galaxy</div>
-      <div class="panel-subtitle">Edita frases y música 💙</div>
+      <div class="panel-subtitle">Edita frases, colores y música 💙</div>
     </div>
     <div class="form-scroll">
       
@@ -165,6 +179,22 @@
         <small class="form-hint">💡 Una frase por línea. Se mostrarán flotando en la galaxia</small>
       </div>
 
+      <!-- 🔹 Colores de partículas (SOLO 2 colores) -->
+      <div class="form-group">
+        <label><i class="fas fa-palette"></i> Colores de las partículas:</label>
+        <div class="color-row">
+          <div class="color-input">
+            <input type="color" id="inside-color" value="#0ea5e9" title="Color interior">
+            <label for="inside-color">Interior</label>
+          </div>
+          <div class="color-input">
+            <input type="color" id="outside-color" value="#38bdf8" title="Color exterior">
+            <label for="outside-color">Exterior</label>
+          </div>
+        </div>
+        <small class="form-hint">🎨 Elige los 2 colores del gradiente de las partículas</small>
+      </div>
+
       <!-- Música -->
       <div class="form-group">
         <label><i class="fas fa-music"></i> Música de fondo (URL MP3):</label>
@@ -173,21 +203,21 @@
         <small class="form-hint">🎵 URL directa a archivo .mp3 (debe permitir CORS)</small>
       </div>
 
-      <!-- 🔹 Token para editar créditos -->
+      <!-- 🔹 Token para créditos - Campo visible pero bloqueado -->
       <div class="token-section">
         <label><i class="fas fa-key"></i> ¿Editar créditos?</label>
         <div class="token-input-wrap">
-          <input type="password" id="token-input" placeholder="Ingresa el token" maxlength="6">
+          <input type="password" id="token-input" placeholder="Ingresa el token (101123)" maxlength="6">
           <button class="token-btn" id="token-btn">Validar</button>
         </div>
         <div class="token-status" id="token-status"></div>
       </div>
 
-      <!-- Créditos (solo visible con token válido) -->
+      <!-- Créditos: VISIBLE siempre, EDITABLE solo con token -->
       <div class="form-group credits-field" id="credits-field">
         <label for="credits-text"><i class="fas fa-signature"></i> Créditos (pie de página):</label>
-        <input type="text" id="credits-text" maxlength="30" value="BerMatCode">
-        <small class="form-hint">✍️ Texto que aparece en la parte inferior</small>
+        <input type="text" id="credits-text" maxlength="30" value="BerMatCode" disabled>
+        <small class="form-hint">✍️ Ingresa el token para editar este campo</small>
       </div>
 
     </div>
@@ -200,7 +230,7 @@
     </div>
   </div>
   
-  <!-- Modal de carga -->
+  <!-- Modal de carga con animación -->
   <div class="modal-overlay" id="loading-modal">
     <div class="loading-modal">
       <div class="loading-spinner"></div>
@@ -209,7 +239,7 @@
     </div>
   </div>
   
-  <!-- Modal de éxito -->
+  <!-- Modal de éxito con animaciones -->
   <div class="modal-overlay" id="success-modal">
     <div class="success-modal">
       <button class="modal-close" onclick="closeModal('success-modal')" title="Cerrar">×</button>
@@ -238,7 +268,7 @@
         </button>
       </div>
       
-      <!-- 🎵 TikTok opcional -->
+      <!-- 🎵 TikTok opcional con animaciones -->
       <div class="tiktok-optional">
         <p>¡Sígueme para más Proyectos!</p>
         <div class="tiktok-mini-profile" onclick="openTikTok()">
@@ -249,7 +279,7 @@
             <div class="tiktok-mini-username">BerMatCode</div>
             <div class="tiktok-mini-handle">@bermatcode</div>
           </div>
-          <i class="fab fa-tiktok" style="color:#0ea5e9;font-size:1.1rem;margin-left:5px"></i>
+          <i class="fab fa-tiktok" style="color:#0ea5e9;font-size:1.1rem;margin-left:5px;animation:pulseIcon 1.5s infinite"></i>
         </div>
       </div>
     </div>
@@ -280,28 +310,45 @@
     let creditsUnlocked = false;
     const VALID_TOKEN = "101123";
     
+    // 🔹 Actualizar tema de Chrome dinámicamente
+    function updateThemeColor(color) {
+      const meta = document.getElementById('theme-color');
+      if (meta) meta.setAttribute('content', color);
+    }
+    
+    // 🔹 Validar token para habilitar edición de créditos
     document.getElementById('token-btn').addEventListener('click', function() {
       const token = document.getElementById('token-input').value.trim();
       const status = document.getElementById('token-status');
+      const creditsInput = document.getElementById('credits-text');
+      
       if (token === VALID_TOKEN) {
         creditsUnlocked = true;
         status.textContent = '✓ Token válido - Ahora puedes editar los créditos';
         status.className = 'token-status valid';
-        document.getElementById('credits-field').classList.add('active');
+        creditsInput.disabled = false;
+        creditsInput.focus();
       } else {
         creditsUnlocked = false;
         status.textContent = '✗ Token incorrecto';
         status.className = 'token-status invalid';
-        document.getElementById('credits-field').classList.remove('active');
+        creditsInput.disabled = true;
       }
     });
+    
+    // 🔹 Actualizar tema de Chrome al cambiar colores
+    document.getElementById('inside-color').addEventListener('input', (e) => updateThemeColor(e.target.value));
+    document.getElementById('outside-color').addEventListener('input', (e) => updateThemeColor(e.target.value));
     
     window.generateLink = async function() {
       const centerText = document.getElementById('center-text').value.trim() || '👑Te quiero👑';
       const heartText = document.getElementById('heart-text').value.trim() || '💙Mi Amor💙';
       const phrasesText = document.getElementById('romantic-phrases').value.trim();
       const romanticPhrases = phrasesText.split('\n').map(p => p.trim()).filter(p => p.length > 0);
+      const insideColor = document.getElementById('inside-color').value;
+      const outsideColor = document.getElementById('outside-color').value;
       const musicUrl = document.getElementById('music-url').value.trim();
+      // 🔹 Créditos: solo editable si token válido, sino usa default
       const credits = creditsUnlocked ? (document.getElementById('credits-text').value.trim() || 'BerMatCode') : 'BerMatCode';
       
       if (romanticPhrases.length === 0) { 
@@ -309,6 +356,7 @@
         return; 
       }
       
+      // Mostrar modal de generación con animación
       document.getElementById('loading-modal').classList.add('active');
       document.getElementById('generate-btn').disabled = true;
       document.body.style.overflow = 'hidden';
@@ -318,8 +366,8 @@
           centerText,
           heartText,
           romanticPhrases,
-          insideColor: '#0ea5e9',
-          outsideColor: '#38bdf8',
+          insideColor,
+          outsideColor,
           musicUrl: musicUrl || 'https://github.com/Baque2005/Organizador/raw/refs/heads/master/Mi%20Coraz%C3%B3n%20Es%20Tuyo%20-%20Axel,%20Kaay%20%20Letra..mp3',
           credits,
           createdAt: serverTimestamp()
@@ -328,6 +376,7 @@
         window.generatedMessageId = docRef.id;
         const shareUrl = `${window.location.origin}${window.location.pathname.replace('panel.html','index.html')}?id=${docRef.id}`;
         
+        // Ocultar loading y mostrar éxito con animación
         document.getElementById('loading-modal').classList.remove('active');
         document.getElementById('share-url').textContent = shareUrl;
         document.getElementById('success-modal').classList.add('active');
@@ -378,6 +427,7 @@
       }
     };
     
+    // Exponer funciones globalmente
     window.generateLink = generateLink;
     window.openTikTok = openTikTok;
     window.copyLink = copyLink;
@@ -388,6 +438,7 @@
   </script>
   
   <script>
+    // Cerrar modals con animación
     document.getElementById('success-modal').addEventListener('click', (e) => { if(e.target.id === 'success-modal') closeModal('success-modal'); });
     document.getElementById('loading-modal').addEventListener('click', (e) => { if(e.target.id === 'loading-modal') {} });
     document.addEventListener('keydown', (e) => { if(e.key === 'Escape' && document.getElementById('success-modal').classList.contains('active')) closeModal('success-modal'); });
