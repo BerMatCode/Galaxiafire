@@ -10,20 +10,27 @@
       * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; user-select: none; }
       html, body { overflow: hidden; height: 100%; width: 100%; background: #000; font-family: Georgia, serif; touch-action: none; position: relative; }
       .webgl { position: fixed; top: 0; left: 0; width: 100%; height: 100%; outline: none; cursor: pointer; display: block; z-index: 1; }
-      .heart { position: absolute; color: rgba(255, 100, 100, 0.2); font-size: 16px; animation: float 18s infinite ease-in-out; z-index: 2; pointer-events: none; text-shadow: 0 0 8px rgba(255,100,100,0.5); will-change: transform, opacity; }
+      .heart { position: absolute; color: rgba(14, 165, 233, 0.2); font-size: 16px; animation: float 18s infinite ease-in-out; z-index: 2; pointer-events: none; text-shadow: 0 0 8px rgba(14,165,233,0.5); will-change: transform, opacity; }
       @keyframes float { 0% { transform: translateY(100vh) rotate(0deg) scale(0.8); opacity: 0; } 10% { opacity: 0.6; } 50% { transform: translateY(-30vh) rotate(15deg) scale(1.1); opacity: 0.9; } 90% { opacity: 0.4; } 100% { transform: translateY(-120vh) rotate(30deg) scale(0.9); opacity: 0; } }
-      .credits { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); color: #fff; font-family: 'Pacifico', cursive; font-size: 13px; text-align: center; z-index: 100; pointer-events: none; letter-spacing: 2px; text-shadow: 0 0 4px var(--glow1, #ff6030), 0 0 8px var(--glow1, #ff6030), 0 0 15px rgba(255, 96, 48, 0.7); animation: gentleGlow 4s infinite ease-in-out; }
-      @keyframes gentleGlow { 0%, 100% { text-shadow: 0 0 4px var(--glow1, #ff6030), 0 0 8px var(--glow1, #ff6030), 0 0 15px rgba(255, 96, 48, 0.7); } 50% { text-shadow: 0 0 6px var(--glow1, #ff6030), 0 0 12px var(--glow1, #ff6030), 0 0 25px rgba(255, 96, 48, 0.9); } }
-      .touch-text { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #fff; font-family: 'Pacifico', cursive; font-size: 26px; text-align: center; z-index: 100; pointer-events: none; text-shadow: 0 0 10px var(--glow1, #ff6030), 0 0 20px var(--glow1, #ff6030), 0 0 40px rgba(255, 96, 48, 0.9); animation: touchPulse 2s infinite ease-in-out; transition: opacity 0.8s ease, transform 0.8s ease; }
+      .credits { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); color: #fff; font-family: 'Pacifico', cursive; font-size: 13px; text-align: center; z-index: 100; pointer-events: none; letter-spacing: 2px; text-shadow: 0 0 4px var(--glow1, #0ea5e9), 0 0 8px var(--glow1, #0ea5e9), 0 0 15px rgba(14, 165, 233, 0.7); animation: gentleGlow 4s infinite ease-in-out; }
+      @keyframes gentleGlow { 0%, 100% { text-shadow: 0 0 4px var(--glow1, #0ea5e9), 0 0 8px var(--glow1, #0ea5e9), 0 0 15px rgba(14, 165, 233, 0.7); } 50% { text-shadow: 0 0 6px var(--glow1, #0ea5e9), 0 0 12px var(--glow1, #0ea5e9), 0 0 25px rgba(14, 165, 233, 0.9); } }
+      .touch-text { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #fff; font-family: 'Pacifico', cursive; font-size: 26px; text-align: center; z-index: 100; pointer-events: none; text-shadow: 0 0 10px var(--glow1, #0ea5e9), 0 0 20px var(--glow1, #0ea5e9), 0 0 40px rgba(14, 165, 233, 0.9); animation: touchPulse 2s infinite ease-in-out; transition: opacity 0.8s ease, transform 0.8s ease; }
       .touch-text.hidden { opacity: 0; transform: translate(-50%, -50%) scale(0.7); }
-      @keyframes touchPulse { 0%, 100% { text-shadow: 0 0 10px var(--glow1, #ff6030), 0 0 20px var(--glow1, #ff6030), 0 0 40px rgba(255, 96, 48, 0.9); transform: translate(-50%, -50%) scale(1); } 50% { text-shadow: 0 0 15px var(--glow1, #ff6030), 0 0 30px var(--glow1, #ff6030), 0 0 60px rgba(255, 96, 48, 1); transform: translate(-50%, -50%) scale(1.08); } }
+      @keyframes touchPulse { 0%, 100% { text-shadow: 0 0 10px var(--glow1, #0ea5e9), 0 0 20px var(--glow1, #0ea5e9), 0 0 40px rgba(14, 165, 233, 0.9); transform: translate(-50%, -50%) scale(1); } 50% { text-shadow: 0 0 15px var(--glow1, #0ea5e9), 0 0 30px var(--glow1, #0ea5e9), 0 0 60px rgba(14, 165, 233, 1); transform: translate(-50%, -50%) scale(1.08); } }
       @media (max-width: 768px) { .credits { font-size: 12px; bottom: 14px; } .touch-text { font-size: 22px; } }
       @media (max-width: 480px) { .credits { font-size: 11px; bottom: 12px; letter-spacing: 1px; } .touch-text { font-size: 20px; } }
       .loading-overlay { position: fixed; inset: 0; background: #000; display: flex; align-items: center; justify-content: center; z-index: 9999; flex-direction: column; gap: 20px; }
-      .loading-spinner { width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.2); border-top-color: #ff6030; border-radius: 50%; animation: spin 1s linear infinite; }
+      .loading-spinner { width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.2); border-top-color: #0ea5e9; border-radius: 50%; animation: spin 1s linear infinite; }
       @keyframes spin { 100% { transform: rotate(360deg); } }
-      .loading-text { color: #fff; font-family: 'Pacifico', cursive; font-size: 1.2rem; text-shadow: 0 0 10px rgba(255,96,48,0.8); }
-      .error-msg { color: #ff6b6b; font-size: 1rem; text-align: center; padding: 20px; display: none; }
+      .loading-text { color: #fff; font-family: 'Pacifico', cursive; font-size: 1.2rem; text-shadow: 0 0 10px rgba(14,165,233,0.8); }
+      .error-msg, .not-found-msg { position: fixed; inset: 0; background: linear-gradient(135deg, #0f172a, #1e293b); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9998; color: #fff; text-align: center; padding: 20px; }
+      .not-found-msg { display: none; }
+      .not-found-msg i { font-size: 4rem; margin-bottom: 20px; color: #0ea5e9; animation: pulse 2s infinite; }
+      @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.7;transform:scale(1.1);} }
+      .not-found-msg h2 { font-family: 'Pacifico', cursive; font-size: 2rem; margin-bottom: 10px; text-shadow: 0 0 20px rgba(14,165,233,0.8); }
+      .not-found-msg p { font-size: 1.1rem; margin-bottom: 25px; opacity: 0.9; }
+      .not-found-msg .contact-btn { background: linear-gradient(135deg, #0ea5e9, #38bdf8); color: white; padding: 12px 30px; border: none; border-radius: 25px; font-size: 1rem; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; box-shadow: 0 8px 25px rgba(14,165,233,0.4); }
+      .not-found-msg .contact-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(14,165,233,0.6); }
     </style>
   </head>
   <body>
@@ -31,12 +38,21 @@
       <div class="loading-spinner"></div>
       <div class="loading-text">Cargando tu galaxia de amor... ✨</div>
     </div>
-    <div class="error-msg" id="errorMsg"></div>
+    
+    <!-- Mensaje "No encontrado" -->
+    <div class="not-found-msg" id="notFound">
+      <i class="fas fa-satellite"></i>
+      <h2>🌌 No se encontró</h2>
+      <p>La galaxia que buscas no existe o ha sido eliminada.</p>
+      <a href="https://wa.me/51930569195" class="contact-btn" target="_blank">
+        <i class="fab fa-whatsapp"></i> Contactar a BerMatCode
+      </a>
+    </div>
     
     <canvas class="webgl" id="galaxy-canvas"></canvas>
     <audio id="bg-music" loop preload="auto"></audio>
     <div class="credits" id="credits">BerMatCode</div>
-    <div class="touch-text" id="touch-text">Toca la pantalla 💛</div>
+    <div class="touch-text" id="touch-text">Toca la pantalla 💙</div>
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -44,7 +60,6 @@
       import * as THREE from "https://cdn.skypack.dev/three@0.132.2";
       import { OrbitControls } from "https://cdn.skypack.dev/three@0.132.2/examples/jsm/controls/OrbitControls.js";
 
-      // 🔹 NUEVA CONFIGURACIÓN FIREBASE
       const firebaseConfig = {
         apiKey: "AIzaSyAVQn_t-gwbA75W6c1FLLP7OnzuU2jhbs0",
         authDomain: "galaxia-2026.firebaseapp.com",
@@ -58,32 +73,30 @@
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
 
-      // 🔹 Parámetros por defecto (se sobrescriben con Firebase)
       let customParams = {
         centerText: "👑Te quiero👑",
-        heartText: "💛Mi Niña💛",
+        heartText: "💙Mi Amor💙",
         romanticPhrases: [
-          "💛 Te amo 💛", "🌹 Mi amor 🌹", "👑 Mi reina 👑", "💜 And 💜", "🌌 Eres todo 🌌",
-          "💫 Para siempre 💫", "🌟 Mi vida 🌟", "☀️ Mi cielo ☀️", "🌅 Mi sol 🌅", "🌸 Bella 🌸",
+          "💙 Te amo 💙", "🌊 Mi amor 🌊", "⭐ Mi estrella ⭐", "💜 And 💜", "🌌 Eres todo 🌌",
+          "💫 Para siempre 💫", "🌟 Mi vida 🌟", "☁️ Mi cielo ☁️", "🌅 Mi sol 🌅", "🌸 Bella 🌸",
           "🌺 Hermosa 🌺", "🌷 Preciosa 🌷", "🍬 Dulzura 🍬", "🤗 Cariño 🤗", "💝 Amor mío 💝",
-          "👸 Mi princesa 👸", "👼 Mi ángel 👼", "⭐ Mi estrella ⭐", "🌍 Mi mundo 🌍", "💎 Eres única 💎",
+          "👸 Mi princesa 👸", "👼 Mi ángel 👼", "✨ Mi luz ✨", "🌍 Mi mundo 🌍", "💎 Eres única 💎",
           "😍 Te adoro 😍", "🎁 Mi tesoro 🎁", "😊 Mi felicidad 😊", "🕊️ Mi paz 🕊️", "🎉 Mi alegría 🎉",
           "♾️ Por siempre ♾️", "💍 Amor de mi vida 💍"
         ],
-        insideColor: '#ff0055',
-        outsideColor: '#ff3088',
+        insideColor: '#0ea5e9',
+        outsideColor: '#38bdf8',
         musicUrl: 'https://github.com/Baque2005/Organizador/raw/refs/heads/master/Mi%20Coraz%C3%B3n%20Es%20Tuyo%20-%20Axel,%20Kaay%20%20Letra..mp3',
         credits: 'BerMatCode'
       };
 
-      // 🔹 Obtener ID de URL y cargar datos
       async function loadCustomization() {
         const urlParams = new URLSearchParams(window.location.search);
         const messageId = urlParams.get('id');
         
         if (!messageId) {
           document.getElementById('loading').style.display = 'none';
-          initGalaxy();
+          document.getElementById('notFound').style.display = 'flex';
           return;
         }
 
@@ -91,38 +104,41 @@
           const docRef = doc(db, "messages", messageId);
           const docSnap = await getDoc(docRef);
           
-          if (docSnap.exists()) {
-            const data = docSnap.data();
-            // Aplicar personalizaciones
-            if (data.centerText) customParams.centerText = data.centerText;
-            if (data.heartText) customParams.heartText = data.heartText;
-            if (data.romanticPhrases?.length) customParams.romanticPhrases = data.romanticPhrases;
-            if (data.insideColor) customParams.insideColor = data.insideColor;
-            if (data.outsideColor) customParams.outsideColor = data.outsideColor;
-            if (data.musicUrl) customParams.musicUrl = data.musicUrl;
-            if (data.credits) customParams.credits = data.credits;
-            
-            // Aplicar colores CSS
-            document.documentElement.style.setProperty('--glow1', customParams.insideColor);
-            document.getElementById('credits').textContent = customParams.credits;
-            
-            // Configurar música
-            const audio = document.getElementById('bg-music');
-            audio.innerHTML = `<source src="${customParams.musicUrl}" type="audio/mpeg">`;
-            audio.load();
+          if (!docSnap.exists()) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('notFound').style.display = 'flex';
+            return;
           }
+          
+          const data = docSnap.data();
+          if (data.centerText) customParams.centerText = data.centerText;
+          if (data.heartText) customParams.heartText = data.heartText;
+          if (data.romanticPhrases?.length) customParams.romanticPhrases = data.romanticPhrases;
+          if (data.insideColor) customParams.insideColor = data.insideColor;
+          if (data.outsideColor) customParams.outsideColor = data.outsideColor;
+          if (data.musicUrl) customParams.musicUrl = data.musicUrl;
+          if (data.credits) customParams.credits = data.credits;
+          
+          document.documentElement.style.setProperty('--glow1', customParams.insideColor);
+          document.getElementById('credits').textContent = customParams.credits;
+          
+          const audio = document.getElementById('bg-music');
+          audio.innerHTML = `<source src="${customParams.musicUrl}" type="audio/mpeg">`;
+          audio.load();
+          
         } catch (error) {
           console.error("Error cargando datos:", error);
-          document.getElementById('errorMsg').style.display = 'block';
-          document.getElementById('errorMsg').textContent = '⚠️ No se pudo cargar la personalización. Mostrando versión por defecto.';
-        } finally {
           document.getElementById('loading').style.display = 'none';
-          initGalaxy();
+          document.getElementById('notFound').style.display = 'flex';
+          return;
         }
+        
+        document.getElementById('loading').style.display = 'none';
+        initGalaxy();
       }
 
       function createCSSHearts() {
-        const heartSymbols = ['💛', '👸', '🌷', '💜', '🅰️', '😘', '❇', '👑'];
+        const heartSymbols = ['💙', '⭐', '🌊', '💜', '✨', '😘', '❄️', '👑'];
         const container = document.body;
         const heartCount = 25;
         for (let i = 0; i < heartCount; i++) {
@@ -306,7 +322,6 @@
         tick();
       }
 
-      // Iniciar
       loadCustomization();
     </script>
   </body>
