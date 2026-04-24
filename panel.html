@@ -24,11 +24,12 @@
     
     .field { text-align:left; margin:20px 0; }
     label { display:block; font-weight:bold; color:var(--pd); margin-bottom:6px; }
-    input, textarea {
+    input {
       width:100%; padding:12px 15px; border:2px solid var(--s); border-radius:12px;
       font-family:inherit; font-size:1.05em; background:#fff; transition:.3s;
     }
-    input:focus, textarea:focus { outline:none; border-color:var(--p); box-shadow:0 0 0 3px rgba(232,162,168,.2); }
+    input:focus { outline:none; border-color:var(--p); box-shadow:0 0 0 3px rgba(232,162,168,.2); }
+    input:disabled { background:#f5f5f5; cursor:not-allowed; }
     
     .phrases { max-height:220px; overflow-y:auto; padding-right:5px; margin:10px 0; }
     .phrase { display:flex; gap:8px; margin:8px 0; align-items:center; }
@@ -46,12 +47,20 @@
     .btn-primary { background:linear-gradient(135deg,var(--p),var(--pd)); color:white; }
     .btn-outline { background:white; border:2px solid var(--p); color:var(--txt); }
     .btn:hover { transform:translateY(-3px); box-shadow:0 6px 25px rgba(217,127,136,.4); }
+    .btn:disabled { opacity:.6; cursor:not-allowed; transform:none; }
     
-    .locked { position:relative; opacity:.6; pointer-events:none; }
-    .locked::after {
-      content:"🔒"; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-      background:rgba(246,209,213,.95); padding:6px 12px; border-radius:8px; font-size:.9em;
-      color:var(--pd); border:2px dashed var(--p); z-index:2;
+    /* Campos avanzados visibles pero bloqueados */
+    .advanced-visible {
+      margin-top:15px; text-align:left; padding:15px; background:var(--bg);
+      border-radius:12px; border:2px dashed var(--s); position:relative;
+    }
+    .advanced-visible.locked { opacity:.7; pointer-events:none; }
+    .advanced-visible.locked::before {
+      content:"🔒 Ingresa la Key para editar";
+      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+      background:rgba(246,209,213,.95); padding:8px 16px; border-radius:10px;
+      font-size:.95em; color:var(--pd); border:2px solid var(--p); z-index:2;
+      white-space:nowrap;
     }
     
     /* Modales */
@@ -104,10 +113,10 @@
     </div>
     
     <div class="field">
-      <label>💬 Frases de Amor (máx 50)</label>
+      <label>💬 Frases de Amor (máx 15)</label>
       <div class="phrases" id="phraseList"></div>
       <button class="btn btn-outline" id="addPhrase" style="padding:8px 20px; font-size:1em;">+ Agregar</button>
-      <div class="counter" id="phraseCount">0/50</div>
+      <div class="counter" id="phraseCount">0/15</div>
     </div>
     
     <div class="field">
@@ -117,18 +126,19 @@
     
     <div class="field">
       <label>🔐 Opciones Avanzadas</label>
-      <button class="btn btn-outline" id="unlockBtn" style="width:100%;">🔑 Ingresar Key para editar núcleo y créditos</button>
+      <button class="btn btn-outline" id="unlockBtn" style="width:100%; margin-top:10px;">🔑 Ingresar Key para desbloquear</button>
       
-      <div id="advanced" style="display:none; margin-top:15px; text-align:left;">
-        <label for="nucleus" style="margin-top:10px;">🌌 Imagen del Núcleo (URL)</label>
-        <input type="url" id="nucleus" placeholder="https://.../imagen.png">
+      <!-- Campos avanzados: visibles pero bloqueados hasta ingresar Key -->
+      <div class="advanced-visible locked" id="advanced">
+        <label for="nucleus" style="margin-top:0;">🌌 Imagen del Núcleo (URL)</label>
+        <input type="url" id="nucleus" placeholder="https://.../imagen.png" disabled>
         
-        <label for="credits" style="margin-top:10px;">✍️ Créditos (abajo)</label>
-        <input type="text" id="credits" placeholder="Ej: 𖤍BerMatCode𖤍" maxlength="60" value="𖤍BerMatCode𖤍">
+        <label for="credits" style="margin-top:12px;">✍️ Créditos (abajo)</label>
+        <input type="text" id="credits" placeholder="Ej: 𖤍BerMatCode𖤍" maxlength="60" value="𖤍BerMatCode𖤍" disabled>
       </div>
     </div>
     
-    <button class="btn btn-primary" id="generate" style="width:100%; margin-top:10px;">✨ Generar mi Galaxia</button>
+    <button class="btn btn-primary" id="generate" style="width:100%; margin-top:20px;">✨ Generar mi Galaxia</button>
   </div>
 
   <!-- Modal Key -->
@@ -184,10 +194,10 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Estado en memoria (NO localStorage)
+    // Estado en memoria
     let unlocked = false;
     const VALID_KEY = "101123";
-    const MAX_PHRASES = 50;
+    const MAX_PHRASES = 15; // ✅ CAMBIO: Máximo 15 frases
     
     let phrases = [
       "Siempre contigo","Eres mi calma","Me haces feliz","Tu sonrisa brilla",
@@ -243,14 +253,14 @@
 
     // Agregar frase
     addPhrase.onclick = () => {
-      if (phrases.length >= MAX_PHRASES) return alert(`⚠️ Máximo ${MAX_PHRASES}`);
+      if (phrases.length >= MAX_PHRASES) return alert(`⚠️ Máximo ${MAX_PHRASES} frases`);
       phrases.push("Nueva frase...");
       renderPhrases();
     };
 
-    // Modal Key
+    // Modal Key - Desbloquear avanzados
     unlockBtn.onclick = () => {
-      if (unlocked) { advanced.style.display = 'block'; return; }
+      if (unlocked) return;
       keyModal.classList.add('active');
       keyInput.value = ''; keyErr.style.display = 'none'; keyInput.focus();
     };
@@ -261,7 +271,10 @@
       if (keyInput.value.trim() === VALID_KEY) {
         unlocked = true;
         keyModal.classList.remove('active');
-        advanced.style.display = 'block';
+        // ✅ Desbloquear campos visibles
+        advanced.classList.remove('locked');
+        nucleus.disabled = false;
+        credits.disabled = false;
         unlockBtn.textContent = '✅ Desbloqueado';
         unlockBtn.disabled = true;
       } else {
@@ -275,7 +288,7 @@
     // Validar URL
     const validUrl = u => { try { const url = new URL(u); return /^https?:/.test(url.protocol); } catch { return false; } };
 
-    // Generar ID
+    // Generar ID único
     const genId = () => 'gal_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
 
     // Generar galaxia
@@ -305,7 +318,7 @@
         config.credits = c || '𖤍BerMatCode𖤍';
       }
       
-      // Guardar
+      // Guardar en Firebase
       loadModal.classList.add('active');
       try {
         const id = genId();
@@ -332,10 +345,9 @@
       }
     };
 
-    // Nueva galaxia
+    // Nueva galaxia - Resetear todo
     newBtn.onclick = () => {
       resultModal.classList.remove('active');
-      // Resetear formulario pero mantener frases por defecto
       title.value = "Te Amo Yorchi";
       music.value = "";
       nucleus.value = "";
@@ -349,8 +361,10 @@
       renderPhrases();
       // Resetear avanzado
       unlocked = false;
-      advanced.style.display = 'none';
-      unlockBtn.textContent = '🔑 Ingresar Key para editar núcleo y créditos';
+      advanced.classList.add('locked');
+      nucleus.disabled = true;
+      credits.disabled = true;
+      unlockBtn.textContent = '🔑 Ingresar Key para desbloquear';
       unlockBtn.disabled = false;
     };
 
