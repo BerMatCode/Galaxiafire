@@ -1,245 +1,219 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>✨ Personaliza tu Galaxia</title>
-<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Galaxia - BerMatCode</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Roboto', sans-serif; background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; color: #cbd5e1; }
-.panel { background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(10px); border-radius: 24px; padding: 25px; width: 100%; max-width: 480px; box-shadow: 0 20px 60px rgba(14, 165, 233, 0.3), 0 0 0 1px rgba(56, 189, 248, 0.2); border: 2px solid #38bdf8; animation: slideIn 0.4s ease; }
-@keyframes slideIn { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
-.header { text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px dashed #475569; }
-.header h1 { font-family: 'Patrick Hand', cursive; font-size: 1.8rem; color: #38bdf8; text-shadow: 0 0 10px rgba(56,189,248,0.5); margin-bottom: 5px; }
-.form-scroll { max-height: 55vh; overflow-y: auto; padding-right: 5px; scrollbar-width: thin; }
-.form-group { margin-bottom: 14px; }
-.form-group label { display: block; font-weight: 600; margin-bottom: 6px; color: #94a3b8; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; }
-.form-group label i { color: #38bdf8; }
-input, textarea { width: 100%; padding: 11px 14px; border: 2px solid #475569; border-radius: 12px; font-size: 0.95rem; background: #0f172a; color: #f1f5f9; font-family: 'Roboto', sans-serif; transition: 0.25s; }
-input:focus, textarea:focus { outline: none; border-color: #38bdf8; box-shadow: 0 0 0 4px rgba(56,189,248,0.15); }
-textarea { min-height: 90px; resize: vertical; }
-.hint { font-size: 0.78rem; color: #64748b; margin-top: 5px; display: block; }
-/* Selector Imágenes */
-.img-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; }
-.img-opt { aspect-ratio: 1; border-radius: 10px; overflow: hidden; cursor: pointer; border: 2px solid transparent; transition: 0.2s; position: relative; }
-.img-opt img { width: 100%; height: 100%; object-fit: cover; }
-.img-opt.selected { border-color: #38bdf8; box-shadow: 0 0 10px rgba(56,189,248,0.5); }
-.img-opt.selected::after { content: '✓'; position: absolute; inset: 0; background: rgba(56,189,248,0.3); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: bold; font-size: 1.2rem; }
-.img-opt.disabled { opacity: 0.3; pointer-events: none; }
-/* Token */
-.token-row { display: flex; gap: 8px; }
-.btn-check { padding: 0 12px; background: #38bdf8; color: #0f172a; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; transition: 0.2s; }
-.btn-check:hover { background: #0ea5e9; }
-.locked { opacity: 0.4; pointer-events: none; filter: grayscale(0.8); }
-/* Botones */
-.btn { width: 100%; padding: 13px; background: linear-gradient(135deg, #0ea5e9, #38bdf8); color: #0f172a; border: none; border-radius: 14px; font-size: 1.05rem; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; }
-.btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(56,189,248,0.5); }
-.btn:disabled { background: #475569; cursor: not-allowed; transform: none; box-shadow: none; }
-/* Modales */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
-.modal-overlay.active { display: flex; }
-.modal { background: #0f172a; border: 2px solid #38bdf8; border-radius: 20px; padding: 24px; width: 100%; max-width: 400px; text-align: center; color: #f1f5f9; animation: popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275); }
-@keyframes popIn { from { transform: scale(0.9) translateY(20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
-.modal h3 { font-family: 'Patrick Hand', cursive; font-size: 1.4rem; margin-bottom: 12px; }
-.modal p { font-size: 0.9rem; color: #94a3b8; margin-bottom: 16px; }
-.spinner { width: 40px; height: 40px; border: 4px solid #334155; border-top-color: #38bdf8; border-radius: 50%; margin: 16px auto; animation: spin 1s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.close-btn { position: absolute; top: 10px; right: 12px; background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; }
-.close-btn:hover { color: #38bdf8; }
-.success-box { background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; border-radius: 12px; padding: 12px; margin: 12px 0; }
-.success-box a { color: #38bdf8; word-break: break-all; }
-.btn-action { width: 100%; padding: 10px; background: #334155; color: #f1f5f9; border: none; border-radius: 8px; margin-top: 8px; cursor: pointer; transition: 0.2s; }
-.btn-action:hover { background: #475569; }
-.tiktok-avatar { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 12px; border: 3px solid #38bdf8; overflow: hidden; }
-.tiktok-avatar img { width: 100%; height: 100%; object-fit: cover; }
+:root { --bg: #f1f5f9; --surf: #ffffff; --prim: #0ea5e9; --danger: #ef4444; --success: #10b981; --warn: #f59e0b; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; color: #1e293b; }
+
+/* Login */
+#login-view { position: fixed; inset: 0; background: var(--bg); display: flex; justify-content: center; align-items: center; z-index: 100; }
+.login-box { background: var(--surf); padding: 40px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; width: 300px; }
+.login-box input { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #cbd5e1; border-radius: 8px; }
+.btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+.btn-prim { background: var(--prim); color: #fff; width: 100%; }
+.btn-prim:hover { opacity: 0.9; }
+
+/* Dashboard */
+#dash-view { display: none; max-width: 900px; margin: 0 auto; padding: 20px; }
+header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: var(--surf); padding: 15px 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+.search-bar { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 20px; }
+
+.list-item { background: var(--surf); padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #e2e8f0; transition: 0.2s; }
+.list-item:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+.info h4 { margin: 0 0 5px 0; font-size: 1rem; }
+.info p { margin: 0; font-size: 0.8rem; color: #64748b; }
+.tags { display: flex; gap: 5px; margin-top: 8px; }
+.tag { font-size: 0.7rem; padding: 3px 8px; border-radius: 10px; cursor: pointer; border: 1px solid #cbd5e1; }
+.tag.neutral { background: #f8fafc; color: #64748b; }
+.tag.is-24h { background: #fee2e2; color: var(--danger); border-color: var(--danger); font-weight: bold; }
+.tag.is-perm { background: #d1fae5; color: var(--success); border-color: var(--success); font-weight: bold; }
+
+.actions { display: flex; gap: 8px; }
+.btn-icon { width: 35px; height: 35px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; }
+.btn-view { background: var(--prim); }
+.btn-del { background: var(--danger); }
+.btn-edit { background: var(--warn); }
+
+/* Modals */
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 50; backdrop-filter: blur(3px); }
+.modal.active { display: flex; }
+.m-content { background: var(--surf); padding: 25px; border-radius: 16px; width: 90%; max-width: 400px; position: relative; animation: slideUp 0.3s; }
+@keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+.m-close { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.2rem; cursor: pointer; }
+.detail-row { margin-bottom: 10px; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px; }
+.detail-label { font-size: 0.75rem; color: #64748b; text-transform: uppercase; font-weight: bold; }
 </style>
 </head>
 <body>
-<div class="panel">
-  <div class="header">
-    <h1>🌌 Panel Galaxia</h1>
-    <p style="font-size:0.9rem">💙 Configura tu universo personalizado</p>
-  </div>
-  <div class="form-scroll">
-    <div class="form-group">
-      <label><i class="fas fa-font"></i> Título Principal</label>
-      <input type="text" id="f-title" value="Te Amo Yorchi" maxlength="40">
-    </div>
-    <div class="form-group">
-      <label><i class="fas fa-comment-dots"></i> Texto de Entrada / Mensaje</label>
-      <textarea id="f-msg">💖Toca la pantalla💘</textarea>
-      <span class="hint">Mensaje que aparece al inicio</span>
-    </div>
-    <div class="form-group">
-      <label><i class="fas fa-music"></i> Música (URL MP3)</label>
-      <input type="url" id="f-music" value="https://github.com/BerMatCode/Archivos/raw/refs/heads/main/Multimedia/TikVid.io_7471239338752363781.mp3">
-    </div>
-    <div class="form-group">
-      <label><i class="fas fa-image"></i> Imágenes Flotantes (Máx 4)</label>
-      <div class="img-grid" id="img-grid"></div>
-      <span class="hint">Haz clic para seleccionar. Predeterminadas marcadas en azul.</span>
-    </div>
-    <div class="form-group">
-      <label><i class="fas fa-lock"></i> Desbloquear Avanzado</label>
-      <div class="token-row">
-        <input type="text" id="f-token" placeholder="Ingresa token" style="flex:1">
-        <button class="btn-check" onclick="checkToken()">✓</button>
-      </div>
-    </div>
-    <div class="form-group locked" id="adv-group">
-      <label><i class="fas fa-atom"></i> Imagen del Núcleo</label>
-      <input type="url" id="f-nucleus" placeholder="https://...">
-      <div class="form-group" style="margin-top:8px; margin-bottom:0;">
-        <label><i class="fas fa-copyright"></i> Créditos Inferiores</label>
-        <input type="text" id="f-credits" value="𖤍BerMatCode𖤍" placeholder="Texto inferior">
-      </div>
-    </div>
-  </div>
-  <button class="btn" id="gen-btn" onclick="startGen()"><i class="fas fa-rocket"></i> Generar mi Galaxia</button>
-</div>
 
-<!-- TikTok Modal -->
-<div class="modal-overlay" id="m-tiktok">
-  <div class="modal">
-    <button class="close-btn" onclick="closeModal('m-tiktok')">×</button>
-    <div class="tiktok-avatar"><img src="https://raw.githubusercontent.com/BerMatCode/Galafire/main/Multimedia/Screenshot_20260225-092058.jpg"></div>
-    <h3>🎵 Sigue en TikTok</h3>
-    <p>Para desbloquear tu galaxia personalizada, <strong style="color:#38bdf8">sigue mi perfil</strong> y regresa.</p>
-    <button class="btn" onclick="followTiktok()" style="background:#000; color:#fff;"><i class="fab fa-tiktok"></i> Seguir Ahora</button>
+<!-- Login -->
+<div id="login-view">
+  <div class="login-box">
+    <h2>🛡️ Admin Access</h2>
+    <input type="password" id="admin-pass" placeholder="Contraseña">
+    <button class="btn btn-prim" onclick="login()">Entrar</button>
   </div>
 </div>
 
-<!-- Loading -->
-<div class="modal-overlay" id="m-load">
-  <div class="modal">
-    <div class="spinner"></div>
-    <h3>🌌 Generando Universo...</h3>
-    <p>Configurando estrellas y partículas...</p>
+<!-- Dashboard -->
+<div id="dash-view">
+  <header>
+    <h3>𖤍 Gestión Galaxias</h3>
+    <button class="btn" style="background:#e2e8f0" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
+  </header>
+  
+  <input type="text" class="search-bar" id="search" placeholder="Buscar por título..." onkeyup="renderList()">
+  <div id="list-container"></div>
+</div>
+
+<!-- Modal Ver Detalle -->
+<div id="m-view" class="modal">
+  <div class="m-content">
+    <button class="m-close" onclick="closeM('m-view')">&times;</button>
+    <h3>Detalles</h3>
+    <div id="view-body"></div>
+    <button class="btn btn-prim" style="margin-top:15px" onclick="closeM('m-view')">Cerrar</button>
   </div>
 </div>
 
-<!-- Success -->
-<div class="modal-overlay" id="m-success">
-  <div class="modal">
-    <button class="close-btn" onclick="closeModal('m-success')">×</button>
-    <h3>✨ ¡Universo Creado!</h3>
-    <div class="success-box">
-      <p style="color:#cbd5e1; font-size:0.85rem">🔗 Enlace para compartir:</p>
-      <a id="share-url" href="#" target="_blank">https://...</a>
+<!-- Modal Confirmar Eliminar -->
+<div id="m-del" class="modal">
+  <div class="m-content" style="text-align:center">
+    <i class="fas fa-trash-alt" style="font-size:3rem; color:var(--danger); margin-bottom:15px"></i>
+    <h3>¿Eliminar?</h3>
+    <p>Esta acción no se puede deshacer.</p>
+    <div style="display:flex; gap:10px; margin-top:20px">
+      <button class="btn" style="flex:1; background:#cbd5e1" onclick="closeM('m-del')">Cancelar</button>
+      <button class="btn" style="flex:1; background:var(--danger); color:#fff" id="confirm-del-btn">Eliminar</button>
     </div>
-    <button class="btn-action" onclick="copyLnk()"><i class="fas fa-copy"></i> Copiar Enlace</button>
-    <button class="btn-action" onclick="viewLnk()" style="background:#10b981"><i class="fas fa-eye"></i> Ver Galaxia</button>
   </div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-const app = initializeApp({ apiKey:"AIzaSyAVQn_t-gwbA75W6c1FLLP7OnzuU2jhbs0", authDomain:"galaxia-2026.firebaseapp.com", projectId:"galaxia-2026", storageBucket:"galaxia-2026.firebasestorage.app", messagingSenderId:"30252830415", appId:"1:30252830415:web:463fbdc73c3fb730d671ba" });
-const db = getFirestore(app);
-
-// Datos de imágenes
-const IMG_LIST = [
-  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda.png',
-  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda1.png',
-  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda2.png',
-  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda3.png',
-  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda4.png',
-  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda5.png',
-  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda6.png',
-  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda7.png',
-  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda8.png',
-  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda9.png',
-  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/pandaa.png',
-  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/pandad.png'
-];
-let selectedImgs = [];
-let tokenUnlocked = false;
-const TOKEN_CODE = "101123";
-
-// Render Grid
-const grid = document.getElementById('img-grid');
-IMG_LIST.forEach((url, idx) => {
-  const div = document.createElement('div');
-  div.className = 'img-opt';
-  div.dataset.url = url;
-  div.innerHTML = `<img src="${url}" alt="img${idx}">`;
-  // Predeterminadas (índices 2, 3, 6 -> panda2, panda3, panda6)
-  if ([2, 3, 6].includes(idx)) div.classList.add('selected');
-  if ([2, 3, 6].includes(idx)) selectedImgs.push(url);
-  div.onclick = () => toggleImg(div, url);
-  grid.appendChild(div);
+const app = initializeApp({
+  apiKey: "AIzaSyAVQn_t-gwbA75W6c1FLLP7OnzuU2jhbs0",
+  authDomain: "galaxia-2026.firebaseapp.com",
+  projectId: "galaxia-2026",
+  storageBucket: "galaxia-2026.firebasestorage.app",
+  messagingSenderId: "30252830415",
+  appId: "1:30252830415:web:463fbdc73c3fb730d671ba"
 });
+const db = getFirestore(app);
+let items = [];
+let delId = null;
+const TAGS_KEY = "galaxia_tags";
 
-window.toggleImg = function(el, url) {
-  if (el.classList.contains('selected')) {
-    el.classList.remove('selected');
-    selectedImgs = selectedImgs.filter(u => u !== url);
-  } else {
-    if (selectedImgs.length >= 4) { alert('⚠️ Máximo 4 imágenes permitidas'); return; }
-    el.classList.add('selected');
-    selectedImgs.push(url);
-  }
-  updateDisabled();
+// Auth
+window.login = () => {
+  if(document.getElementById('admin-pass').value === "BerMatCode") {
+    localStorage.setItem("gal_admin", "true");
+    showDash();
+  } else alert("Contraseña incorrecta");
 };
-function updateDisabled() {
-  document.querySelectorAll('.img-opt').forEach(el => {
-    el.classList.toggle('disabled', selectedImgs.length >= 4 && !el.classList.contains('selected'));
+window.logout = () => { localStorage.removeItem("gal_admin"); location.reload(); };
+
+if(localStorage.getItem("gal_admin")) showDash();
+
+function showDash() {
+  document.getElementById('login-view').style.display = 'none';
+  document.getElementById('dash-view').style.display = 'block';
+  loadData();
+}
+
+async function loadData() {
+  const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
+  const snap = await getDocs(q);
+  items = [];
+  snap.forEach(d => items.push({id:d.id, ...d.data()}));
+  renderList();
+}
+
+window.renderList = () => {
+  const term = document.getElementById('search').value.toLowerCase();
+  const container = document.getElementById('list-container');
+  container.innerHTML = "";
+  
+  items.filter(i => (i.title||"").toLowerCase().includes(term)).forEach(item => {
+    const date = item.createdAt?.toDate ? item.createdAt.toDate().toLocaleDateString() : "Reciente";
+    const tagState = getTag(item.id);
+    
+    const div = document.createElement('div');
+    div.className = 'list-item';
+    div.innerHTML = `
+      <div class="info">
+        <h4>${item.title}</h4>
+        <p>${date} • ${item.images?.length || 0} imgs</p>
+        <div class="tags">
+          <span class="tag ${tagState==='24h'?'is-24h':'neutral'}" onclick="toggleTag('${item.id}','24h')">24h</span>
+          <span class="tag ${tagState==='perm'?'is-perm':'neutral'}" onclick="toggleTag('${item.id}','perm')">Perm</span>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn-icon btn-view" onclick="viewItem('${item.id}')"><i class="fas fa-eye"></i></button>
+        <button class="btn-icon btn-del" onclick="askDel('${item.id}')"><i class="fas fa-trash"></i></button>
+      </div>
+    `;
+    container.appendChild(div);
   });
+};
+
+// Tags Logic
+function getTag(id) {
+  const s = JSON.parse(localStorage.getItem(TAGS_KEY)||"{}");
+  return s[id] || null;
 }
-
-window.checkToken = function() {
-  const val = document.getElementById('f-token').value.trim();
-  if (val === TOKEN_CODE) {
-    tokenUnlocked = true;
-    document.getElementById('adv-group').classList.remove('locked');
-    document.querySelector('.token-row').style.opacity = '0.5';
-    document.querySelector('.token-row').style.pointerEvents = 'none';
-  } else { alert('🔒 Token incorrecto'); }
+window.toggleTag = (id, type) => {
+  const s = JSON.parse(localStorage.getItem(TAGS_KEY)||"{}");
+  if(s[id] === type) delete s[id];
+  else s[id] = type;
+  localStorage.setItem(TAGS_KEY, JSON.stringify(s));
+  renderList();
 };
 
-window.startGen = function() {
-  document.getElementById('m-tiktok').classList.add('active');
-};
-window.followTiktok = function() {
-  window.open('https://www.tiktok.com/@bermatcode', '_blank');
-  closeModal('m-tiktok');
-  document.getElementById('m-load').classList.add('active');
-  setTimeout(saveToDb, 2200);
+// Actions
+window.viewItem = (id) => {
+  const i = items.find(x=>x.id===id);
+  document.getElementById('view-body').innerHTML = `
+    <div class="detail-row"><div class="detail-label">Título</div>${i.title}</div>
+    <div class="detail-row"><div class="detail-label">Texto Flotante</div>${(i.customTexts||[]).join(', ')}</div>
+    <div class="detail-row"><div class="detail-label">Música</div><a href="${i.musicUrl}" target="_blank">Ver URL</a></div>
+    <div class="detail-row"><div class="detail-label">Link</div><a href="?id=${i.id}" target="_blank">Abrir Galaxia</a></div>
+  `;
+  openM('m-view');
 };
 
-async function saveToDb() {
-  const data = {
-    title: document.getElementById('f-title').value.trim() || "Te Amo Yorchi",
-    entryText: document.getElementById('f-msg').value.trim() || "💖Toca la pantalla💘",
-    musicUrl: document.getElementById('f-music').value.trim(),
-    images: selectedImgs.length ? selectedImgs : ["https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda2.png","https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda3.png"],
-    createdAt: serverTimestamp()
-  };
-  if (tokenUnlocked) {
-    data.nucleusUrl = document.getElementById('f-nucleus').value.trim();
-    data.credits = document.getElementById('f-credits').value.trim();
+window.askDel = (id) => {
+  const tag = getTag(id);
+  if(tag === 'perm') {
+    if(!confirm("⚠️ Está marcado como PERMANENTE. ¿Forzar eliminación?")) return;
   }
-  try {
-    const ref = await addDoc(collection(db, "messages"), data);
-    const link = `${window.location.origin}${window.location.pathname.replace('panel.html','index.html')}?id=${ref.id}`;
-    document.getElementById('share-url').textContent = link;
-    document.getElementById('share-url').href = link;
-    closeModal('m-load');
-    document.getElementById('m-success').classList.add('active');
-  } catch(e) {
-    console.error(e); alert('❌ Error al crear la galaxia'); closeModal('m-load');
-  }
-}
-
-window.copyLnk = function() {
-  navigator.clipboard.writeText(document.getElementById('share-url').href).then(()=>alert('📋 Copiado'));
+  delId = id;
+  openM('m-del');
 };
-window.viewLnk = function() { window.open(document.getElementById('share-url').href, '_blank'); };
-window.closeModal = function(id) { document.getElementById(id).classList.remove('active'); };
+
+document.getElementById('confirm-del-btn').onclick = async () => {
+  if(!delId) return;
+  await deleteDoc(doc(db, "messages", delId));
+  // Clean tags
+  const s = JSON.parse(localStorage.getItem(TAGS_KEY)||"{}");
+  delete s[delId];
+  localStorage.setItem(TAGS_KEY, JSON.stringify(s));
+  
+  closeM('m-del');
+  loadData();
+};
+
+// Modal Utils
+window.openM = (id) => document.getElementById(id).classList.add('active');
+window.closeM = (id) => document.getElementById(id).classList.remove('active');
 </script>
 </body>
 </html>
