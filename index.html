@@ -22,31 +22,48 @@
     #entry-text{font-size:2.5em;color:#F6D1D5;text-shadow:0 0 20px #E8A2A8,0 0 40px #D97F88;text-align:center;animation:pulse 2s infinite ease-in-out;padding:30px 50px;background:rgba(246,209,213,.1);border-radius:20px;border:2px solid rgba(232,162,168,.3);font-family:'Patrick Hand',cursive}
     @keyframes pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
     #credits{position:fixed;bottom:15px;left:50%;transform:translateX(-50%);font-family:'Patrick Hand',cursive;font-size:.9em;color:#F6D1D5;text-shadow:0 0 10px #E8A2A8;z-index:50;pointer-events:none;white-space:nowrap}
-    #error-screen{position:fixed;top:0;left:0;width:100%;height:100%;display:none;justify-content:center;align-items:center;background:linear-gradient(135deg,#1a0a12,#0f0508);z-index:10000;text-align:center;padding:20px;color:#F6D1D5;font-family:'Patrick Hand',cursive}
-    #error-screen.active{display:flex;animation:fadeIn .5s}
+    
+    /* Modal de error mejorado */
+    #error-modal{position:fixed;top:0;left:0;width:100%;height:100%;display:none;justify-content:center;align-items:center;background:linear-gradient(135deg,#1a0a12,#0f0508);z-index:10000;text-align:center;padding:20px;color:#F6D1D5;font-family:'Patrick Hand',cursive;backdrop-filter:blur(10px)}
+    #error-modal.active{display:flex;animation:fadeIn .5s}
     @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-    #error-screen h2{font-size:3em;color:#E8A2A8;text-shadow:0 0 20px #D97F88;margin-bottom:20px}
-    #error-screen p{font-size:1.5em;max-width:600px;line-height:1.6;opacity:.9}
-    #error-screen .btn{margin-top:30px;padding:12px 30px;background:#E8A2A8;color:white;border:none;border-radius:50px;font-family:inherit;font-size:1.2em;cursor:pointer;text-decoration:none;display:inline-block;transition:transform .3s}
-    #error-screen .btn:hover{transform:scale(1.05)}
+    .error-card{background:rgba(255,255,255,.1);padding:35px;border-radius:24px;max-width:480px;width:90%;border:2px solid #E8A2A8;box-shadow:0 10px 40px rgba(217,127,136,.3)}
+    .error-card h2{font-size:2.5em;color:#E8A2A8;text-shadow:0 0 20px #D97F88;margin-bottom:15px}
+    .error-card p{font-size:1.2em;line-height:1.6;opacity:.9;margin:15px 0}
+    .error-card .btn{display:inline-block;margin:12px 8px;padding:12px 28px;background:#E8A2A8;color:white;border:none;border-radius:50px;font-family:inherit;font-size:1.1em;cursor:pointer;text-decoration:none;transition:transform .3s}
+    .error-card .btn:hover{transform:scale(1.05)}
+    .error-card .btn-whatsapp{background:#25D366}
+    .error-card .btn-whatsapp:hover{background:#128C7E}
+    
+    /* Loading */
     #loading{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;background:#000;z-index:9998;color:#F6D1D5;font-size:1.5em;flex-direction:column;gap:20px}
     .spinner{width:50px;height:50px;border:4px solid rgba(232,162,168,.3);border-top-color:#E8A2A8;border-radius:50%;animation:spin 1s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
-    @media(max-width:768px){#main-title{font-size:3.4em;top:25px}#entry-text{font-size:2em}#credits{font-size:.8em;bottom:10px}}
+    
+    @media(max-width:768px){#main-title{font-size:3.4em;top:25px}#entry-text{font-size:2em}#credits{font-size:.8em;bottom:10px}.error-card h2{font-size:2em}}
     @media(max-width:480px){#main-title{font-size:2.5em;top:20px}#entry-text{font-size:1.6em}}
   </style>
 </head>
 <body>
+  <!-- Loading -->
   <div id="loading"><div class="spinner"></div><div>Cargando tu galaxia... ✨</div></div>
-  <div id="error-screen">
-    <h2>🌠 Galaxia No Encontrada</h2>
-    <p>Lo sentimos, no pudimos encontrar esta galaxia.<br>El enlace puede haber expirado o ser incorrecto.</p>
-    <a href="panel.html" class="btn">✨ Crear mi galaxia</a>
+  
+  <!-- Modal de Error (NO muestra galaxia base) -->
+  <div id="error-modal">
+    <div class="error-card">
+      <h2>🌠 Archivo No Encontrado</h2>
+      <p>Lo sentimos, esta galaxia no existe o el enlace ha expirado.</p>
+      <p>Puedes crear una nueva o contactarme para ayudarte:</p>
+      <a href="panel.html" class="btn">✨ Crear mi galaxia</a>
+      <a href="https://wa.me/51930569195" target="_blank" class="btn btn-whatsapp">💬 WhatsApp: 930569195</a>
+    </div>
   </div>
+  
+  <!-- Contenido principal (solo si hay config válida) -->
   <h1 id="main-title">Cargando...</h1>
   <div id="entry-screen"><div id="entry-text">💖Toca la pantalla💘</div></div>
   <div id="credits">𖤍BerMatCode𖤍</div>
-  <audio id="background-music" loop></audio>
+  <audio id="background-music" loop preload="none"></audio>
   <canvas id="galaxy-canvas"></canvas>
 
   <script type="importmap">
@@ -85,7 +102,7 @@
 
     let USER_CFG = {...DEFAULT};
     
-    // CONFIG Three.js (base intacta)
+    // CONFIG Three.js (base intacta - NO se modifica)
     const CONFIG = {
       galaxy: { rotationSpeed: 0.12, centerExclusionRadius: 45 },
       elementExclusionRadius: 40,
@@ -108,12 +125,15 @@
     let scene, camera, renderer, controls, galaxyGroup, clock, composer;
     let loveTexts=[], loveImages=[], shootingStars=[], floatingParticles=[], orbitalParticles=[];
     let occupiedPositions=[], raycaster, mouse, blackHoleMesh;
+    let musicPlayed = false; // ✅ Control para que música solo suene tras interacción
 
     const urlParams = new URLSearchParams(location.search);
     const galaxyId = urlParams.get('id');
 
     async function loadConfig() {
-      if (!galaxyId) { applyCfg(); init(); return; }
+      // ✅ Si no hay ID, mostrar error modal (NUNCA galaxia base)
+      if (!galaxyId) { showError(); return; }
+      
       try {
         const snap = await getDoc(doc(db, "galaxies", galaxyId));
         if (snap.exists()) {
@@ -121,12 +141,17 @@
           USER_CFG = {
             ...DEFAULT,
             ...d,
-            phrases: Array.isArray(d.phrases) && d.phrases.length ? d.phrases.slice(0,50) : DEFAULT.phrases
+            phrases: Array.isArray(d.phrases) && d.phrases.length ? d.phrases.slice(0,15) : DEFAULT.phrases
           };
           applyCfg();
           init();
-        } else showError();
-      } catch(e) { console.error(e); showError(); }
+        } else {
+          showError(); // ✅ Config no encontrada
+        }
+      } catch(e) { 
+        console.error('Error:', e); 
+        showError(); // ✅ Cualquier error muestra modal
+      }
     }
 
     function applyCfg() {
@@ -134,18 +159,25 @@
       document.getElementById('credits').textContent = USER_CFG.credits || DEFAULT.credits;
       CONFIG.blackHole.imageUrl = USER_CFG.nucleusImage || DEFAULT.nucleusImage;
       CONFIG.particles.texts.content = USER_CFG.phrases || DEFAULT.phrases;
+      // ✅ Música: solo se asigna, NO se reproduce automáticamente
       const music = document.getElementById('background-music');
-      if (USER_CFG.musicUrl?.trim()) music.src = USER_CFG.musicUrl;
+      if (USER_CFG.musicUrl?.trim()) {
+        music.src = USER_CFG.musicUrl;
+        music.load(); // Precargar pero no play
+      }
     }
 
     function showError() {
       document.getElementById('loading').style.display = 'none';
-      document.getElementById('error-screen').classList.add('active');
-      if (renderer) renderer.dispose();
+      document.getElementById('error-modal').classList.add('active');
+      // ✅ Detener cualquier intento de renderizar galaxia
+      if (renderer) { renderer.dispose(); renderer = null; }
+      if (scene) scene = null;
     }
 
     function init() {
       document.getElementById('loading').style.display = 'none';
+      
       scene = new THREE.Scene();
       clock = new THREE.Clock();
       raycaster = new THREE.Raycaster();
@@ -154,10 +186,12 @@
       renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('galaxy-canvas'), antialias: true });
       renderer.setPixelRatio(devicePixelRatio);
       renderer.setSize(innerWidth, innerHeight);
+      
       controls = new OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true; controls.dampingFactor = 0.05;
       controls.minDistance = CONFIG.cameraControls.minDistance;
       controls.maxDistance = CONFIG.cameraControls.maxDistance;
+      
       const renderScene = new RenderPass(scene, camera);
       const bloomPass = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 1.5, 0.4, 0.85);
       bloomPass.threshold = CONFIG.bloomEffect.threshold;
@@ -166,13 +200,16 @@
       composer = new EffectComposer(renderer);
       composer.addPass(renderScene);
       composer.addPass(bloomPass);
+      
       const { ambientLight, pointLight } = CONFIG.lighting;
       scene.add(new THREE.AmbientLight(ambientLight.color, ambientLight.intensity));
       const mainLight = new THREE.PointLight(pointLight.color, pointLight.intensity, pointLight.distance);
       mainLight.position.set(0,0,0);
       scene.add(mainLight);
+      
       galaxyGroup = new THREE.Group();
       scene.add(galaxyGroup);
+      
       createBlackHole();
       createAccretionDiskParticles();
       createOrbitalRings();
@@ -181,6 +218,7 @@
       createBackgroundStars();
       createFloatingSpaceParticles();
       createLoveElements();
+      
       addEventListener('resize', onWindowResize);
       onWindowResize();
       animate();
@@ -451,15 +489,25 @@
       composer.render();
     }
     
+    // Prevenciones
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.onkeydown = function(e) {
       if (e.keyCode==123 || (e.ctrlKey && e.shiftKey && (e.keyCode=='I'.charCodeAt(0)||e.keyCode=='J'.charCodeAt(0)||e.keyCode=='C'.charCodeAt(0))) || (e.ctrlKey && (e.keyCode=='U'.charCodeAt(0)||e.keyCode=='S'.charCodeAt(0)))) return false;
     };
+    
+    // ✅ Música: solo se reproduce tras interacción del usuario
     document.getElementById('entry-screen').addEventListener('click', () => {
-      const screen = document.getElementById('entry-screen'), music = document.getElementById('background-music');
-      if (music.src?.trim()) { music.load(); music.play().catch(e=>console.log('Autoplay:',e)); }
+      const screen = document.getElementById('entry-screen');
+      const music = document.getElementById('background-music');
+      
+      // ✅ Solo play si hay música y no se ha reproducido aún
+      if (music.src?.trim() && !musicPlayed) {
+        music.play().then(() => { musicPlayed = true; }).catch(e => console.log('Autoplay:', e));
+      }
       screen.style.display = 'none';
     });
+    
+    // Iniciar carga
     loadConfig();
   </script>
 </body>
