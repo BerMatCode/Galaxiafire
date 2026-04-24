@@ -5,14 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#000000">
 <title>Galaxia Personalizada</title>
-<meta property="og:title" content="Galaxia Te amo">
-<meta property="og:image" content="https://mi-universo-perfecto.netlify.app/assets/icon.webp">
-<meta property="og:url" content="https://mi-universo-perfecto.netlify.app/">
-<meta property="og:type" content="website">
+<meta property="og:title" content="Mi Universo para Ti">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
-<link rel="icon" href="https://mi-universo-perfecto.netlify.app/assets/icon.webp">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -238,7 +234,7 @@ Tu detalle personalizado no ha sido encontrado. Es posible que el link esté da�
 <i class="fas fa-bolt charging-icon" id="charging-icon"></i>
 </div>
 <!-- === Contenido Principal === -->
-<h1 id="main-title">Te Amo Yorchi</h1>
+<h1 id="main-title">Te Amo</h1>
 <div id="entry-screen"><div id="entry-text">💖Toca la pantalla💘</div></div>
 <div id="credits">𖤍BerMatCode𖤍</div>
 <audio id="background-music" loop></audio>
@@ -265,8 +261,11 @@ window.customMusic = null;
 window.customTitle = null;
 window.customCredits = null;
 window.customCoreImage = null;
+window.hasError = false;
 // === Función para mostrar error ===
 function showErrorModal() {
+if (window.hasError) return;
+window.hasError = true;
 const loading = document.getElementById('loading-screen');
 loading.classList.add('hidden');
 setTimeout(() => { loading.style.display = 'none'; }, 600);
@@ -278,79 +277,51 @@ const inputName = document.getElementById('recipient-name');
 function updateWhatsAppLink() {
 const name = inputName.value.trim() || '.........';
 const message = `*Hola BerMatCode*, tengo un problema con mi detalle de galaxia a nombre de *${name}*. El link no funciona.`;
-const encodedMsg = encodeURIComponent(message);
-whatsappBtn.href = `https://wa.me/51930569195?text=${encodedMsg}`;
+whatsappBtn.href = `https://wa.me/51930569195?text=${encodeURIComponent(message)}`;
 }
 inputName.addEventListener('input', updateWhatsAppLink);
 updateWhatsAppLink();
-window.hasError = true;
 }
 // === Cargar datos desde Firebase ===
 async function loadCustomData() {
 const params = new URLSearchParams(window.location.search);
 const messageId = params.get('id');
-if (!messageId) { showErrorModal(); return false; }
+if (!messageId) { showErrorModal(); return; }
 try {
 const docRef = doc(db, "messages", messageId);
 const docSnap = await getDoc(docRef);
 if (docSnap.exists()) {
 const data = docSnap.data();
-// Aplicar personalizaciones
-if (data.title) { document.getElementById('main-title').textContent = data.title; window.customTitle = data.title; }
-if (data.credits) { document.getElementById('credits').textContent = data.credits; window.customCredits = data.credits; }
-if (data.musicUrl) { document.getElementById('background-music').src = data.musicUrl; window.customMusic = data.musicUrl; }
-if (data.coreImageUrl) { window.customCoreImage = data.coreImageUrl; }
-if (data.texts && data.texts.length > 0) { window.customTexts = data.texts.filter(t => t && t.trim() !== ''); }
-if (data.images && data.images.length > 0) { window.customImages = data.images.filter(url => url && url.trim() !== ''); }
-hideLoadingAndShowContent();
-playAudio();
-return true;
-} else { showErrorModal(); return false; }
-} catch (error) {
-console.error("Error cargando datos:", error);
-showErrorModal();
-return false;
-}
-}
-function hideLoadingAndShowContent() {
+document.getElementById('main-title').textContent = data.title || document.getElementById('main-title').textContent;
+document.getElementById('credits').textContent = data.credits || document.getElementById('credits').textContent;
+window.customTitle = data.title;
+window.customCredits = data.credits;
+window.customMusic = data.musicUrl;
+window.customCoreImage = data.coreImageUrl;
+window.customTexts = Array.isArray(data.texts) ? data.texts.filter(t => t?.trim()) : [];
+window.customImages = Array.isArray(data.images) ? data.images.filter(u => u?.trim()) : [];
 const loading = document.getElementById('loading-screen');
 loading.classList.add('hidden');
 setTimeout(() => { loading.style.display = 'none'; }, 600);
+window.customDataReady = true;
+window.dispatchEvent(new Event('data-ready'));
+} else { showErrorModal(); }
+} catch (error) {
+console.error("Error cargando:", error);
+showErrorModal();
+}
 }
 window.loadCustomData = loadCustomData;
 window.showErrorModal = showErrorModal;
+window.addEventListener('load', loadCustomData);
 </script>
 <script>
-// === Inicialización ===
-window.addEventListener('load', async () => {
-await (typeof loadCustomData === 'function' ? loadCustomData() : Promise.resolve());
-if (!window.hasError) { initBattery(); initMenu(); }
-});
-// === Audio ===
-const bg = document.getElementById('background-music');
-let audioReady = false;
-async function playAudio() {
-if (audioReady || window.hasError) return;
-try {
-await bg.load();
-bg.volume = 0.6;
-await bg.play();
-audioReady = true;
-} catch(e) { /* Autoplay requiere interacción */ }
-}
-document.addEventListener('click', playAudio, { once: true, passive: true });
-document.addEventListener('touchstart', playAudio, { once: true, passive: true });
-// === Menú ===
 function toggleMenu() {
 if (window.hasError) return;
 document.getElementById('menu-panel').classList.toggle('active');
 document.getElementById('menu-btn').classList.toggle('active');
 document.getElementById('menu-overlay').classList.toggle('active');
 }
-function initMenu() {
-document.getElementById('menu-btn').style.display = 'flex';
-}
-// === Batería ===
 async function initBattery() {
 if (window.hasError) return;
 const l = document.getElementById('battery-level');
@@ -364,25 +335,21 @@ l.className = 'battery-level ' + (pct <= 20 ? 'low' : pct <= 50 ? 'medium' : 'hi
 c.classList.toggle('active', chg);
 };
 if ('getBattery' in navigator) {
-try {
-const b = await navigator.getBattery();
-upd(b.level, b.charging);
+try { const b = await navigator.getBattery(); upd(b.level, b.charging);
 b.addEventListener('levelchange', () => upd(b.level, b.charging));
 b.addEventListener('chargingchange', () => upd(b.level, b.charging));
-return;
 } catch(e) {}
 }
 upd(0.85, false);
 }
-// === Entry Screen ===
+initBattery();
+const bg = document.getElementById('background-music');
 document.getElementById('entry-screen').addEventListener('click', () => {
 if (window.hasError) return;
+bg.src = window.customMusic || 'https://github.com/BerMatCode/Archivos/raw/refs/heads/main/Multimedia/TikVid.io_7471239338752363781.mp3';
+bg.load();
+bg.play().catch(()=>{});
 const screen = document.getElementById('entry-screen');
-const music = document.getElementById('background-music');
-const defaultMusic = 'https://github.com/BerMatCode/Archivos/raw/refs/heads/main/Multimedia/TikVid.io_7471239338752363781.mp3';
-music.src = window.customMusic || defaultMusic;
-music.load();
-music.play().catch(e => console.error('Error música:', e));
 screen.style.opacity = '0';
 screen.style.pointerEvents = 'none';
 setTimeout(() => { screen.style.display = 'none'; }, 500);
@@ -394,405 +361,225 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-// Configuración base
-const BASE_CONFIG = {
-galaxy: { rotationSpeed: 0.12, centerExclusionRadius: 45 },
-elementExclusionRadius: 40,
-blackHole: { radius: 12, segments: 64, imageUrl: 'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/imagen%20del%20n%C3%BAcleo.png' },
-accretionDisk: { innerRadius: 18, outerRadius: 65, particleCount: 8000, particleSize: 0.28, colors: ['#E8A2A8', '#D97F88', '#F6D1D5', '#F2B9BF', '#FFB6C1'], brightness: 0.18, orbitalRings: 18, ringParticleBase: 600, ringParticleIncrement: 55 },
-particles: {
-coreStars: { count: 25000, radius: 140, maxHeight: 70, size: 0.2 },
-sphericalHalo: { count: 22000, radiusXZ: 130, radiusY: 65, size: 0.15, minDistFromCenter: 32 },
-backgroundStars: { count: 12000, radius: 800, size: 0.1, floatSpeed: 0.012 },
-floatingSpace: { count: 5000, radius: 280, size: 0.2, speed: 0.005 },
-texts: {
-count: 50, width: 45, height: 20, minRadius: null, maxRadius: 140,
-content: ["Siempre contigo", "Eres mi calma", "Me haces feliz", "Tu sonrisa brilla", "Qué bonito coincidir", "Mi lugar favorito", "Contigo todo mejora", "Tu luz me inspira", "Eres increíble", "Gracias por existir", "Mi corazón te elige", "Qué suerte tenerte", "Eres mi paz"],
-colors: [{ fill: '#E8A2A8', shadow: '#D97F88' }, { fill: '#F6D1D5', shadow: '#E8A2A8' }, { fill: '#F2B9BF', shadow: '#D97F88' }]
-},
-emojis: {
-count: 25, size: 10, minRadius: null, maxRadius: 140,
-content: ['https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda2.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda3.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda6.png'],
-colors: [{ fill: '#F6D1D5', shadow: '#D97F88' }, { fill: '#F2B9BF', shadow: '#E8A2A8' }, { fill: '#E8A2A8', shadow: '#D97F88' }]
-}
-},
-shootingStars: { enabled: true, spawnProbability: 0.007, speed: 1.2 },
-lighting: { ambientLight: { color: '#ffffff', intensity: 0.06 }, pointLight: { color: '#E8A2A8', intensity: 1.5, distance: 400 } },
-bloomEffect: { threshold: 0.45, strength: 0.4, radius: 0.3 },
-cameraControls: { minDistance: 30, maxDistance: 300 },
-performance: { updateInterval: 2, floatUpdateInterval: 3 }
+const BASE = {
+rotationSpeed: 0.12, elementExclusion: 40,
+bhRadius: 12, bhImg: 'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/imagen%20del%20n%C3%BAcleo.png',
+diskInner: 18, diskOuter: 65, diskCount: 8000, diskSize: 0.28,
+diskColors: ['#E8A2A8', '#D97F88', '#F6D1D5', '#F2B9BF', '#FFB6C1'], diskBright: 0.18,
+texts: ["Siempre contigo", "Eres mi calma", "Me haces feliz", "Tu sonrisa brilla", "Qué bonito coincidir", "Mi lugar favorito", "Contigo todo mejora", "Tu luz me inspira", "Eres increíble", "Gracias por existir", "Mi corazón te elige", "Qué suerte tenerte", "Eres mi paz"],
+imgDefaults: ['https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda2.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda3.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda6.png']
 };
-let scene, camera, renderer, controls, galaxyGroup, clock, composer;
-let loveTexts = [], loveImages = [], shootingStars = [], floatingParticles = [], orbitalParticles = [];
-let occupiedPositions = [];
-let raycaster, mouse;
-let blackHoleMesh, diskParticles, bgStarsMesh, floatMesh;
-let frameCount = 0;
-function init() {
+let scene, camera, renderer, controls, clock, composer, galaxyGroup;
+let loveTexts=[], loveImages=[], shootingStars=[], orbitalParticles=[];
+let occupied=[], blackHoleMesh, diskParticles, bgStarsMesh, floatMesh;
+let frameCount=0;
+function initGalaxy() {
 if (window.hasError) return;
 scene = new THREE.Scene();
 clock = new THREE.Clock();
-raycaster = new THREE.Raycaster();
-mouse = new THREE.Vector2();
 camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1500);
-renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('galaxy-canvas'), antialias: true, powerPreference: 'high-performance' });
+renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('galaxy-canvas'), antialias: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setClearColor(0x000000, 1);
 controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true; controls.dampingFactor = 0.05;
-controls.minDistance = BASE_CONFIG.cameraControls.minDistance;
-controls.maxDistance = BASE_CONFIG.cameraControls.maxDistance;
-controls.enablePan = false;
-const renderScene = new RenderPass(scene, camera);
-const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.2, 0.35, 0.75);
-bloomPass.threshold = BASE_CONFIG.bloomEffect.threshold;
-bloomPass.strength = BASE_CONFIG.bloomEffect.strength;
-bloomPass.radius = BASE_CONFIG.bloomEffect.radius;
+controls.minDistance = 30; controls.maxDistance = 300; controls.enablePan = false;
 composer = new EffectComposer(renderer);
-composer.addPass(renderScene);
-composer.addPass(bloomPass);
-const { ambientLight, pointLight } = BASE_CONFIG.lighting;
-scene.add(new THREE.AmbientLight(ambientLight.color, ambientLight.intensity));
-const mainLight = new THREE.PointLight(pointLight.color, pointLight.intensity, pointLight.distance);
-mainLight.position.set(0, 0, 0);
-scene.add(mainLight);
-galaxyGroup = new THREE.Group();
-scene.add(galaxyGroup);
-createBlackHole();
-createAccretionDiskParticles();
+composer.addPass(new RenderPass(scene, camera));
+const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.2, 0.35, 0.75);
+bloom.threshold = 0.45; bloom.strength = 0.4; bloom.radius = 0.3;
+composer.addPass(bloom);
+scene.add(new THREE.AmbientLight('#ffffff', 0.06));
+const pl = new THREE.PointLight('#E8A2A8', 1.5, 400); pl.position.set(0,0,0); scene.add(pl);
+galaxyGroup = new THREE.Group(); scene.add(galaxyGroup);
+createCore();
+createDisk();
 createOrbitalRings();
-createCoreStars();
-createSphericalHalo();
-createBackgroundStars();
-createFloatingSpaceParticles();
+createStars(25000, 140, 70, 0.2, true);
+createHalo();
+createBgStars();
+createFloating();
 createLoveElements();
-window.addEventListener('resize', onWindowResize);
-onWindowResize();
+window.addEventListener('resize', ()=>{
+const w=window.innerWidth, h=window.innerHeight;
+renderer.setSize(w,h); composer.setSize(w,h);
+camera.aspect=w/h; camera.position.set(0,45,w<768?190:160);
+camera.updateProjectionMatrix();
+});
+window.addEventListener('resize', ()=>{}, {once:true});
 animate();
 }
-function createBlackHole() {
-const bhConfig = BASE_CONFIG.blackHole;
-const imageUrl = window.customCoreImage || bhConfig.imageUrl;
-const textureLoader = new THREE.TextureLoader();
-const nucleusTexture = textureLoader.load(imageUrl, (tex) => { tex.colorSpace = THREE.SRGBColorSpace; });
-const sphereGeometry = new THREE.SphereGeometry(bhConfig.radius, bhConfig.segments, bhConfig.segments);
-const sphereMaterial = new THREE.MeshBasicMaterial({ map: nucleusTexture, transparent: false, opacity: 1.0 });
-blackHoleMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
-scene.add(blackHoleMesh);
+function createCore() {
+const url = window.customCoreImage || BASE.bhImg;
+const t = new THREE.TextureLoader().load(url, x=>x.colorSpace=THREE.SRGBColorSpace);
+const g = new THREE.SphereGeometry(BASE.bhRadius, 64, 64);
+const m = new THREE.MeshBasicMaterial({ map: t, transparent: false });
+blackHoleMesh = new THREE.Mesh(g, m); scene.add(blackHoleMesh);
 }
-function createAccretionDiskParticles() {
-const diskConfig = BASE_CONFIG.accretionDisk;
-const geometry = new THREE.BufferGeometry();
-const positions = new Float32Array(diskConfig.particleCount * 3);
-const colors = new Float32Array(diskConfig.particleCount * 3);
-const colorObj = new THREE.Color();
-for (let i = 0; i < diskConfig.particleCount; i++) {
-const radius = diskConfig.innerRadius + Math.random() * (diskConfig.outerRadius - diskConfig.innerRadius);
-const angle = Math.random() * Math.PI * 2;
-const spread = 0.5;
-const x = radius * Math.cos(angle);
-const z = radius * Math.sin(angle);
-const y = (Math.random() - 0.5) * spread;
-positions.set([x, y, z], i * 3);
-const colorHex = diskConfig.colors[Math.floor(Math.random() * diskConfig.colors.length)];
-colorObj.set(colorHex);
-colors.set([colorObj.r * diskConfig.brightness, colorObj.g * diskConfig.brightness, colorObj.b * diskConfig.brightness], i * 3);
+function createDisk() {
+const g = new THREE.BufferGeometry();
+const pos = new Float32Array(BASE.diskCount*3), col = new Float32Array(BASE.diskCount*3);
+const c = new THREE.Color();
+for(let i=0;i<BASE.diskCount;i++){
+const r = BASE.diskInner + Math.random()*(BASE.diskOuter-BASE.diskInner);
+const a = Math.random()*Math.PI*2;
+pos[i*3]=r*Math.cos(a); pos[i*3+1]=(Math.random()-0.5)*0.5; pos[i*3+2]=r*Math.sin(a);
+c.set(BASE.diskColors[Math.floor(Math.random()*5)]);
+col[i*3]=c.r*BASE.diskBright; col[i*3+1]=c.g*BASE.diskBright; col[i*3+2]=c.b*BASE.diskBright;
 }
-geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-const material = new THREE.PointsMaterial({ size: diskConfig.particleSize, blending: THREE.AdditiveBlending, vertexColors: true, transparent: true, opacity: 0.8, sizeAttenuation: true, depthWrite: false });
-diskParticles = new THREE.Points(geometry, material);
-diskParticles.rotation.x = 0;
+g.setAttribute('position', new THREE.BufferAttribute(pos,3));
+g.setAttribute('color', new THREE.BufferAttribute(col,3));
+diskParticles = new THREE.Points(g, new THREE.PointsMaterial({size:BASE.diskSize, blending:THREE.AdditiveBlending, vertexColors:true, transparent:true, depthWrite:false}));
 galaxyGroup.add(diskParticles);
 }
 function createOrbitalRings() {
-const diskConfig = BASE_CONFIG.accretionDisk;
-const ringCount = diskConfig.orbitalRings;
-for (let r = 0; r < ringCount; r++) {
-const radius = diskConfig.innerRadius + (diskConfig.outerRadius - diskConfig.innerRadius) * (r / ringCount);
-const particlesPerRing = Math.min(diskConfig.ringParticleBase + r * diskConfig.ringParticleIncrement, 1000);
-const geometry = new THREE.BufferGeometry();
-const positions = new Float32Array(particlesPerRing * 3);
-const colors = new Float32Array(particlesPerRing * 3);
-const colorObj = new THREE.Color();
-for (let i = 0; i < particlesPerRing; i++) {
-const angle = (i / particlesPerRing) * Math.PI * 2;
-const x = radius * Math.cos(angle);
-const z = radius * Math.sin(angle);
-const y = 0;
-positions.set([x, y, z], i * 3);
-const colorHex = diskConfig.colors[r % diskConfig.colors.length];
-colorObj.set(colorHex);
-const brightness = BASE_CONFIG.accretionDisk.brightness * (0.8 + Math.random() * 0.2);
-colors.set([colorObj.r * brightness, colorObj.g * brightness, colorObj.b * brightness], i * 3);
+for(let r=0;r<18;r++){
+const rad = BASE.diskInner + (BASE.diskOuter-BASE.diskInner)*(r/18);
+const count = Math.min(600+r*55, 1000);
+const g = new THREE.BufferGeometry();
+const pos = new Float32Array(count*3), col = new Float32Array(count*3);
+const c = new THREE.Color();
+for(let i=0;i<count;i++){
+const a = (i/count)*Math.PI*2;
+pos[i*3]=rad*Math.cos(a); pos[i*3+1]=0; pos[i*3+2]=rad*Math.sin(a);
+c.set(BASE.diskColors[r%5]);
+col[i*3]=c.r*0.2; col[i*3+1]=c.g*0.2; col[i*3+2]=c.b*0.2;
 }
-geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-const material = new THREE.PointsMaterial({ size: 0.32, blending: THREE.AdditiveBlending, vertexColors: true, transparent: true, opacity: 0.9, depthWrite: false });
-const ring = new THREE.Points(geometry, material);
-ring.userData = { radius: radius, speed: 0.0012 + r * 0.0002, offset: Math.random() * Math.PI * 2 };
-ring.rotation.x = 0;
-galaxyGroup.add(ring);
-orbitalParticles.push(ring);
+g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+g.setAttribute('color',new THREE.BufferAttribute(col,3));
+const ring = new THREE.Points(g, new THREE.PointsMaterial({size:0.32, blending:THREE.AdditiveBlending, vertexColors:true, transparent:true, depthWrite:false}));
+ring.userData = {speed:0.0012+r*0.0002, offset:Math.random()*Math.PI*2};
+galaxyGroup.add(ring); orbitalParticles.push(ring);
 }
 }
-function createCoreStars() {
-const coreConfig = BASE_CONFIG.particles.coreStars;
-const geometry = new THREE.BufferGeometry();
-const positions = new Float32Array(coreConfig.count * 3);
-const colors = new Float32Array(coreConfig.count * 3);
-const color = new THREE.Color();
-for (let i = 0; i < coreConfig.count; i++) {
-const distance = BASE_CONFIG.accretionDisk.outerRadius + Math.random() * (coreConfig.radius - BASE_CONFIG.accretionDisk.outerRadius);
-const angle = Math.random() * Math.PI * 2;
-const y = (Math.random() - 0.5) * coreConfig.maxHeight * Math.pow(1 - (distance / coreConfig.radius), 1.5);
-positions.set([Math.cos(angle) * distance, y, Math.sin(angle) * distance], i * 3);
-const hue = 0.82 + Math.random() * 0.12;
-const saturation = 0.8 + Math.random() * 0.2;
-const lightness = 0.6 + Math.random() * 0.4;
-color.setHSL(hue % 1, saturation, lightness);
-colors.set([color.r, color.g, color.b], i * 3);
+function createStars(n, rad, h, sz, isCore) {
+const g = new THREE.BufferGeometry(), pos = new Float32Array(n*3), col = new Float32Array(n*3);
+const c = new THREE.Color();
+for(let i=0;i<n;i++){
+const d = isCore ? BASE.diskOuter + Math.random()*(rad-BASE.diskOuter) : Math.random()*rad;
+const a = Math.random()*Math.PI*2;
+pos[i*3]=Math.cos(a)*d; pos[i*3+1]=(Math.random()-0.5)*h; pos[i*3+2]=Math.sin(a)*d;
+c.setHSL((0.82+Math.random()*0.12)%1, 0.8+Math.random()*0.2, 0.5+Math.random()*0.5);
+col[i*3]=c.r; col[i*3+1]=c.g; col[i*3+2]=c.b;
 }
-geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-const material = new THREE.PointsMaterial({ size: coreConfig.size, blending: THREE.AdditiveBlending, vertexColors: true, transparent: true, depthWrite: false });
-galaxyGroup.add(new THREE.Points(geometry, material));
+g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+g.setAttribute('color',new THREE.BufferAttribute(col,3));
+galaxyGroup.add(new THREE.Points(g, new THREE.PointsMaterial({size:sz, blending:THREE.AdditiveBlending, vertexColors:true, transparent:true, depthWrite:false})));
 }
-function createSphericalHalo() {
-const haloConfig = BASE_CONFIG.particles.sphericalHalo;
-const geometry = new THREE.BufferGeometry();
-const positions = new Float32Array(haloConfig.count * 3);
-const colors = new Float32Array(haloConfig.count * 3);
-const color = new THREE.Color();
-let filled = 0;
-while (filled < haloConfig.count) {
-const rx = (Math.random() * 2 - 1);
-const ry = (Math.random() * 2 - 1);
-const rz = (Math.random() * 2 - 1);
-if (rx * rx + ry * ry + rz * rz > 1.0) continue;
-const x = rx * haloConfig.radiusXZ;
-const y = ry * haloConfig.radiusY;
-const z = rz * haloConfig.radiusXZ;
-const distFromCenter = Math.sqrt(x * x + y * y + z * z);
-if (distFromCenter < haloConfig.minDistFromCenter) continue;
-const rNorm = distFromCenter / Math.max(haloConfig.radiusXZ, haloConfig.radiusY);
-if (Math.random() > Math.pow(1.0 - rNorm * 0.7, 1.2)) continue;
-positions.set([x, y, z], filled * 3);
-const hue = 0.82 + Math.random() * 0.12;
-const saturation = 0.6 + Math.random() * 0.4;
-const lightness = 0.45 + Math.random() * 0.45;
-color.setHSL(hue % 1, saturation, lightness);
-colors.set([color.r, color.g, color.b], filled * 3);
-filled++;
+function createHalo() { createStars(22000, 130, 65, 0.15, false); }
+function createBgStars() {
+const g = new THREE.BufferGeometry(), pos = new Float32Array(12000*3), vel = new Float32Array(12000*3);
+for(let i=0;i<12000;i++){
+pos[i*3]=(Math.random()-0.5)*1600; pos[i*3+1]=(Math.random()-0.5)*1600; pos[i*3+2]=(Math.random()-0.5)*1600;
+vel[i*3]=(Math.random()-0.5)*0.012; vel[i*3+1]=(Math.random()-0.5)*0.012; vel[i*3+2]=(Math.random()-0.5)*0.012;
 }
-geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-const material = new THREE.PointsMaterial({ size: haloConfig.size, blending: THREE.AdditiveBlending, vertexColors: true, transparent: true, opacity: 0.65, depthWrite: false });
-galaxyGroup.add(new THREE.Points(geometry, material));
-}
-function createBackgroundStars() {
-const bgConfig = BASE_CONFIG.particles.backgroundStars;
-const geometry = new THREE.BufferGeometry();
-const positions = new Float32Array(bgConfig.count * 3);
-const velocities = new Float32Array(bgConfig.count * 3);
-for (let i = 0; i < bgConfig.count; i++) {
-const r = bgConfig.radius;
-positions.set([(Math.random() - 0.5) * 2 * r, (Math.random() - 0.5) * 2 * r, (Math.random() - 0.5) * 2 * r], i * 3);
-velocities.set([(Math.random() - 0.5) * bgConfig.floatSpeed, (Math.random() - 0.5) * bgConfig.floatSpeed, (Math.random() - 0.5) * bgConfig.floatSpeed], i * 3);
-}
-geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-geometry.setAttribute('velocity', new THREE.BufferAttribute(velocities, 3));
-const material = new THREE.PointsMaterial({ size: bgConfig.size, color: 0xffffff, transparent: true, opacity: 0.3, depthWrite: false });
-bgStarsMesh = new THREE.Points(geometry, material);
-bgStarsMesh.userData.isBackground = true;
+g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+g.setAttribute('velocity',new THREE.BufferAttribute(vel,3));
+bgStarsMesh = new THREE.Points(g, new THREE.PointsMaterial({size:0.1, color:0xffffff, transparent:true, opacity:0.3, depthWrite:false}));
 scene.add(bgStarsMesh);
 }
-function createFloatingSpaceParticles() {
-const floatConfig = BASE_CONFIG.particles.floatingSpace;
-const geometry = new THREE.BufferGeometry();
-const positions = new Float32Array(floatConfig.count * 3);
-const colors = new Float32Array(floatConfig.count * 3);
-const velocities = new Float32Array(floatConfig.count * 3);
-const colorObj = new THREE.Color();
-for (let i = 0; i < floatConfig.count; i++) {
-const theta = Math.random() * Math.PI * 2;
-const phi = Math.acos(2 * Math.random() - 1);
-const radius = floatConfig.radius * Math.pow(Math.random(), 0.3);
-const x = radius * Math.sin(phi) * Math.cos(theta);
-const y = radius * Math.cos(phi);
-const z = radius * Math.sin(phi) * Math.sin(theta);
-positions.set([x, y, z], i * 3);
-const hue = 0.8 + Math.random() * 0.15;
-const saturation = 0.5 + Math.random() * 0.3;
-const lightness = 0.7 + Math.random() * 0.25;
-colorObj.setHSL(hue, saturation, lightness);
-colors.set([colorObj.r * 0.4, colorObj.g * 0.4, colorObj.b * 0.4], i * 3);
-velocities.set([(Math.random() - 0.5) * floatConfig.speed, (Math.random() - 0.5) * floatConfig.speed, (Math.random() - 0.5) * floatConfig.speed], i * 3);
+function createFloating() {
+const g = new THREE.BufferGeometry(), pos = new Float32Array(5000*3), col = new Float32Array(5000*3), vel = new Float32Array(5000*3);
+const c = new THREE.Color();
+for(let i=0;i<5000;i++){
+const t=Math.random()*Math.PI*2, p=Math.acos(2*Math.random()-1), r=280*Math.pow(Math.random(),0.3);
+pos[i*3]=r*Math.sin(p)*Math.cos(t); pos[i*3+1]=r*Math.cos(p); pos[i*3+2]=r*Math.sin(p)*Math.sin(t);
+c.setHSL(0.8+Math.random()*0.15, 0.5+Math.random()*0.3, 0.7+Math.random()*0.25);
+col[i*3]=c.r*0.4; col[i*3+1]=c.g*0.4; col[i*3+2]=c.b*0.4;
+vel[i*3]=(Math.random()-0.5)*0.005; vel[i*3+1]=(Math.random()-0.5)*0.005; vel[i*3+2]=(Math.random()-0.5)*0.005;
 }
-geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-geometry.setAttribute('velocity', new THREE.BufferAttribute(velocities, 3));
-const material = new THREE.PointsMaterial({ size: floatConfig.size, blending: THREE.AdditiveBlending, vertexColors: true, transparent: true, opacity: 0.5, depthWrite: false });
-floatMesh = new THREE.Points(geometry, material);
-floatMesh.userData.isFloating = true;
+g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+g.setAttribute('color',new THREE.BufferAttribute(col,3));
+g.setAttribute('velocity',new THREE.BufferAttribute(vel,3));
+floatMesh = new THREE.Points(g, new THREE.PointsMaterial({size:0.2, blending:THREE.AdditiveBlending, vertexColors:true, transparent:true, opacity:0.5, depthWrite:false}));
 scene.add(floatMesh);
-floatingParticles.push(floatMesh);
 }
 function createLoveElements() {
-const textConfig = BASE_CONFIG.particles.texts;
-const emojiConfig = BASE_CONFIG.particles.emojis;
-// Usar textos personalizados o por defecto
-const textsToUse = window.customTexts?.length > 0 ? window.customTexts : textConfig.content;
-const textureLoader = new THREE.TextureLoader();
-// Crear textos flotantes
-for (let i = 0; i < Math.min(50, textsToUse.length * 4); i++) {
-const text = textsToUse[i % textsToUse.length];
-const colorData = textConfig.colors[i % textConfig.colors.length];
-const texture = createTextTexture(text, colorData);
-const material = new THREE.MeshPhongMaterial({ map: texture, transparent: true, alphaTest: 0.1, emissive: colorData.fill, emissiveIntensity: 1.2, depthWrite: false });
-const textMesh = new THREE.Mesh(new THREE.PlaneGeometry(textConfig.width, textConfig.height), material);
-setElementOrbitPosition(textMesh, textConfig.minRadius, textConfig.maxRadius);
-galaxyGroup.add(textMesh); loveTexts.push(textMesh);
+const texts = window.customTexts?.length ? window.customTexts : BASE.texts;
+const imgs = window.customImages?.length ? window.customImages : BASE.imgDefaults;
+// Textos
+texts.forEach((txt, i) => {
+const canvas = document.createElement('canvas'); canvas.width=1536; canvas.height=512;
+const ctx = canvas.getContext('2d');
+ctx.font='84px "Patrick Hand", cursive'; ctx.fillStyle=['#E8A2A8','#F6D1D5','#F2B9BF'][i%3];
+ctx.shadowColor=['#D97F88','#E8A2A8','#D97F88'][i%3]; ctx.shadowBlur=15; ctx.textAlign='center'; ctx.textBaseline='middle';
+const words=txt.split(' '), lines=[], maxW=1300, lh=100;
+let cur=words[0];
+for(let j=1;j<words.length;j++){
+const test=cur+' '+words[j];
+if(ctx.measureText(test).width>maxW){lines.push(cur); cur=words[j];}
+else cur=test;
 }
-// Usar imágenes personalizadas o por defecto
-const imagesToUse = window.customImages?.length > 0 ? window.customImages : emojiConfig.content;
-for (let i = 0; i < 25; i++) {
-const imageUrl = imagesToUse[i % imagesToUse.length];
-const texture = textureLoader.load(imageUrl, (tex) => { tex.colorSpace = THREE.SRGBColorSpace; tex.transparent = true; });
-texture.minFilter = THREE.LinearFilter;
-texture.magFilter = THREE.LinearFilter;
-const material = new THREE.SpriteMaterial({ map: texture, transparent: true, depthWrite: false });
-const sprite = new THREE.Sprite(material);
-sprite.scale.set(emojiConfig.size, emojiConfig.size, 1);
-setElementOrbitPosition(sprite, emojiConfig.minRadius, emojiConfig.maxRadius);
-galaxyGroup.add(sprite);
-loveImages.push(sprite);
-}
-}
-function createShootingStar() {
-const geometry = new THREE.BufferGeometry();
-geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array([0,0,0]), 3));
-const material = new THREE.PointsMaterial({ color: 0xffffff, size: 1.8, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false });
-const star = new THREE.Points(geometry, material);
-const [x, y, z] = [THREE.MathUtils.randFloatSpread(1000), THREE.MathUtils.randFloat(150, 400), THREE.MathUtils.randFloatSpread(1000)];
-star.position.set(x, y, z);
-star.userData.velocity = new THREE.Vector3((Math.random() < 0.5 ? -1 : 1) * BASE_CONFIG.shootingStars.speed, -BASE_CONFIG.shootingStars.speed * 0.5, (Math.random() - 0.5) * 2);
-star.userData.life = 0;
-shootingStars.push(star);
-scene.add(star);
-}
-function setElementOrbitPosition(element, minRadius, maxRadius) {
-const safeMinRadius = minRadius || BASE_CONFIG.elementExclusionRadius;
-const safeMaxRadius = maxRadius || BASE_CONFIG.particles.coreStars.radius;
-const minSeparation = 22; const maxAttempts = 40;
-let validPosition = false; let attempts = 0;
-let finalPosition = { x: 0, y: 0, z: 0 };
-while (!validPosition && attempts < maxAttempts) {
-attempts++;
-const radius = safeMinRadius + Math.random() * (safeMaxRadius - safeMinRadius);
-const theta = Math.random() * Math.PI * 2;
-const maxVerticalOffset = 20;
-const y = (Math.random() - 0.5) * maxVerticalOffset;
-const x = radius * Math.cos(theta); const z = radius * Math.sin(theta);
-validPosition = true;
-for (let pos of occupiedPositions) {
-const distance = Math.sqrt(Math.pow(x - pos.x, 2) + Math.pow(y - pos.y, 2) + Math.pow(z - pos.z, 2));
-if (distance < minSeparation) { validPosition = false; break; }
-}
-if (validPosition) finalPosition = { x, y, z };
-}
-element.position.set(finalPosition.x, finalPosition.y, finalPosition.z);
-occupiedPositions.push(finalPosition);
-}
-function createTextTexture(text, color) {
-const canvas = document.createElement('canvas'); canvas.width = 1536; canvas.height = 512;
-const context = canvas.getContext('2d');
-context.font = '84px "Patrick Hand", cursive'; context.fillStyle = color.fill;
-context.textAlign = 'center'; context.textBaseline = 'middle';
-context.shadowColor = color.shadow; context.shadowBlur = 3;
-const words = text.split(' '); let lines = []; let currentLine = words[0];
-const maxWidth = canvas.width - 100, lineHeight = 100;
-for (let i = 1; i < words.length; i++) {
-const testLine = currentLine + ' ' + words[i];
-if (context.measureText(testLine).width > maxWidth && currentLine.length > 0) { lines.push(currentLine); currentLine = words[i]; }
-else { currentLine = testLine; }
-}
-lines.push(currentLine);
-const startY = canvas.height / 2 - (lines.length - 1) * lineHeight / 2;
-lines.forEach((line, index) => context.fillText(line, canvas.width / 2, startY + index * lineHeight));
-const texture = new THREE.CanvasTexture(canvas);
-texture.needsUpdate = true;
-return texture;
-}
-function onWindowResize() {
-const width = window.innerWidth, height = window.innerHeight;
-renderer.setSize(width, height);
-composer.setSize(width, height);
-camera.aspect = width / height;
-camera.position.set(0, 45, width < 768 ? 190 : 160);
-camera.updateProjectionMatrix();
-}
-function updateFloatingParticles() {
-if (floatMesh && frameCount % BASE_CONFIG.performance.floatUpdateInterval === 0) {
-const positions = floatMesh.geometry.attributes.position;
-const velocities = floatMesh.geometry.attributes.velocity;
-for (let i = 0; i < positions.count; i++) {
-positions.setXYZ(i, positions.getX(i) + velocities.getX(i), positions.getY(i) + velocities.getY(i), positions.getZ(i) + velocities.getZ(i));
-}
-positions.needsUpdate = true;
-}
-}
-function updateBackgroundStars() {
-if (bgStarsMesh && frameCount % BASE_CONFIG.performance.floatUpdateInterval === 0) {
-const positions = bgStarsMesh.geometry.attributes.position;
-const velocities = bgStarsMesh.geometry.attributes.velocity;
-const r = BASE_CONFIG.particles.backgroundStars.radius;
-for (let i = 0; i < positions.count; i++) {
-let x = positions.getX(i) + velocities.getX(i);
-let y = positions.getY(i) + velocities.getY(i);
-let z = positions.getZ(i) + velocities.getZ(i);
-if (Math.abs(x) > r) x = -Math.sign(x) * r * 0.98;
-if (Math.abs(y) > r) y = -Math.sign(y) * r * 0.98;
-if (Math.abs(z) > r) z = -Math.sign(z) * r * 0.98;
-positions.setXYZ(i, x, y, z);
-}
-positions.needsUpdate = true;
-}
-}
-function animate() {
-if (window.hasError) return;
-requestAnimationFrame(animate);
-frameCount++;
-const elapsedTime = clock.getElapsedTime();
-galaxyGroup.rotation.y = elapsedTime * BASE_CONFIG.galaxy.rotationSpeed;
-if (blackHoleMesh) blackHoleMesh.rotation.y = elapsedTime * 0.05;
-if (frameCount % BASE_CONFIG.performance.updateInterval === 0) {
-orbitalParticles.forEach(ring => {
-ring.rotation.y = elapsedTime * ring.userData.speed + ring.userData.offset;
+lines.push(cur);
+const sy=256-(lines.length-1)*lh/2;
+lines.forEach((ln,idx)=>ctx.fillText(ln,768,sy+idx*lh));
+const tex=new THREE.CanvasTexture(canvas); tex.needsUpdate=true;
+const mat=new THREE.MeshPhongMaterial({map:tex, transparent:true, emissive:ctx.fillStyle, emissiveIntensity:1.5, depthWrite:false});
+const m=new THREE.Mesh(new THREE.PlaneGeometry(45,20), mat);
+setPos(m, 40, 140); galaxyGroup.add(m); loveTexts.push(m);
+});
+// Imágenes
+const loader = new THREE.TextureLoader();
+imgs.forEach((src, i) => {
+const tex = loader.load(src, x=>{x.colorSpace=THREE.SRGBColorSpace; x.transparent=true;});
+tex.minFilter=THREE.LinearFilter; tex.magFilter=THREE.LinearFilter;
+const spr = new THREE.Sprite(new THREE.SpriteMaterial({map:tex, transparent:true, depthWrite:false}));
+spr.scale.set(10,10,1); setPos(spr, 40, 140);
+galaxyGroup.add(spr); loveImages.push(spr);
 });
 }
-updateFloatingParticles();
-updateBackgroundStars();
-loveTexts.forEach(t => t.lookAt(camera.position));
-loveImages.forEach(i => i.lookAt(camera.position));
-if (BASE_CONFIG.shootingStars.enabled && Math.random() < BASE_CONFIG.shootingStars.spawnProbability) {
-createShootingStar();
+function setPos(el, minR, maxR) {
+let valid=false, tries=0, pos={x:0,y:0,z:0};
+while(!valid && tries<40) {
+tries++;
+const r=minR+Math.random()*(maxR-minR), a=Math.random()*Math.PI*2;
+pos={x:r*Math.cos(a), y:(Math.random()-0.5)*20, z:r*Math.sin(a)};
+valid=true;
+for(let p of occupied) if(Math.hypot(pos.x-p.x, pos.y-p.y, pos.z-p.z)<22) {valid=false;break;}
 }
-for (let i = shootingStars.length - 1; i >= 0; i--) {
-const star = shootingStars[i];
-star.position.add(star.userData.velocity);
-star.userData.life++;
-if (star.userData.life > 350) {
-scene.remove(star);
-shootingStars.splice(i, 1);
+el.position.set(pos.x,pos.y,pos.z); occupied.push(pos);
 }
+function animate() {
+if(window.hasError) return;
+requestAnimationFrame(animate); frameCount++;
+const t=clock.getElapsedTime();
+galaxyGroup.rotation.y=t*0.12;
+if(blackHoleMesh) blackHoleMesh.rotation.y=t*0.05;
+orbitalParticles.forEach(r=>{r.rotation.y=t*r.userData.speed+r.userData.offset;});
+if(floatMesh && frameCount%3===0){
+const p=floatMesh.geometry.attributes.position, v=floatMesh.geometry.attributes.velocity;
+for(let i=0;i<p.count;i++) p.setXYZ(i, p.getX(i)+v.getX(i), p.getY(i)+v.getY(i), p.getZ(i)+v.getZ(i));
+p.needsUpdate=true;
 }
-controls.update();
-composer.render();
+if(bgStarsMesh && frameCount%3===0){
+const p=bgStarsMesh.geometry.attributes.position, v=bgStarsMesh.geometry.attributes.velocity, r=800;
+for(let i=0;i<p.count;i++){
+let x=p.getX(i)+v.getX(i), y=p.getY(i)+v.getY(i), z=p.getZ(i)+v.getZ(i);
+if(Math.abs(x)>r)x=-Math.sign(x)*r*0.98; if(Math.abs(y)>r)y=-Math.sign(y)*r*0.98; if(Math.abs(z)>r)z=-Math.sign(z)*r*0.98;
+p.setXYZ(i,x,y,z);
 }
-// Iniciar Three.js cuando no haya error
-if (!window.hasError) { init(); }
+p.needsUpdate=true;
+}
+loveTexts.forEach(x=>x.lookAt(camera.position));
+loveImages.forEach(x=>x.lookAt(camera.position));
+if(Math.random()<0.007) createShootingStar();
+for(let i=shootingStars.length-1;i>=0;i--){
+const s=shootingStars[i]; s.position.add(s.userData.vel); s.userData.life++;
+if(s.userData.life>350){scene.remove(s); shootingStars.splice(i,1);}
+}
+controls.update(); composer.render();
+}
+function createShootingStar() {
+const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.BufferAttribute(new Float32Array([0,0,0]),3));
+const s=new THREE.Points(g, new THREE.PointsMaterial({color:0xffffff, size:1.8, blending:THREE.AdditiveBlending, transparent:true, depthWrite:false}));
+s.position.set((Math.random()-0.5)*1000, 150+Math.random()*250, (Math.random()-0.5)*1000);
+s.userData.vel=new THREE.Vector3((Math.random()<0.5?-1:1)*1.2, -0.6, (Math.random()-0.5)*2);
+s.userData.life=0; shootingStars.push(s); scene.add(s);
+}
+// Esperar datos o iniciar inmediatamente
+if(window.customDataReady) initGalaxy();
+else window.addEventListener('data-ready', ()=>setTimeout(initGalaxy, 100));
 </script>
 </body>
 </html>
