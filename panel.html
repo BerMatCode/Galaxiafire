@@ -4,61 +4,113 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>✨ Personaliza tu Galaxia</title>
-<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script:wght@700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Roboto',sans-serif;background:linear-gradient(135deg,#0f172a,#1e293b);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;color:#cbd5e1}
-.panel{background:rgba(30,41,59,0.95);backdrop-filter:blur(10px);border-radius:24px;padding:25px;width:100%;max-width:480px;box-shadow:0 20px 60px rgba(14,165,233,0.3),0 0 0 1px rgba(56,189,248,0.2);border:2px solid #38bdf8;animation:slideIn 0.4s ease}
-@keyframes slideIn{from{opacity:0;transform:translateY(20px) scale(0.98)}to{opacity:1;transform:translateY(0) scale(1)}}
-.header{text-align:center;margin-bottom:20px;padding-bottom:15px;border-bottom:2px dashed #475569}
-.header h1{font-family:'Pacifico',cursive;font-size:1.8rem;color:#38bdf8;text-shadow:0 0 10px rgba(56,189,248,0.5);margin-bottom:5px}
-.form-scroll{max-height:55vh;overflow-y:auto;padding-right:5px;scrollbar-width:thin}
-.form-group{margin-bottom:14px}
-.form-group label{display:block;font-weight:600;margin-bottom:6px;color:#94a3b8;font-size:0.95rem;display:flex;align-items:center;gap:6px}
-.form-group label i{color:#38bdf8}
-input,textarea{width:100%;padding:11px 14px;border:2px solid #475569;border-radius:12px;font-size:0.95rem;background:#0f172a;color:#f1f5f9;font-family:'Roboto',sans-serif;transition:0.25s}
-input:focus,textarea:focus{outline:none;border-color:#38bdf8;box-shadow:0 0 0 4px rgba(56,189,248,0.15)}
-textarea{min-height:90px;resize:vertical}
-.hint{font-size:0.78rem;color:#64748b;margin-top:5px;display:block}
-.img-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
-.img-opt{aspect-ratio:1;border-radius:10px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:0.2s;position:relative}
-.img-opt img{width:100%;height:100%;object-fit:cover}
-.img-opt.selected{border-color:#38bdf8;box-shadow:0 0 10px rgba(56,189,248,0.5)}
-.img-opt.selected::after{content:'✓';position:absolute;inset:0;background:rgba(56,189,248,0.3);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;font-size:1.2rem}
-.img-opt.disabled{opacity:0.3;pointer-events:none}
-.token-row{display:flex;gap:8px}
-.btn-check{padding:0 12px;background:#38bdf8;color:#0f172a;border:none;border-radius:10px;cursor:pointer;font-weight:600;transition:0.2s}
-.btn-check:hover{background:#0ea5e9}
-.locked{opacity:0.4;pointer-events:none;filter:grayscale(0.8)}
-.btn{width:100%;padding:13px;background:linear-gradient(135deg,#0ea5e9,#38bdf8);color:#0f172a;border:none;border-radius:14px;font-size:1.05rem;font-weight:700;cursor:pointer;transition:0.3s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px}
-.btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(56,189,248,0.5)}
-.btn:disabled{background:#475569;cursor:not-allowed;transform:none;box-shadow:none}
-/* Modals */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;z-index:2000;padding:20px}
-.modal-overlay.active{display:flex}
-.modal{background:#0f172a;border:2px solid #38bdf8;border-radius:20px;padding:24px;width:100%;max-width:400px;text-align:center;color:#f1f5f9;animation:popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275)}
-@keyframes popIn{from{transform:scale(0.9) translateY(20px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
-.modal h3{font-family:'Pacifico',cursive;font-size:1.4rem;margin-bottom:12px;color:#38bdf8}
-.modal p{font-size:0.9rem;color:#94a3b8;margin-bottom:16px}
-.spinner{width:40px;height:40px;border:4px solid #334155;border-top-color:#38bdf8;border-radius:50%;margin:16px auto;animation:spin 1s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.close-btn{position:absolute;top:10px;right:12px;background:none;border:none;color:#94a3b8;font-size:1.5rem;cursor:pointer}
-.close-btn:hover{color:#38bdf8}
-.success-box{background:rgba(16,185,129,0.1);border:1px solid #10b981;border-radius:12px;padding:12px;margin:12px 0}
-.success-box a{color:#38bdf8;word-break:break-all}
-.btn-action{width:100%;padding:10px;background:#334155;color:#f1f5f9;border:none;border-radius:8px;margin-top:8px;cursor:pointer;transition:0.2s}
-.btn-action:hover{background:#475569}
-.btn-tiktok{width:100%;padding:14px;background:linear-gradient(135deg,#000,#25F4EE,#FE2C55);color:#fff;border:none;border-radius:16px;font-size:1.1rem;font-weight:700;cursor:pointer;margin-top:12px;display:flex;align-items:center;justify-content:center;gap:8px;transition:0.3s}
-.btn-tiktok:hover{transform:translateY(-3px) scale(1.02)}
-@media(max-width:520px){.panel{padding:20px 18px}.header h1{font-size:1.5rem}}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Roboto', sans-serif; background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; position: relative; overflow-x: hidden; color: #cbd5e1; }
+body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(circle at 20% 35%, rgba(56,189,248,0.15) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(14,165,233,0.1) 0%, transparent 50%); z-index: -1; pointer-events: none; animation: floatBg 20s ease-in-out infinite; }
+@keyframes floatBg { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
+.panel-container { background: rgba(30,41,59,0.95); backdrop-filter: blur(10px); border-radius: 24px; padding: 25px; width: 100%; max-width: 480px; box-shadow: 0 20px 60px rgba(14,165,233,0.3), 0 0 0 1px rgba(56,189,248,0.2); border: 2px solid #38bdf8; position: relative; z-index: 10; animation: slideIn 0.4s ease; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.panel-header { text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px dashed #475569; }
+.panel-title { font-family: 'Pacifico', cursive; font-size: 1.8rem; color: #38bdf8; text-shadow: 0 0 10px rgba(56,189,248,0.5); margin-bottom: 5px; }
+.panel-subtitle { font-size: 0.9rem; color: #94a3b8; }
+.form-scroll { max-height: 55vh; overflow-y: auto; padding-right: 5px; scrollbar-width: thin; scrollbar-color: #38bdf8 #0f172a; }
+.form-scroll::-webkit-scrollbar { width: 6px; }
+.form-scroll::-webkit-scrollbar-track { background: #0f172a; border-radius: 10px; }
+.form-scroll::-webkit-scrollbar-thumb { background: #38bdf8; border-radius: 10px; }
+.form-group { margin-bottom: 14px; }
+.form-group label { display: block; font-weight: 600; margin-bottom: 6px; color: #94a3b8; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; }
+.form-group label i { color: #38bdf8; }
+.form-group input, .form-group textarea { width: 100%; padding: 11px 14px; border: 2px solid #475569; border-radius: 12px; font-size: 0.95rem; background: #0f172a; color: #f1f5f9; font-family: 'Roboto', sans-serif; transition: all 0.25s ease; }
+.form-group input:focus, .form-group textarea:focus { outline: none; border-color: #38bdf8; box-shadow: 0 0 0 4px rgba(56,189,248,0.15); transform: translateY(-1px); }
+.form-group textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
+.form-hint { font-size: 0.78rem; color: #64748b; margin-top: 5px; display: block; padding-left: 3px; }
+.img-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; }
+.img-opt { aspect-ratio: 1; border-radius: 10px; overflow: hidden; cursor: pointer; border: 2px solid #475569; transition: 0.2s; position: relative; background: #1e293b; }
+.img-opt img { width: 100%; height: 100%; object-fit: cover; }
+.img-opt.selected { border-color: #38bdf8; box-shadow: 0 0 10px rgba(56,189,248,0.5); }
+.img-opt.selected::after { content: '✓'; position: absolute; inset: 0; background: rgba(56,189,248,0.4); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: bold; font-size: 1.2rem; }
+.img-opt.disabled { opacity: 0.3; pointer-events: none; }
+.music-input input { font-size: 0.9rem; }
+.btn { width: 100%; padding: 13px; background: linear-gradient(135deg, #0ea5e9, #38bdf8); color: #0f172a; border: none; border-radius: 14px; font-size: 1.05rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-family: 'Roboto', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 8px; position: relative; overflow: hidden; }
+.btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.5s; }
+.btn:hover::before { left: 100%; }
+.btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(56,189,248,0.5); }
+.btn:disabled { background: linear-gradient(135deg, #475569, #64748b); cursor: not-allowed; transform: none; box-shadow: none; }
+.token-row { display: flex; gap: 8px; margin-top: 6px; }
+.btn-check { padding: 0 14px; background: #38bdf8; color: #0f172a; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+.btn-check:hover { background: #0ea5e9; }
+.locked { opacity: 0.4; pointer-events: none; filter: grayscale(0.8); transition: 0.3s; }
+/* Modales */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 20px; opacity: 0; visibility: hidden; transition: all 0.35s ease; }
+.modal-overlay.active { opacity: 1; visibility: visible; }
+.tiktok-modal, .loading-modal, .success-modal { background: linear-gradient(145deg, #0f172a, #1e293b); border: 3px solid #38bdf8; border-radius: 24px; padding: 30px 25px; width: 100%; max-width: 440px; text-align: center; color: #f1f5f9; box-shadow: 0 30px 90px rgba(14,165,233,0.4); transform: scale(0.9) translateY(25px); opacity: 0; transition: all 0.45s cubic-bezier(0.175,0.885,0.32,1.275); position: relative; overflow: hidden; }
+.modal-overlay.active .tiktok-modal, .modal-overlay.active .loading-modal, .modal-overlay.active .success-modal { transform: scale(1) translateY(0); opacity: 1; }
+.modal-close { position: absolute; top: 15px; right: 18px; background: rgba(30,41,59,0.9); border: 2px solid #38bdf8; font-size: 1.4rem; color: #38bdf8; cursor: pointer; transition: all 0.25s ease; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+.modal-close:hover { background: #38bdf8; color: #0f172a; transform: rotate(90deg) scale(1.1); }
+.loading-avatar, .tiktok-icon { width: 95px; height: 95px; border-radius: 50%; margin: 0 auto 18px; overflow: hidden; border: 4px solid #38bdf8; box-shadow: 0 10px 30px rgba(56,189,248,0.35); animation: pulseAvatar 2s ease-in-out infinite; background: #1e293b; }
+@keyframes pulseAvatar { 0%,100%{transform:scale(1);} 50%{transform:scale(1.05);} }
+.loading-avatar img, .tiktok-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.loading-spinner { width: 55px; height: 55px; border: 5px solid rgba(56,189,248,0.25); border-top: 5px solid #38bdf8; border-radius: 50%; margin: 0 auto 16px; animation: spin 1s linear infinite; }
+@keyframes spin { 100% { transform: rotate(360deg); } }
+.tiktok-modal h4, .loading-modal h4 { font-family: 'Pacifico', cursive; font-size: 1.4rem; color: #38bdf8; margin-bottom: 8px; }
+.tiktok-modal p, .loading-modal p { font-size: 0.95rem; color: #94a3b8; line-height: 1.5; }
+.loading-hearts { margin-top: 14px; font-size: 1.3rem; color: #38bdf8; animation: floatHearts 1.5s ease-in-out infinite; }
+@keyframes floatHearts { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-6px);} }
+.success-modal .check-icon { width: 75px; height: 75px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; box-shadow: 0 12px 35px rgba(16,185,129,0.5); animation: popIn 0.5s ease; }
+@keyframes popIn { 0%{transform:scale(0);} 50%{transform:scale(1.2);} 100%{transform:scale(1);} }
+.success-modal .check-icon i { font-size: 2.1rem; color: white; }
+.success-modal h3 { font-family: 'Pacifico', cursive; font-size: 1.5rem; color: #38bdf8; margin-bottom: 10px; }
+.share-box { background: linear-gradient(135deg, #1e293b, #0f172a); border: 2px dashed #38bdf8; border-radius: 16px; padding: 15px; margin: 15px 0; text-align: left; }
+.share-box label { font-size: 0.88rem; color: #94a3b8; font-weight: 600; display: block; margin-bottom: 8px; }
+.share-url { font-size: 0.85rem; color: #f1f5f9; word-break: break-all; background: #0f172a; padding: 10px 12px; border-radius: 10px; border: 1px solid #475569; font-family: monospace; }
+.modal-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+.btn-square { padding: 14px 12px; border: none; border-radius: 16px; cursor: pointer; font-size: 0.95rem; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 7px; transition: all 0.28s ease; font-family: 'Roboto', sans-serif; }
+.btn-copy { background: linear-gradient(135deg, #475569, #64748b); color: #f1f5f9; }
+.btn-view { background: linear-gradient(135deg, #10b981, #059669); color: #fff; }
+.btn-contact { width: 100%; padding: 14px; margin-top: 10px; background: linear-gradient(135deg, #6c5ce7, #9b6fcc); color: white; border: none; border-radius: 16px; font-size: 1rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.28s ease; font-family: 'Roboto', sans-serif; box-shadow: 0 5px 18px rgba(108,92,231,0.35); }
+.btn-tiktok { width: 100%; padding: 16px; background: linear-gradient(135deg, #000, #25F4EE, #FE2C55); color: white; border: none; border-radius: 18px; font-size: 1.12rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; font-family: 'Roboto', sans-serif; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px; box-shadow: 0 6px 20px rgba(254,44,85,0.4); animation: pulseBtn 2s ease-in-out infinite; }
+@keyframes pulseBtn { 0%,100%{box-shadow:0 6px 20px rgba(254,44,85,0.4);} 50%{box-shadow:0 8px 30px rgba(254,44,85,0.7);} }
+.btn-tiktok:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 35px rgba(254,44,85,0.6); }
+.permanent-notice { background: linear-gradient(135deg, #1e293b, #0f172a); border: 2px solid #f59e0b; border-radius: 14px; padding: 14px; margin: 12px 0; text-align: left; font-size: 0.9rem; color: #fbbf24; }
+.confetti { position: fixed; width: 10px; height: 10px; background: #38bdf8; border-radius: 50%; animation: confettiFall 3s ease-out forwards; pointer-events: none; z-index: 1999; }
+@keyframes confettiFall { 0% { transform: translateY(-100px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+#menu-btn { position: absolute; top: 15px; right: 15px; width: 38px; height: 38px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; cursor: pointer; z-index: 100; background: rgba(30,41,59,0.9); border-radius: 10px; border: 2px solid #38bdf8; transition: 0.3s; }
+#menu-btn:hover { background: #0f172a; transform: scale(1.05); }
+#menu-btn span { width: 20px; height: 2px; background: #38bdf8; border-radius: 2px; }
+#menu-panel { position: fixed; top: 0; right: -280px; width: 250px; height: 100vh; background: #0f172a; padding: 65px 18px 20px; z-index: 99; box-shadow: -5px 0 25px rgba(0,0,0,0.15); transition: right 0.3s ease; font-family: 'Roboto', sans-serif; }
+#menu-panel.active { right: 0; }
+#menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 98; display: none; opacity: 0; transition: opacity 0.3s; }
+#menu-overlay.active { display: block; opacity: 1; }
+.menu-title { font-size: 1.25rem; font-weight: 700; color: #38bdf8; text-align: center; padding-bottom: 12px; border-bottom: 2px solid #0ea5e9; margin-bottom: 15px; }
+.menu-item { padding: 10px 14px; margin: 5px 0; border-radius: 10px; background: #1e293b; display: flex; align-items: center; gap: 10px; color: #94a3b8; font-size: 0.92rem; font-weight: 500; }
+.menu-item i { color: #38bdf8; width: 22px; text-align: center; }
+.dev-footer { margin-top: 25px; padding-top: 15px; border-top: 1px dashed #475569; text-align: center; font-size: 0.85rem; color: #64748b; }
+.dev-footer strong { color: #38bdf8; }
+@media (max-width: 520px) { .panel-container { padding: 20px 18px; border-radius: 20px; } .panel-title { font-size: 1.5rem; } .modal-buttons { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
-<div class="panel">
-  <div class="header"><h1>🌌 Panel Galaxia</h1><p style="font-size:0.9rem">💙 Configura tu universo personalizado</p></div>
+<!-- Menú -->
+<div id="menu-btn" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+<div id="menu-overlay" onclick="toggleMenu()"></div>
+<div id="menu-panel">
+  <div class="menu-title">⚙️ Información</div>
+  <div class="menu-item"><i class="fas fa-code"></i> Desarrollado por BerMatCode</div>
+  <div class="menu-item"><i class="fas fa-gift"></i> Proyecto 100% gratuito</div>
+  <div class="menu-item"><i class="fas fa-heart"></i> Detalle virtual</div>
+  <div class="menu-item"><i class="fas fa-shield-alt"></i> Datos seguros en Firebase</div>
+  <div class="dev-footer"><strong>BerMatCode</strong><br>© 2026 • Todos los derechos reservados</div>
+</div>
+<!-- Panel -->
+<div class="panel-container">
+  <div class="panel-header"><div class="panel-title">𝗣𝗮𝗻𝗲𝗹 𝗱𝗲 𝗚𝗮𝗹𝗮𝘅𝗶𝗮</div><div class="panel-subtitle">🌌 Edita los valores 🌌</div></div>
   <div class="form-scroll">
-    <div class="form-group"><label><i class="fas fa-font"></i> Título Principal</label><input type="text" id="f-title" value="Te Amo Yorchi" maxlength="40"></div>
-    <div class="form-group"><label><i class="fas fa-quote-left"></i> Frases Flotantes (una por línea)</label><textarea id="f-texts">Siempre contigo
+    <div class="form-group"><label for="f-title"><i class="fas fa-font"></i> Título Principal:</label><input type="text" id="f-title" maxlength="60" value="Te Amo Yorchi"></div>
+    <div class="form-group"><label for="f-entry"><i class="fas fa-comment-dots"></i> Texto de Entrada:</label><textarea id="f-entry">💖Toca la pantalla💘</textarea><small class="form-hint">Mensaje inicial antes de tocar</small></div>
+    <div class="form-group"><label for="f-texts"><i class="fas fa-quote-left"></i> Frases Flotantes (una por línea):</label><textarea id="f-texts">Siempre contigo
 Eres mi calma
 Me haces feliz
 Tu sonrisa brilla
@@ -70,57 +122,44 @@ Eres increíble
 Gracias por existir
 Mi corazón te elige
 Qué suerte tenerte
-Eres mi paz</textarea><span class="hint">Edita o deja las predeterminadas</span></div>
-    <div class="form-group"><label><i class="fas fa-music"></i> Música (URL MP3)</label><input type="url" id="f-music" value="https://github.com/BerMatCode/Archivos/raw/refs/heads/main/Multimedia/TikVid.io_7471239338752363781.mp3"></div>
-    <div class="form-group"><label><i class="fas fa-images"></i> Imágenes Flotantes (Máx 4)</label><div class="img-grid" id="img-grid"></div><span class="hint">Haz clic para seleccionar. Predeterminadas marcadas.</span></div>
+Eres mi paz</textarea><small class="form-hint">Edita o deja las predeterminadas</small></div>
+    <div class="form-group music-input"><label><i class="fas fa-music"></i> Música (URL MP3):</label><input type="url" id="f-music" value="https://github.com/BerMatCode/Archivos/raw/refs/heads/main/Multimedia/TikVid.io_7471239338752363781.mp3"><small class="form-hint">No cambies si quieres usar la música por defecto</small></div>
+    <div class="form-group"><label><i class="fas fa-images"></i> Imágenes Flotantes (Máx 4):</label><div class="img-grid" id="img-grid"></div><small class="form-hint">Haz clic para seleccionar. Predeterminadas marcadas.</small></div>
     <div class="form-group"><label><i class="fas fa-lock"></i> Desbloquear Avanzado</label><div class="token-row"><input type="text" id="f-token" placeholder="Ingresa token" style="flex:1"><button class="btn-check" onclick="checkToken()">✓</button></div></div>
     <div class="form-group locked" id="adv-group"><label><i class="fas fa-atom"></i> Imagen del Núcleo</label><input type="url" id="f-nucleus" placeholder="https://..."><div class="form-group" style="margin-top:8px;margin-bottom:0"><label><i class="fas fa-copyright"></i> Créditos Inferiores</label><input type="text" id="f-credits" value="𖤍BerMatCode𖤍" placeholder="Texto inferior"></div></div>
   </div>
   <button class="btn" id="gen-btn" onclick="startGen()"><i class="fas fa-rocket"></i> Generar mi Galaxia</button>
 </div>
-
-<!-- TikTok Modal -->
-<div class="modal-overlay" id="m-tiktok">
-  <div class="modal"><button class="close-btn" onclick="closeModal('m-tiktok')">×</button>
-  <h3>🎵 Sigue en TikTok</h3><p>Para desbloquear tu galaxia personalizada, <strong style="color:#38bdf8">sigue mi perfil</strong> y regresa.</p>
-  <button class="btn-tiktok" onclick="followTiktok()"><i class="fab fa-tiktok"></i> Seguir Ahora</button></div>
-</div>
-<!-- Loading Modal -->
-<div class="modal-overlay" id="m-load"><div class="modal"><div class="spinner"></div><h3>🌌 Generando Universo...</h3><p>Configurando estrellas y partículas...</p></div></div>
-<!-- Success Modal -->
-<div class="modal-overlay" id="m-success"><div class="modal"><button class="close-btn" onclick="closeModal('m-success')">×</button>
-  <h3>✨ ¡Universo Creado!</h3>
-  <div style="background:rgba(16,185,129,0.1);border:1px solid #10b981;border-radius:10px;padding:10px;margin:10px 0;font-size:0.8rem;color:#94a3b8">⏰ Tu link durará <strong>24 horas</strong> y se eliminará automáticamente. Para versión permanente, contáctame.</div>
-  <div class="success-box"><p style="color:#cbd5e1;font-size:0.85rem">🔗 Enlace:</p><a id="share-url" href="#" target="_blank">https://...</a></div>
-  <button class="btn-action" onclick="copyLnk()"><i class="fas fa-copy"></i> Copiar Enlace</button>
-  <button class="btn-action" onclick="viewLnk()" style="background:#10b981"><i class="fas fa-eye"></i> Ver Galaxia</button>
-  <button class="btn-action" onclick="contactDev()" style="background:#6c5ce7"><i class="fas fa-user"></i> Contactar al Desarrollador</button>
-</div></div>
-
+<!-- Modales -->
+<div class="modal-overlay" id="m-tiktok"><div class="tiktok-modal"><button class="modal-close" onclick="closeModal('m-tiktok')">×</button><div class="tiktok-icon"><img src="https://raw.githubusercontent.com/BerMatCode/Galafire/main/Multimedia/Screenshot_20260225-092058.jpg" alt="Perfil"></div><h4>𝐒𝐢𝐠𝐮𝐞𝐦𝐞 𝐞𝐧 𝐓𝐢𝐤𝐭𝐨𝐤</h4><p>Para desbloquear tu galaxia personalizada, <strong style="color:#38bdf8">sigue mi perfil de TikTok</strong> y regresa.</p><button class="btn-tiktok" onclick="followTiktok()"><i class="fab fa-tiktok"></i> Seguir Ahora</button></div></div>
+<div class="modal-overlay" id="m-load"><div class="loading-modal"><div class="loading-avatar"><img src="https://raw.githubusercontent.com/BerMatCode/Galafire/main/Multimedia/Screenshot_20260225-092058.jpg" alt="Perfil"></div><div class="loading-spinner"></div><h4>𝐆𝐄𝐍𝐄𝐑𝐀𝐍𝐃𝐎...</h4><p>Espere un momento, configurando estrellas</p><div class="loading-hearts">🌌</div></div></div>
+<div class="modal-overlay" id="m-success"><div class="success-modal"><button class="modal-close" onclick="closeModal('m-success')">×</button><div class="check-icon"><i class="fas fa-check"></i></div><h3>𝗘𝘅𝗶𝘁𝗼 𝗔𝗹 𝗚𝗲𝗻𝗲𝗿𝗮𝗿</h3><p><strong>Tu detalle ha sido generado con éxito.</strong><br>Ya está creado en Database de <strong>BerMatCode</strong> ☠︎</p><div class="permanent-notice"><i class="fas fa-clock" style="margin-right:6px"></i><strong>⏰ Aviso importante:</strong> Tu link estará disponible por <strong>24 horas</strong> y se eliminará automáticamente. Si deseas que sea <strong>permanente</strong>, contáctame.</div><button class="btn-contact" onclick="contactDev()"><i class="fas fa-user-circle"></i> Contactar al Desarrollador</button><div class="share-box"><label>🔗 Tu link para compartir:</label><div class="share-url" id="share-url"></div></div><div class="modal-buttons"><button class="btn-square btn-copy" onclick="copyLnk()"><i class="fas fa-copy"></i> Copiar</button><button class="btn-square btn-view" onclick="viewMyPage()"><i class="fas fa-eye"></i> Ver mi Página</button></div></div></div>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
 const app = initializeApp({ apiKey:"AIzaSyAVQn_t-gwbA75W6c1FLLP7OnzuU2jhbs0", authDomain:"galaxia-2026.firebaseapp.com", projectId:"galaxia-2026", storageBucket:"galaxia-2026.firebasestorage.app", messagingSenderId:"30252830415", appId:"1:30252830415:web:463fbdc73c3fb730d671ba" });
-const db = getFirestore(app);
-
+const db = getFirestore(app); window.firebaseDB = db; window.generatedMessageId = null; window.tiktokFollowed = false;
 const IMG_LIST=['https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda1.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda2.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda3.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda4.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda5.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda6.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda7.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda8.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda9.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/pandaa.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/pandad.png'];
-let selectedImgs=[], tokenUnlocked=false;
-const grid=document.getElementById('img-grid');
+let selectedImgs=[]; const grid=document.getElementById('img-grid');
 IMG_LIST.forEach((url,idx)=>{const d=document.createElement('div');d.className='img-opt';d.dataset.url=url;d.innerHTML=`<img src="${url}" alt="img${idx}">`;if([2,3,6].includes(idx)){d.classList.add('selected');selectedImgs.push(url);}d.onclick=()=>toggleImg(d,url);grid.appendChild(d);});
-window.toggleImg=(el,url)=>{if(el.classList.contains('selected')){el.classList.remove('selected');selectedImgs=selectedImgs.filter(u=>u!==url);}else{if(selectedImgs.length>=4){showToast('⚠️ Máximo 4 imágenes');return;}el.classList.add('selected');selectedImgs.push(url);}updateDisabled();};
+window.toggleImg=(el,url)=>{if(el.classList.contains('selected')){el.classList.remove('selected');selectedImgs=selectedImgs.filter(u=>u!==url);}else{if(selectedImgs.length>=4){toast('⚠️ Máximo 4 imágenes permitidas');return;}el.classList.add('selected');selectedImgs.push(url);}updateDisabled();};
 function updateDisabled(){document.querySelectorAll('.img-opt').forEach(el=>el.classList.toggle('disabled',selectedImgs.length>=4&&!el.classList.contains('selected')));}
-window.checkToken=()=>{if(document.getElementById('f-token').value.trim()==="101123"){tokenUnlocked=true;document.getElementById('adv-group').classList.remove('locked');document.querySelector('.token-row').style.opacity='0.5';document.querySelector('.token-row').style.pointerEvents='none';showToast('🔓 Avanzado desbloqueado');}else showToast('🔒 Token incorrecto');};
+window.checkToken=()=>{if(document.getElementById('f-token').value.trim()==="101123"){document.getElementById('adv-group').classList.remove('locked');document.querySelector('.token-row').style.opacity='0.5';document.querySelector('.token-row').style.pointerEvents='none';toast('🔓 Avanzado desbloqueado');}else toast('🔒 Token incorrecto');};
 window.startGen=()=>document.getElementById('m-tiktok').classList.add('active');
-window.followTiktok=()=>{window.open('https://www.tiktok.com/@bermatcode','_blank');closeModal('m-tiktok');document.getElementById('m-load').classList.add('active');setTimeout(saveToDb,2500);};
-async function saveToDb(){const data={title:document.getElementById('f-title').value.trim(),texts:document.getElementById('f-texts').value.trim().split('\n').map(t=>t.trim()).filter(Boolean),musicUrl:document.getElementById('f-music').value.trim(),images:selectedImgs.length?selectedImgs:["https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda2.png","https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda3.png","https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda6.png"],createdAt:serverTimestamp()};if(tokenUnlocked){data.nucleusUrl=document.getElementById('f-nucleus').value.trim();data.credits=document.getElementById('f-credits').value.trim();}try{const ref=await addDoc(collection(db,"messages"),data);const link=`${location.origin}${location.pathname.replace('panel.html','index.html')}?id=${ref.id}`;document.getElementById('share-url').textContent=link;document.getElementById('share-url').href=link;closeModal('m-load');document.getElementById('m-success').classList.add('active');createConfetti();}catch(e){alert('❌ Error al crear');closeModal('m-load');}}
-window.copyLnk=()=>navigator.clipboard.writeText(document.getElementById('share-url').href).then(()=>showToast('📋 Copiado'));
-window.viewLnk=()=>window.open(document.getElementById('share-url').href,'_blank');
+window.followTiktok=()=>{window.tiktokFollowed=true;createConfetti();window.open('https://www.tiktok.com/@bermatcode','_blank');document.getElementById('m-tiktok').classList.remove('active');document.getElementById('m-load').classList.add('active');document.getElementById('gen-btn').disabled=true;setTimeout(()=>completeGeneration(),2500);};
+async function completeGeneration(){
+  const data={title:document.getElementById('f-title').value.trim()||'Te Amo Yorchi',entryText:document.getElementById('f-entry').value.trim()||'💖Toca la pantalla💘',texts:document.getElementById('f-texts').value.trim().split('\n').map(t=>t.trim()).filter(Boolean),musicUrl:document.getElementById('f-music').value.trim(),images:selectedImgs.length?selectedImgs:['https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda2.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda3.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda6.png'],createdAt:serverTimestamp()};
+  const adv=document.getElementById('adv-group');if(!adv.classList.contains('locked')){data.nucleusUrl=document.getElementById('f-nucleus').value.trim();data.credits=document.getElementById('f-credits').value.trim();}
+  try{const ref=await addDoc(collection(db,"messages"),data);window.generatedMessageId=ref.id;const link=`${location.origin}${location.pathname.replace('panel.html','index.html')}?id=${ref.id}`;document.getElementById('share-url').textContent=link;document.getElementById('share-url').href=link;document.getElementById('m-load').classList.remove('active');document.getElementById('m-success').classList.add('active');document.getElementById('gen-btn').disabled=false;createConfetti();}catch(e){alert('❌ Error al crear tu link. Intenta de nuevo.');document.getElementById('m-load').classList.remove('active');document.getElementById('gen-btn').disabled=false;}
+}
+window.copyLnk=()=>navigator.clipboard.writeText(document.getElementById('share-url').href).then(()=>toast('🔗 Link copiado ✨'));
+window.viewMyPage=()=>window.location.href=`index.html?id=${window.generatedMessageId}`;
 window.contactDev=()=>window.open('https://wa.me/51930569195?text=Hola%20AnthZz%20Berrocal,%20quiero%20un%20detalle%20permanente','_blank');
 window.closeModal=id=>document.getElementById(id).classList.remove('active');
-function showToast(m){const t=document.createElement('div');t.style.cssText=`position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#334155;color:#fff;padding:10px 18px;border-radius:20px;z-index:9999;font-size:0.85rem;animation:popIn 0.3s ease`;t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2500);}
-function createConfetti(){for(let i=0;i<40;i++){const c=document.createElement('div');c.style.cssText=`position:fixed;width:8px;height:8px;background:#${Math.floor(Math.random()*16777215).toString(16)};left:${Math.random()*100}vw;top:-10px;animation:fall ${2+Math.random()*3}s linear forwards;z-index:9998`;document.body.appendChild(c);setTimeout(()=>c.remove(),5000);}}
-const style=document.createElement('style');style.textContent=`@keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}`;document.head.appendChild(style);
+window.toast=(m)=>{const t=document.createElement('div');t.style.cssText=`position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#1e293b,#0f172a);color:#f1f5f9;padding:12px 24px;border-radius:30px;font-size:0.95rem;z-index:3000;animation:slideUp 0.3s ease;box-shadow:0 8px 25px rgba(0,0,0,0.3);font-weight:500;border:1px solid #38bdf8;`;t.innerHTML=`<i class="fas fa-check-circle" style="margin-right:8px"></i>${m}`;document.body.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(-50%) translateY(10px)';setTimeout(()=>t.remove(),300)},2500);};
+window.createConfetti=()=>{const colors=['#38bdf8','#0ea5e9','#10b981','#f59e0b','#ef4444'];for(let i=0;i<50;i++){const c=document.createElement('div');c.className='confetti';c.style.left=Math.random()*100+'vw';c.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];c.style.animationDuration=(Math.random()*2+2)+'s';c.style.animationDelay=Math.random()*0.5+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),3000);}};
+window.toggleMenu=()=>{document.getElementById('menu-panel').classList.toggle('active');document.getElementById('menu-btn').classList.toggle('active');document.getElementById('menu-overlay').classList.toggle('active');};
+document.getElementById('m-success').addEventListener('click',e=>{if(e.target.id==='m-success')closeModal('m-success');});
 </script>
 </body>
 </html>
