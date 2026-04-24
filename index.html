@@ -1,180 +1,466 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galaxia Te Amo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Patrick Hand', cursive;
-            background: #0a0a0f;
-            color: #F6D1D5;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-            overflow: hidden;
-        }
-        
-        .error-container {
-            max-width: 600px;
-            padding: 40px;
-            background: rgba(246, 209, 213, 0.08);
-            border-radius: 25px;
-            border: 2px solid rgba(232, 162, 168, 0.3);
-            backdrop-filter: blur(10px);
-            animation: fadeIn 0.6s ease-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .error-icon {
-            font-size: 4em;
-            margin-bottom: 20px;
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .error-title {
-            font-size: 2.2em;
-            color: #E8A2A8;
-            margin-bottom: 15px;
-            text-shadow: 0 0 20px rgba(232, 162, 168, 0.5);
-        }
-        
-        .error-message {
-            font-size: 1.3em;
-            line-height: 1.8;
-            margin-bottom: 30px;
-            color: #F2B9BF;
-        }
-        
-        .error-hint {
-            font-size: 1.1em;
-            color: #D97F88;
-            margin-bottom: 25px;
-            font-style: italic;
-        }
-        
-        .btn-create {
-            display: inline-block;
-            padding: 15px 40px;
-            background: linear-gradient(135deg, #E8A2A8, #D97F88);
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-size: 1.3em;
-            font-family: 'Patrick Hand', cursive;
-            box-shadow: 0 8px 25px rgba(217, 127, 136, 0.4);
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-        
-        .btn-create:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(217, 127, 136, 0.6);
-        }
-        
-        .btn-create:active {
-            transform: translateY(-1px);
-        }
-        
-        .particles {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-        
-        .particle {
-            position: absolute;
-            width: 4px; height: 4px;
-            background: rgba(246, 209, 213, 0.6);
-            border-radius: 50%;
-            animation: twinkle 3s infinite ease-in-out;
-        }
-        
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.3); }
-        }
-        
-        @media (max-width: 480px) {
-            .error-container { padding: 30px 25px; }
-            .error-title { font-size: 1.8em; }
-            .error-message { font-size: 1.15em; }
-            .btn-create { padding: 12px 30px; font-size: 1.15em; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌌 Galaxia</title>
+  <meta property="og:title" content="Galaxia de Amor">
+  <meta property="og:image" content="https://mi-universo-perfecto.netlify.app/assets/icon.webp">
+  <meta property="og:url" content="https://mi-universo-perfecto.netlify.app/">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://mi-universo-perfecto.netlify.app/assets/icon.webp">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#000;font-family:'Patrick Hand',cursive;cursor:grab;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+    body:active{cursor:grabbing}
+    canvas{display:block;position:fixed;top:0;left:0;z-index:1}
+    #main-title{position:absolute;top:40px;left:50%;transform:translateX(-50%);font-size:4.5em;color:#F6D1D5;text-shadow:0 0 15px #E8A2A8,0 0 25px #D97F88;z-index:10;pointer-events:none;text-align:center;white-space:nowrap}
+    #entry-screen{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:9999;background:rgba(0,0,0,.3);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);cursor:pointer}
+    #entry-text{font-size:2.5em;color:#F6D1D5;text-shadow:0 0 20px #E8A2A8,0 0 40px #D97F88;text-align:center;animation:pulse 2s infinite ease-in-out;padding:30px 50px;background:rgba(246,209,213,.1);border-radius:20px;border:2px solid rgba(232,162,168,.3);font-family:'Patrick Hand',cursive}
+    @keyframes pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
+    #credits{position:fixed;bottom:15px;left:50%;transform:translateX(-50%);font-family:'Patrick Hand',cursive;font-size:.9em;color:#F6D1D5;text-shadow:0 0 10px #E8A2A8;z-index:50;pointer-events:none;white-space:nowrap}
+    #error-screen{position:fixed;top:0;left:0;width:100%;height:100%;display:none;justify-content:center;align-items:center;background:linear-gradient(135deg,#1a0a12,#0f0508);z-index:10000;text-align:center;padding:20px;color:#F6D1D5;font-family:'Patrick Hand',cursive}
+    #error-screen.active{display:flex;animation:fadeIn .5s}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    #error-screen h2{font-size:3em;color:#E8A2A8;text-shadow:0 0 20px #D97F88;margin-bottom:20px}
+    #error-screen p{font-size:1.5em;max-width:600px;line-height:1.6;opacity:.9}
+    #error-screen .btn{margin-top:30px;padding:12px 30px;background:#E8A2A8;color:white;border:none;border-radius:50px;font-family:inherit;font-size:1.2em;cursor:pointer;text-decoration:none;display:inline-block;transition:transform .3s}
+    #error-screen .btn:hover{transform:scale(1.05)}
+    #loading{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;background:#000;z-index:9998;color:#F6D1D5;font-size:1.5em;flex-direction:column;gap:20px}
+    .spinner{width:50px;height:50px;border:4px solid rgba(232,162,168,.3);border-top-color:#E8A2A8;border-radius:50%;animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @media(max-width:768px){#main-title{font-size:3.4em;top:25px}#entry-text{font-size:2em}#credits{font-size:.8em;bottom:10px}}
+    @media(max-width:480px){#main-title{font-size:2.5em;top:20px}#entry-text{font-size:1.6em}}
+  </style>
 </head>
 <body>
-    <!-- Partículas de fondo -->
-    <div class="particles" id="particles"></div>
-    
-    <!-- Contenido de error -->
-    <div class="error-container">
-        <div class="error-icon">🌌</div>
-        <h1 class="error-title">Galaxia No Encontrada</h1>
-        <p class="error-message">
-            Lo sentimos, no pudimos encontrar la configuración de tu galaxia personalizada.<br><br>
-            Es posible que el archivo haya sido eliminado, el enlace esté incorrecto, 
-            o aún no hayas creado tu universo.
-        </p>
-        <p class="error-hint">✨ ¿Quieres crear tu propia galaxia del amor?</p>
-        <a href="panel.html" class="btn-create">Crear mi Galaxia 💖</a>
-    </div>
+  <div id="loading"><div class="spinner"></div><div>Cargando tu galaxia... ✨</div></div>
+  <div id="error-screen">
+    <h2>🌠 Galaxia No Encontrada</h2>
+    <p>Lo sentimos, no pudimos encontrar esta galaxia.<br>El enlace puede haber expirado o ser incorrecto.</p>
+    <a href="panel.html" class="btn">✨ Crear mi galaxia</a>
+  </div>
+  <h1 id="main-title">Cargando...</h1>
+  <div id="entry-screen"><div id="entry-text">💖Toca la pantalla💘</div></div>
+  <div id="credits">𖤍BerMatCode𖤍</div>
+  <audio id="background-music" loop></audio>
+  <canvas id="galaxy-canvas"></canvas>
 
-    <script>
-        // Crear partículas animadas de fondo
-        function createParticles() {
-            const container = document.getElementById('particles');
-            const particleCount = 50;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 3 + 's';
-                particle.style.animationDuration = (2 + Math.random() * 3) + 's';
-                container.appendChild(particle);
-            }
+  <script type="importmap">
+  {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+  </script>
+  
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAVQn_t-gwbA75W6c1FLLP7OnzuU2jhbs0",
+      authDomain: "galaxia-2026.firebaseapp.com",
+      projectId: "galaxia-2026",
+      storageBucket: "galaxia-2026.firebasestorage.app",
+      messagingSenderId: "30252830415",
+      appId: "1:30252830415:web:463fbdc73c3fb730d671ba",
+      measurementId: "G-XCSVYH6KEG"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Configuración por defecto (base intacta)
+    const DEFAULT = {
+      title: "Te Amo Yorchi",
+      phrases: ["Siempre contigo","Eres mi calma","Me haces feliz","Tu sonrisa brilla","Qué bonito coincidir","Mi lugar favorito","Contigo todo mejora","Tu luz me inspira","Eres increíble","Gracias por existir","Mi corazón te elige","Qué suerte tenerte","Eres mi paz"],
+      musicUrl: "",
+      nucleusImage: "https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/imagen%20del%20n%C3%BAcleo.png",
+      credits: "𖤍BerMatCode𖤍"
+    };
+
+    let USER_CFG = {...DEFAULT};
+    
+    // CONFIG Three.js (base intacta)
+    const CONFIG = {
+      galaxy: { rotationSpeed: 0.12, centerExclusionRadius: 45 },
+      elementExclusionRadius: 40,
+      blackHole: { radius: 12, segments: 64, color1: '#000000', color2: '#050505', imageUrl: DEFAULT.nucleusImage },
+      accretionDisk: { innerRadius: 18, outerRadius: 32, particleCount: 3500, particleSize: 0.35, colors: ['#E8A2A8','#D97F88','#F6D1D5','#F2B9BF'], brightness: 0.25, orbitalRings: 8 },
+      particles: {
+        coreStars: { count: 20000, radius: 120, maxHeight: 60, size: 0.25 },
+        sphericalHalo: { count: 18000, radiusXZ: 110, radiusY: 55, size: 0.18, minDistFromCenter: 28 },
+        backgroundStars: { count: 8000, radius: 600, size: 0.15, floatSpeed: 0.02 },
+        floatingSpace: { count: 2500, radius: 200, size: 0.25, speed: 0.008 },
+        texts: { count: 50, width: 45, height: 20, minRadius: null, maxRadius: 120, content: DEFAULT.phrases, colors: [{fill:'#E8A2A8',shadow:'#D97F88'},{fill:'#F6D1D5',shadow:'#E8A2A8'},{fill:'#F2B9BF',shadow:'#D97F88'}] },
+        emojis: { count: 25, size: 10, minRadius: null, maxRadius: 120, content: ['https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda2.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda3.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda6.png'], colors: [{fill:'#F6D1D5',shadow:'#D97F88'},{fill:'#F2B9BF',shadow:'#E8A2A8'},{fill:'#E8A2A8',shadow:'#D97F88'}] }
+      },
+      shootingStars: { enabled: true, spawnProbability: 0.01, speed: 1.2 },
+      lighting: { ambientLight: { color: '#ffffff', intensity: 0.08 }, pointLight: { color: '#E8A2A8', intensity: 1.8, distance: 350 } },
+      bloomEffect: { threshold: 0.55, strength: 0.5, radius: 0.4 },
+      cameraControls: { minDistance: 30, maxDistance: 250 }
+    };
+
+    let scene, camera, renderer, controls, galaxyGroup, clock, composer;
+    let loveTexts=[], loveImages=[], shootingStars=[], floatingParticles=[], orbitalParticles=[];
+    let occupiedPositions=[], raycaster, mouse, blackHoleMesh;
+
+    const urlParams = new URLSearchParams(location.search);
+    const galaxyId = urlParams.get('id');
+
+    async function loadConfig() {
+      if (!galaxyId) { applyCfg(); init(); return; }
+      try {
+        const snap = await getDoc(doc(db, "galaxies", galaxyId));
+        if (snap.exists()) {
+          const d = snap.data();
+          USER_CFG = {
+            ...DEFAULT,
+            ...d,
+            phrases: Array.isArray(d.phrases) && d.phrases.length ? d.phrases.slice(0,50) : DEFAULT.phrases
+          };
+          applyCfg();
+          init();
+        } else showError();
+      } catch(e) { console.error(e); showError(); }
+    }
+
+    function applyCfg() {
+      document.getElementById('main-title').textContent = USER_CFG.title || DEFAULT.title;
+      document.getElementById('credits').textContent = USER_CFG.credits || DEFAULT.credits;
+      CONFIG.blackHole.imageUrl = USER_CFG.nucleusImage || DEFAULT.nucleusImage;
+      CONFIG.particles.texts.content = USER_CFG.phrases || DEFAULT.phrases;
+      const music = document.getElementById('background-music');
+      if (USER_CFG.musicUrl?.trim()) music.src = USER_CFG.musicUrl;
+    }
+
+    function showError() {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('error-screen').classList.add('active');
+      if (renderer) renderer.dispose();
+    }
+
+    function init() {
+      document.getElementById('loading').style.display = 'none';
+      scene = new THREE.Scene();
+      clock = new THREE.Clock();
+      raycaster = new THREE.Raycaster();
+      mouse = new THREE.Vector2();
+      camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 1000);
+      renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('galaxy-canvas'), antialias: true });
+      renderer.setPixelRatio(devicePixelRatio);
+      renderer.setSize(innerWidth, innerHeight);
+      controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true; controls.dampingFactor = 0.05;
+      controls.minDistance = CONFIG.cameraControls.minDistance;
+      controls.maxDistance = CONFIG.cameraControls.maxDistance;
+      const renderScene = new RenderPass(scene, camera);
+      const bloomPass = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 1.5, 0.4, 0.85);
+      bloomPass.threshold = CONFIG.bloomEffect.threshold;
+      bloomPass.strength = CONFIG.bloomEffect.strength;
+      bloomPass.radius = CONFIG.bloomEffect.radius;
+      composer = new EffectComposer(renderer);
+      composer.addPass(renderScene);
+      composer.addPass(bloomPass);
+      const { ambientLight, pointLight } = CONFIG.lighting;
+      scene.add(new THREE.AmbientLight(ambientLight.color, ambientLight.intensity));
+      const mainLight = new THREE.PointLight(pointLight.color, pointLight.intensity, pointLight.distance);
+      mainLight.position.set(0,0,0);
+      scene.add(mainLight);
+      galaxyGroup = new THREE.Group();
+      scene.add(galaxyGroup);
+      createBlackHole();
+      createAccretionDiskParticles();
+      createOrbitalRings();
+      createCoreStars();
+      createSphericalHalo();
+      createBackgroundStars();
+      createFloatingSpaceParticles();
+      createLoveElements();
+      addEventListener('resize', onWindowResize);
+      onWindowResize();
+      animate();
+    }
+    
+    function createBlackHole() {
+      const bh = CONFIG.blackHole;
+      const tex = new THREE.TextureLoader().load(bh.imageUrl, t=>{t.colorSpace=THREE.SRGBColorSpace}, undefined, e=>console.warn('Núcleo:',e));
+      const geo = new THREE.SphereGeometry(bh.radius, bh.segments, bh.segments);
+      const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: false, opacity: 1 });
+      blackHoleMesh = new THREE.Mesh(geo, mat);
+      scene.add(blackHoleMesh);
+    }
+
+    function createAccretionDiskParticles() {
+      const dc = CONFIG.accretionDisk;
+      const geo = new THREE.BufferGeometry();
+      const pos = new Float32Array(dc.particleCount*3), col = new Float32Array(dc.particleCount*3), sizes = new Float32Array(dc.particleCount);
+      const c = new THREE.Color();
+      for (let i=0; i<dc.particleCount; i++) {
+        const r = dc.innerRadius + Math.random()*(dc.outerRadius-dc.innerRadius), a = Math.random()*Math.PI*2, sp = 0.8;
+        const x = r*Math.cos(a), z = r*Math.sin(a), y = (Math.random()-.5)*sp;
+        pos.set([x,y,z], i*3);
+        const ch = dc.colors[Math.floor(Math.random()*dc.colors.length)]; c.set(ch);
+        col.set([c.r*dc.brightness, c.g*dc.brightness, c.b*dc.brightness], i*3);
+        const bs = dc.particleSize, df = 1-(r-dc.innerRadius)/(dc.outerRadius-dc.innerRadius);
+        sizes[i] = bs*(.6+df*.8);
+      }
+      geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
+      geo.setAttribute('color', new THREE.BufferAttribute(col,3));
+      geo.setAttribute('size', new THREE.BufferAttribute(sizes,1));
+      const mat = new THREE.PointsMaterial({ size: dc.particleSize, blending: THREE.AdditiveBlending, vertexColors: true, transparent: true, opacity: .7, sizeAttenuation: true });
+      const pts = new THREE.Points(geo, mat);
+      pts.rotation.x = 0;
+      galaxyGroup.add(pts);
+    }
+
+    function createOrbitalRings() {
+      const dc = CONFIG.accretionDisk;
+      for (let r=0; r<dc.orbitalRings; r++) {
+        const radius = dc.innerRadius + (dc.outerRadius-dc.innerRadius)*(r/dc.orbitalRings);
+        const ppr = Math.floor(400 + r*30);
+        const geo = new THREE.BufferGeometry();
+        const pos = new Float32Array(ppr*3), col = new Float32Array(ppr*3);
+        const c = new THREE.Color();
+        for (let i=0; i<ppr; i++) {
+          const a = (i/ppr)*Math.PI*2, x = radius*Math.cos(a), z = radius*Math.sin(a), y = 0;
+          pos.set([x,y,z], i*3);
+          const ch = dc.colors[r%dc.colors.length]; c.set(ch);
+          const br = dc.brightness*(.7+Math.random()*.3);
+          col.set([c.r*br, c.g*br, c.b*br], i*3);
         }
-        
-        // Verificar si hay ID de galaxia en la URL
-        function checkGalaxiaId() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const galaxiaId = urlParams.get('id');
-            
-            if (galaxiaId) {
-                // Aquí se cargaría la configuración desde Firebase
-                // Por simplicidad, mostramos el error si no se implementa el loader
-                console.log('Buscando galaxia con ID:', galaxiaId);
-                // En producción: cargar desde Firestore y renderizar la galaxia
-            }
+        geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
+        geo.setAttribute('color', new THREE.BufferAttribute(col,3));
+        const mat = new THREE.PointsMaterial({ size: .4, blending: THREE.AdditiveBlending, vertexColors: true, transparent: true, opacity: .8 });
+        const ring = new THREE.Points(geo, mat);
+        ring.userData = { radius, speed: .002 + r*.0003, offset: Math.random()*Math.PI*2 };
+        ring.rotation.x = 0;
+        galaxyGroup.add(ring);
+        orbitalParticles.push(ring);
+      }
+    }
+
+    function createCoreStars() {
+      const cc = CONFIG.particles.coreStars;
+      const geo = new THREE.BufferGeometry();
+      const pos = new Float32Array(cc.count*3), col = new Float32Array(cc.count*3);
+      const c = new THREE.Color();
+      for (let i=0; i<cc.count; i++) {
+        const d = CONFIG.accretionDisk.outerRadius + Math.random()*(cc.radius-CONFIG.accretionDisk.outerRadius);
+        const a = Math.random()*Math.PI*2;
+        const y = (Math.random()-.5)*cc.maxHeight*Math.pow(1-(d/cc.radius),1.5);
+        pos.set([Math.cos(a)*d, y, Math.sin(a)*d], i*3);
+        const h = .82+Math.random()*.12, s = .8+Math.random()*.2, l = .6+Math.random()*.4;
+        c.setHSL(h%1, s, l);
+        col.set([c.r, c.g, c.b], i*3);
+      }
+      geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
+      geo.setAttribute('color', new THREE.BufferAttribute(col,3));
+      const mat = new THREE.PointsMaterial({ size: cc.size, blending: THREE.AdditiveBlending, vertexColors: true, transparent: true });
+      galaxyGroup.add(new THREE.Points(geo, mat));
+    }
+
+    function createSphericalHalo() {
+      const hc = CONFIG.particles.sphericalHalo;
+      const geo = new THREE.BufferGeometry();
+      const pos = new Float32Array(hc.count*3), col = new Float32Array(hc.count*3);
+      const c = new THREE.Color();
+      let filled = 0;
+      while (filled < hc.count) {
+        const rx = Math.random()*2-1, ry = Math.random()*2-1, rz = Math.random()*2-1;
+        if (rx*rx+ry*ry+rz*rz > 1) continue;
+        const x = rx*hc.radiusXZ, y = ry*hc.radiusY, z = rz*hc.radiusXZ;
+        const dfc = Math.sqrt(x*x+y*y+z*z);
+        if (dfc < hc.minDistFromCenter) continue;
+        const rn = dfc / Math.max(hc.radiusXZ, hc.radiusY);
+        if (Math.random() > Math.pow(1-rn*.7, 1.2)) continue;
+        pos.set([x,y,z], filled*3);
+        const h = .82+Math.random()*.12, s = .6+Math.random()*.4, l = .45+Math.random()*.45;
+        c.setHSL(h%1, s, l);
+        col.set([c.r, c.g, c.b], filled*3);
+        filled++;
+      }
+      geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
+      geo.setAttribute('color', new THREE.BufferAttribute(col,3));
+      const mat = new THREE.PointsMaterial({ size: hc.size, blending: THREE.AdditiveBlending, vertexColors: true, transparent: true, opacity: .65 });
+      galaxyGroup.add(new THREE.Points(geo, mat));
+    }
+
+    function createBackgroundStars() {
+      const bc = CONFIG.particles.backgroundStars;
+      const geo = new THREE.BufferGeometry();
+      const pos = new Float32Array(bc.count*3), vel = new Float32Array(bc.count*3);
+      for (let i=0; i<bc.count; i++) {
+        const r = bc.radius;
+        pos.set([(Math.random()-.5)*2*r, (Math.random()-.5)*2*r, (Math.random()-.5)*2*r], i*3);
+        vel.set([(Math.random()-.5)*bc.floatSpeed, (Math.random()-.5)*bc.floatSpeed, (Math.random()-.5)*bc.floatSpeed], i*3);
+      }
+      geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
+      geo.setAttribute('velocity', new THREE.BufferAttribute(vel,3));
+      const mat = new THREE.PointsMaterial({ size: bc.size, color: 0xffffff, transparent: true, opacity: .4 });
+      const stars = new THREE.Points(geo, mat);
+      stars.userData.isBackground = true;
+      scene.add(stars);
+    }
+    
+    function createFloatingSpaceParticles() {
+      const fc = CONFIG.particles.floatingSpace;
+      const geo = new THREE.BufferGeometry();
+      const pos = new Float32Array(fc.count*3), col = new Float32Array(fc.count*3), vel = new Float32Array(fc.count*3);
+      const co = new THREE.Color();
+      for (let i=0; i<fc.count; i++) {
+        const th = Math.random()*Math.PI*2, ph = Math.acos(2*Math.random()-1), r = fc.radius*Math.pow(Math.random(), .3);
+        const x = r*Math.sin(ph)*Math.cos(th), y = r*Math.cos(ph), z = r*Math.sin(ph)*Math.sin(th);
+        pos.set([x,y,z], i*3);
+        const h = .8+Math.random()*.15, s = .5+Math.random()*.3, l = .7+Math.random()*.25;
+        co.setHSL(h, s, l);
+        col.set([co.r*.5, co.g*.5, co.b*.5], i*3);
+        vel.set([(Math.random()-.5)*fc.speed, (Math.random()-.5)*fc.speed, (Math.random()-.5)*fc.speed], i*3);
+      }
+      geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
+      geo.setAttribute('color', new THREE.BufferAttribute(col,3));
+      geo.setAttribute('velocity', new THREE.BufferAttribute(vel,3));
+      const mat = new THREE.PointsMaterial({ size: fc.size, blending: THREE.AdditiveBlending, vertexColors: true, transparent: true, opacity: .6 });
+      const fl = new THREE.Points(geo, mat);
+      fl.userData.isFloating = true;
+      scene.add(fl);
+      floatingParticles.push(fl);
+    }
+    
+    function createLoveElements() {
+      const tc = CONFIG.particles.texts, ec = CONFIG.particles.emojis;
+      for (let i=0; i<tc.count; i++) {
+        const cd = tc.colors[i%tc.colors.length];
+        const ph = tc.content[i%tc.content.length];
+        const tex = createTextTexture(ph, cd);
+        const mat = new THREE.MeshPhongMaterial({ map: tex, transparent: true, alphaTest: .1, emissive: cd.fill, emissiveIntensity: 1.2 });
+        const mesh = new THREE.Mesh(new THREE.PlaneGeometry(tc.width, tc.height), mat);
+        setElementOrbitPosition(mesh, tc.minRadius, tc.maxRadius);
+        galaxyGroup.add(mesh); loveTexts.push(mesh);
+      }
+      const tl = new THREE.TextureLoader();
+      for (let i=0; i<ec.count; i++) {
+        const img = ec.content[i%ec.content.length], cd = ec.colors[i%ec.colors.length];
+        const tex = tl.load(img, t=>{t.colorSpace=THREE.SRGBColorSpace; t.transparent=true}, undefined, e=>console.warn('Img:',img,e));
+        tex.minFilter = tex.magFilter = THREE.LinearFilter;
+        const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false });
+        const sp = new THREE.Sprite(mat);
+        sp.scale.set(ec.size, ec.size, 1);
+        setElementOrbitPosition(sp, ec.minRadius, ec.maxRadius);
+        galaxyGroup.add(sp); loveImages.push(sp);
+      }
+    }
+
+    function createShootingStar() {
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array([0,0,0]), 3));
+      const mat = new THREE.PointsMaterial({ color: 0xffffff, size: 1.8, blending: THREE.AdditiveBlending, transparent: true });
+      const star = new THREE.Points(geo, mat);
+      const [x,y,z] = [THREE.MathUtils.randFloatSpread(800), THREE.MathUtils.randFloat(100,300), THREE.MathUtils.randFloatSpread(800)];
+      star.position.set(x,y,z);
+      star.userData.velocity = new THREE.Vector3((Math.random()<.5?-1:1)*CONFIG.shootingStars.speed, -CONFIG.shootingStars.speed*.5, (Math.random()-.5)*2);
+      star.userData.life = 0;
+      shootingStars.push(star);
+      scene.add(star);
+    }
+
+    function setElementOrbitPosition(el, minR, maxR) {
+      const sMin = minR || CONFIG.elementExclusionRadius, sMax = maxR || CONFIG.particles.coreStars.radius;
+      const minSep = 18, maxAtt = 50;
+      let valid = false, att = 0, fp = {x:0,y:0,z:0};
+      while (!valid && att < maxAtt) {
+        att++;
+        const r = sMin + Math.random()*(sMax-sMin), th = Math.random()*Math.PI*2, mvo = 15;
+        const y = (Math.random()-.5)*mvo, x = r*Math.cos(th), z = r*Math.sin(th);
+        valid = true;
+        for (let p of occupiedPositions) {
+          const d = Math.sqrt((x-p.x)**2 + (y-p.y)**2 + (z-p.z)**2);
+          if (d < minSep) { valid = false; break; }
         }
-        
-        // Inicializar
-        document.addEventListener('DOMContentLoaded', () => {
-            createParticles();
-            checkGalaxiaId();
-        });
-    </script>
+        if (valid) fp = {x,y,z};
+      }
+      el.position.set(fp.x, fp.y, fp.z);
+      occupiedPositions.push(fp);
+    }
+    
+    function createTextTexture(text, color) {
+      const cv = document.createElement('canvas'); cv.width = 1536; cv.height = 512;
+      const ctx = cv.getContext('2d');
+      ctx.font = '84px "Patrick Hand", cursive'; ctx.fillStyle = color.fill;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.shadowColor = color.shadow; ctx.shadowBlur = 3;
+      const words = text.split(' '); let lines = [], cl = words[0];
+      const mw = cv.width-100, lh = 100;
+      for (let i=1; i<words.length; i++) {
+        const tl = cl + ' ' + words[i];
+        if (ctx.measureText(tl).width > mw && cl.length > 0) { lines.push(cl); cl = words[i]; }
+        else cl = tl;
+      }
+      lines.push(cl);
+      const sy = cv.height/2 - (lines.length-1)*lh/2;
+      lines.forEach((l, idx) => ctx.fillText(l, cv.width/2, sy + idx*lh));
+      return new THREE.CanvasTexture(cv);
+    }
+
+    function onWindowResize() {
+      const w = innerWidth, h = innerHeight;
+      renderer.setSize(w, h);
+      composer.setSize(w, h);
+      camera.aspect = w/h;
+      camera.position.set(0, 35, w<768 ? 150 : 120);
+      camera.updateProjectionMatrix();
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const et = clock.getElapsedTime();
+      galaxyGroup.rotation.y = et * CONFIG.galaxy.rotationSpeed;
+      if (blackHoleMesh) blackHoleMesh.rotation.y = et * .05;
+      orbitalParticles.forEach(r => { r.rotation.y = et * r.userData.speed + r.userData.offset; });
+      floatingParticles.forEach(fp => {
+        const pos = fp.geometry.attributes.position, vel = fp.geometry.attributes.velocity;
+        for (let i=0; i<pos.count; i++) pos.setXYZ(i, pos.getX(i)+vel.getX(i), pos.getY(i)+vel.getY(i), pos.getZ(i)+vel.getZ(i));
+        pos.needsUpdate = true;
+      });
+      const bg = scene.children.find(c => c.userData?.isBackground);
+      if (bg) {
+        const pos = bg.geometry.attributes.position, vel = bg.geometry.attributes.velocity;
+        for (let i=0; i<pos.count; i++) {
+          let x = pos.getX(i)+vel.getX(i), y = pos.getY(i)+vel.getY(i), z = pos.getZ(i)+vel.getZ(i);
+          const r = CONFIG.particles.backgroundStars.radius;
+          if (Math.abs(x)>r) x = -Math.sign(x)*r*.95;
+          if (Math.abs(y)>r) y = -Math.sign(y)*r*.95;
+          if (Math.abs(z)>r) z = -Math.sign(z)*r*.95;
+          pos.setXYZ(i, x, y, z);
+        }
+        pos.needsUpdate = true;
+      }
+      loveTexts.forEach(t => t.lookAt(camera.position));
+      loveImages.forEach(i => i.lookAt(camera.position));
+      if (CONFIG.shootingStars.enabled && Math.random() < CONFIG.shootingStars.spawnProbability) createShootingStar();
+      shootingStars.forEach((star, idx) => {
+        star.position.add(star.userData.velocity);
+        star.userData.life++;
+        if (star.userData.life > 300) { scene.remove(star); shootingStars.splice(idx, 1); }
+      });
+      controls.update();
+      composer.render();
+    }
+    
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.onkeydown = function(e) {
+      if (e.keyCode==123 || (e.ctrlKey && e.shiftKey && (e.keyCode=='I'.charCodeAt(0)||e.keyCode=='J'.charCodeAt(0)||e.keyCode=='C'.charCodeAt(0))) || (e.ctrlKey && (e.keyCode=='U'.charCodeAt(0)||e.keyCode=='S'.charCodeAt(0)))) return false;
+    };
+    document.getElementById('entry-screen').addEventListener('click', () => {
+      const screen = document.getElementById('entry-screen'), music = document.getElementById('background-music');
+      if (music.src?.trim()) { music.load(); music.play().catch(e=>console.log('Autoplay:',e)); }
+      screen.style.display = 'none';
+    });
+    loadConfig();
+  </script>
 </body>
 </html>
