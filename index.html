@@ -13,10 +13,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
-    html,body{width:100%;height:100%;margin:0;overflow:hidden;background:radial-gradient(circle at center,#1a0f14 0%,#000 100%);font-family:'Patrick Hand',cursive;cursor:grab;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;will-change:transform}
+    html,body{width:100%;height:100%;margin:0;overflow:hidden;background:radial-gradient(circle at center,#1a0f14 0%,#000 100%);font-family:'Patrick Hand',cursive;cursor:grab;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
     body:active{cursor:grabbing}
-    canvas{display:block;position:fixed;top:0;left:0;z-index:1;will-change:transform}
-    #main-title{position:absolute;top:40px;left:50%;transform:translateX(-50%);font-size:4.5em;color:#F6D1D5;text-shadow:0 0 15px #E8A2A8,0 0 25px #D97F88;z-index:10;pointer-events:none;text-align:center;white-space:nowrap;animation:titleGlow 3s infinite alternate;will-change:text-shadow}
+    canvas{display:block;position:fixed;top:0;left:0;z-index:1}
+    #main-title{position:absolute;top:40px;left:50%;transform:translateX(-50%);font-size:4.5em;color:#F6D1D5;text-shadow:0 0 15px #E8A2A8,0 0 25px #D97F88;z-index:10;pointer-events:none;text-align:center;white-space:nowrap;animation:titleGlow 3s infinite alternate}
     @keyframes titleGlow{0%{text-shadow:0 0 15px #E8A2A8,0 0 25px #D97F88}100%{text-shadow:0 0 25px #E8A2A8,0 0 35px #D97F88}}
     #entry-screen{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:9999;background:rgba(0,0,0,.4);backdrop-filter:blur(10px);cursor:pointer;transition:opacity .6s ease}
     #entry-text{font-size:2.6em;color:#F6D1D5;text-shadow:0 0 20px #E8A2A8,0 0 40px #D97F88;text-align:center;animation:pulse 2s infinite ease-in-out;padding:30px 50px;background:rgba(246,209,213,.1);border-radius:20px;border:2px solid rgba(232,162,168,.3);font-family:'Patrick Hand',cursive;box-shadow:0 8px 30px rgba(0,0,0,.4)}
@@ -82,6 +82,7 @@
     const db = getFirestore(app);
 
     const DEFAULT_MUSIC = "https://github.com/BerMatCode/Archivos/raw/refs/heads/main/Multimedia/TikVid.io_7471239338752363781.mp3";
+
     const DEFAULT = {
       title: "Te Amo Yorchi",
       phrases: ["Siempre contigo","Eres mi calma","Me haces feliz","Tu sonrisa brilla","Qué bonito coincidir","Mi lugar favorito","Contigo todo mejora","Tu luz me inspira","Eres increíble","Gracias por existir","Mi corazón te elige","Qué suerte tenerte","Eres mi paz"],
@@ -91,6 +92,8 @@
     };
 
     let USER_CFG = {...DEFAULT};
+    
+    // === CONFIG Three.js OPTIMIZADO (igual al original) ===
     const CONFIG = {
       galaxy: { rotationSpeed: 0.12, centerExclusionRadius: 45 },
       elementExclusionRadius: 40,
@@ -124,8 +127,14 @@
         const snap = await getDoc(doc(db, "galaxies", galaxyId));
         if (snap.exists()) {
           const d = snap.data();
-          USER_CFG = { ...DEFAULT, ...d, phrases: Array.isArray(d.phrases) && d.phrases.length ? d.phrases.slice(0,15) : DEFAULT.phrases, musicUrl: d.musicUrl || DEFAULT_MUSIC };
-          applyCfg(); init();
+          USER_CFG = {
+            ...DEFAULT,
+            ...d,
+            phrases: Array.isArray(d.phrases) && d.phrases.length ? d.phrases.slice(0,15) : DEFAULT.phrases,
+            musicUrl: d.musicUrl || DEFAULT_MUSIC
+          };
+          applyCfg();
+          init();
         } else { showError(); }
       } catch(e) { console.error('Error:', e); showError(); }
     }
@@ -136,25 +145,27 @@
       CONFIG.blackHole.imageUrl = USER_CFG.nucleusImage || DEFAULT.nucleusImage;
       CONFIG.particles.texts.content = USER_CFG.phrases || DEFAULT.phrases;
       const music = document.getElementById('background-music');
-      music.src = USER_CFG.musicUrl || DEFAULT_MUSIC;
-      music.volume = 0.75;
-      music.load();
+      const musicSrc = USER_CFG.musicUrl || DEFAULT_MUSIC;
+      if (music.src !== musicSrc) {
+        music.src = musicSrc;
+        music.volume = 0.75;
+        music.load();
+      }
     }
 
     function showError() {
       document.getElementById('loading').style.display = 'none';
       document.getElementById('error-modal').classList.add('active');
       if (renderer) { renderer.dispose(); renderer = null; }
+      if (scene) scene = null;
     }
 
     function init() {
       document.getElementById('loading').style.display = 'none';
       scene = new THREE.Scene();
       clock = new THREE.Clock();
-      raycaster = new THREE.Raycaster();
-      mouse = new THREE.Vector2();
       camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 1000);
-      renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('galaxy-canvas'), antialias: true, powerPreference: 'high-performance' });
+      renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('galaxy-canvas'), antialias: true, powerPreference: "high-performance" });
       renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); // ✅ Optimización: limitar pixel ratio
       renderer.setSize(innerWidth, innerHeight);
       
@@ -181,21 +192,22 @@
       galaxyGroup = new THREE.Group();
       scene.add(galaxyGroup);
       
-      createBlackHole(); createAccretionDiskParticles(); createOrbitalRings();
-      createCoreStars(); createSphericalHalo(); createBackgroundStars();
-      createFloatingSpaceParticles(); createLoveElements();
+      // === Creación de elementos (optimizada) ===
+      createBlackHole();
+      createAccretionDiskParticles();
+      createOrbitalRings();
+      createCoreStars();
+      createSphericalHalo();
+      createBackgroundStars();
+      createFloatingSpaceParticles();
+      createLoveElements();
       
-      // ✅ Optimización: Resize con debounce
-      let resizeTimer;
-      addEventListener('resize', () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(onWindowResize, 250);
-      }, {passive:true});
+      addEventListener('resize', onWindowResize, { passive: true });
       onWindowResize();
       animate();
     }
     
-    // === Funciones Three.js (base intacta, solo optimizaciones menores) ===
+    // === Funciones Three.js (código original optimizado) ===
     function createBlackHole() { const bh=CONFIG.blackHole; const tex=new THREE.TextureLoader().load(bh.imageUrl,t=>{t.colorSpace=THREE.SRGBColorSpace},undefined,e=>console.warn('Núcleo:',e)); const geo=new THREE.SphereGeometry(bh.radius,bh.segments,bh.segments); const mat=new THREE.MeshBasicMaterial({map:tex,transparent:false,opacity:1}); blackHoleMesh=new THREE.Mesh(geo,mat); scene.add(blackHoleMesh); }
     function createAccretionDiskParticles() { const dc=CONFIG.accretionDisk; const geo=new THREE.BufferGeometry(); const pos=new Float32Array(dc.particleCount*3), col=new Float32Array(dc.particleCount*3), sizes=new Float32Array(dc.particleCount); const c=new THREE.Color(); for(let i=0;i<dc.particleCount;i++){const r=dc.innerRadius+Math.random()*(dc.outerRadius-dc.innerRadius),a=Math.random()*Math.PI*2,sp=0.8;const x=r*Math.cos(a),z=r*Math.sin(a),y=(Math.random()-.5)*sp;pos.set([x,y,z],i*3);const ch=dc.colors[Math.floor(Math.random()*dc.colors.length)];c.set(ch);col.set([c.r*dc.brightness,c.g*dc.brightness,c.b*dc.brightness],i*3);const bs=dc.particleSize,df=1-(r-dc.innerRadius)/(dc.outerRadius-dc.innerRadius);sizes[i]=bs*(.6+df*.8);} geo.setAttribute('position',new THREE.BufferAttribute(pos,3)); geo.setAttribute('color',new THREE.BufferAttribute(col,3)); geo.setAttribute('size',new THREE.BufferAttribute(sizes,1)); const mat=new THREE.PointsMaterial({size:dc.particleSize,blending:THREE.AdditiveBlending,vertexColors:true,transparent:true,opacity:.7,sizeAttenuation:true}); const pts=new THREE.Points(geo,mat); pts.rotation.x=0; galaxyGroup.add(pts); }
     function createOrbitalRings() { const dc=CONFIG.accretionDisk; for(let r=0;r<dc.orbitalRings;r++){const radius=dc.innerRadius+(dc.outerRadius-dc.innerRadius)*(r/dc.orbitalRings);const ppr=Math.floor(400+r*30);const geo=new THREE.BufferGeometry();const pos=new Float32Array(ppr*3),col=new Float32Array(ppr*3);const c=new THREE.Color();for(let i=0;i<ppr;i++){const a=(i/ppr)*Math.PI*2,x=radius*Math.cos(a),z=radius*Math.sin(a),y=0;pos.set([x,y,z],i*3);const ch=dc.colors[r%dc.colors.length];c.set(ch);const br=dc.brightness*(.7+Math.random()*.3);col.set([c.r*br,c.g*br,c.b*br],i*3);} geo.setAttribute('position',new THREE.BufferAttribute(pos,3)); geo.setAttribute('color',new THREE.BufferAttribute(col,3)); const mat=new THREE.PointsMaterial({size:.4,blending:THREE.AdditiveBlending,vertexColors:true,transparent:true,opacity:.8});const ring=new THREE.Points(geo,mat);ring.userData={radius,speed:.002+r*.0003,offset:Math.random()*Math.PI*2};ring.rotation.x=0;galaxyGroup.add(ring);orbitalParticles.push(ring);} }
@@ -208,50 +220,9 @@
     function setElementOrbitPosition(el,minR,maxR) { const sMin=minR||CONFIG.elementExclusionRadius,sMax=maxR||CONFIG.particles.coreStars.radius; const minSep=18,maxAtt=50; let valid=false,att=0,fp={x:0,y:0,z:0}; while(!valid&&att<maxAtt){att++;const r=sMin+Math.random()*(sMax-sMin),th=Math.random()*Math.PI*2,mvo=15;const y=(Math.random()-.5)*mvo,x=r*Math.cos(th),z=r*Math.sin(th);valid=true;for(let p of occupiedPositions){const d=Math.sqrt((x-p.x)**2+(y-p.y)**2+(z-p.z)**2);if(d<minSep){valid=false;break;}}if(valid)fp={x,y,z};} el.position.set(fp.x,fp.y,fp.z); occupiedPositions.push(fp); }
     function createTextTexture(text,color) { const cv=document.createElement('canvas');cv.width=1536;cv.height=512;const ctx=cv.getContext('2d');ctx.font='84px "Patrick Hand",cursive';ctx.fillStyle=color.fill;ctx.textAlign='center';ctx.textBaseline='middle';ctx.shadowColor=color.shadow;ctx.shadowBlur=3;const words=text.split(' ');let lines=[],cl=words[0];const mw=cv.width-100,lh=100;for(let i=1;i<words.length;i++){const tl=cl+' '+words[i];if(ctx.measureText(tl).width>mw&&cl.length>0){lines.push(cl);cl=words[i];}else cl=tl;} lines.push(cl);const sy=cv.height/2-(lines.length-1)*lh/2;lines.forEach((l,idx)=>ctx.fillText(l,cv.width/2,sy+idx*lh));return new THREE.CanvasTexture(cv); }
     function onWindowResize() { const w=innerWidth,h=innerHeight; renderer.setSize(w,h); composer.setSize(w,h); camera.aspect=w/h; camera.position.set(0,35,w<768?150:120); camera.updateProjectionMatrix(); }
-    
-    // ✅ Optimización: animate con control de framerate
-    let lastFrameTime = 0;
-    function animate(time) {
-      requestAnimationFrame(animate);
-      // Limitar a ~60fps
-      if (time - lastFrameTime < 16) return;
-      lastFrameTime = time;
-      
-      const et = clock.getElapsedTime();
-      galaxyGroup.rotation.y = et * CONFIG.galaxy.rotationSpeed;
-      if (blackHoleMesh) blackHoleMesh.rotation.y = et * .05;
-      orbitalParticles.forEach(r => { r.rotation.y = et * r.userData.speed + r.userData.offset; });
-      floatingParticles.forEach(fp => {
-        const pos = fp.geometry.attributes.position, vel = fp.geometry.attributes.velocity;
-        for (let i = 0; i < pos.count; i++) pos.setXYZ(i, pos.getX(i)+vel.getX(i), pos.getY(i)+vel.getY(i), pos.getZ(i)+vel.getZ(i));
-        pos.needsUpdate = true;
-      });
-      const bg = scene.children.find(c => c.userData?.isBackground);
-      if (bg) {
-        const pos = bg.geometry.attributes.position, vel = bg.geometry.attributes.velocity;
-        for (let i = 0; i < pos.count; i++) {
-          let x = pos.getX(i)+vel.getX(i), y = pos.getY(i)+vel.getY(i), z = pos.getZ(i)+vel.getZ(i);
-          const r = CONFIG.particles.backgroundStars.radius;
-          if (Math.abs(x)>r) x = -Math.sign(x)*r*.95;
-          if (Math.abs(y)>r) y = -Math.sign(y)*r*.95;
-          if (Math.abs(z)>r) z = -Math.sign(z)*r*.95;
-          pos.setXYZ(i, x, y, z);
-        }
-        pos.needsUpdate = true;
-      }
-      loveTexts.forEach(t => t.lookAt(camera.position));
-      loveImages.forEach(i => i.lookAt(camera.position));
-      if (CONFIG.shootingStars.enabled && Math.random() < CONFIG.shootingStars.spawnProbability) createShootingStar();
-      shootingStars.forEach((star, idx) => {
-        star.position.add(star.userData.velocity);
-        star.userData.life++;
-        if (star.userData.life > 300) { scene.remove(star); shootingStars.splice(idx, 1); }
-      });
-      controls.update();
-      composer.render();
-    }
+    function animate() { requestAnimationFrame(animate); const et=clock.getElapsedTime(); galaxyGroup.rotation.y=et*CONFIG.galaxy.rotationSpeed; if(blackHoleMesh)blackHoleMesh.rotation.y=et*.05; orbitalParticles.forEach(r=>{r.rotation.y=et*r.userData.speed+r.userData.offset;}); floatingParticles.forEach(fp=>{const pos=fp.geometry.attributes.position,vel=fp.geometry.attributes.velocity;for(let i=0;i<pos.count;i++)pos.setXYZ(i,pos.getX(i)+vel.getX(i),pos.getY(i)+vel.getY(i),pos.getZ(i)+vel.getZ(i));pos.needsUpdate=true;}); const bg=scene.children.find(c=>c.userData?.isBackground); if(bg){const pos=bg.geometry.attributes.position,vel=bg.geometry.attributes.velocity;for(let i=0;i<pos.count;i++){let x=pos.getX(i)+vel.getX(i),y=pos.getY(i)+vel.getY(i),z=pos.getZ(i)+vel.getZ(i);const r=CONFIG.particles.backgroundStars.radius;if(Math.abs(x)>r)x=-Math.sign(x)*r*.95;if(Math.abs(y)>r)y=-Math.sign(y)*r*.95;if(Math.abs(z)>r)z=-Math.sign(z)*r*.95;pos.setXYZ(i,x,y,z);}pos.needsUpdate=true;} loveTexts.forEach(t=>t.lookAt(camera.position)); loveImages.forEach(i=>i.lookAt(camera.position)); if(CONFIG.shootingStars.enabled&&Math.random()<CONFIG.shootingStars.spawnProbability)createShootingStar(); shootingStars.forEach((star,idx)=>{star.position.add(star.userData.velocity);star.userData.life++;if(star.userData.life>300){scene.remove(star);shootingStars.splice(idx,1);}}); controls.update(); composer.render(); }
 
-    // ✅ Event listeners optimizados
+    // ✅ Audio optimizado
     document.getElementById('entry-screen').addEventListener('click', async () => {
       const screen = document.getElementById('entry-screen');
       screen.style.opacity = '0';
@@ -259,23 +230,20 @@
       if (!musicPlayed) {
         const music = document.getElementById('background-music');
         if (music.src) {
-          try { await music.play(); musicPlayed = true; } catch (err) { console.warn('⚠️ Reproducción:', err); }
+          try {
+            await music.play();
+            musicPlayed = true;
+          } catch (err) { console.warn('Audio:', err); }
         }
       }
-    }, {passive:true});
+    }, { passive: true });
 
-    document.addEventListener('contextmenu', e => e.preventDefault(), {passive:false});
+    document.addEventListener('contextmenu', e => e.preventDefault(), { passive: false });
     document.onkeydown = function(e) {
       if (e.keyCode==123 || (e.ctrlKey && e.shiftKey && (e.keyCode=='I'.charCodeAt(0)||e.keyCode=='J'.charCodeAt(0)||e.keyCode=='C'.charCodeAt(0))) || (e.ctrlKey && (e.keyCode=='U'.charCodeAt(0)||e.keyCode=='S'.charCodeAt(0)))) return false;
     };
 
-    // ✅ Optimización: IntersectionObserver para cargar solo cuando es visible
-    if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver(entries => {
-        if (entries[0].isIntersecting && !scene) loadConfig();
-      }, {threshold: 0.1});
-      observer.observe(document.body);
-    } else { loadConfig(); }
+    loadConfig();
   </script>
 </body>
 </html>
