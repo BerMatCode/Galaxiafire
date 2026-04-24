@@ -1,447 +1,245 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#0ea5e9" id="theme-color" />
-  <title>✨ Personaliza tu Galaxy - BerMatCode</title>
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Roboto', sans-serif; background: linear-gradient(135deg, #0f172a, #1e3a5f, #0c1929); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; position: relative; overflow-x: hidden; color: #fff; }
-    body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(circle at 20% 35%, rgba(14,165,233,0.15) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(56,189,248,0.1) 0%, transparent 50%); z-index: -1; pointer-events: none; animation: floatBg 20s ease-in-out infinite; }
-    @keyframes floatBg { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
-    .panel-container { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-radius: 24px; padding: 25px; width: 100%; max-width: 540px; box-shadow: 0 20px 60px rgba(14,165,233,0.3), 0 0 0 1px rgba(56,189,248,0.2); border: 2px solid #38bdf8; position: relative; z-index: 10; animation: slideIn 0.4s ease; }
-    @keyframes slideIn { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
-    .panel-header { text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px dashed #93c5fd; }
-    .panel-title { font-family: 'Pacifico', cursive; font-size: 1.8rem; color: #0ea5e9; text-shadow: 0 0 10px rgba(14,165,233,0.5); margin-bottom: 5px; }
-    .panel-subtitle { font-size: 0.9rem; color: #64748b; }
-    .form-scroll { max-height: 62vh; overflow-y: auto; padding-right: 5px; scrollbar-width: thin; scrollbar-color: #38bdf8 #e0f2fe; }
-    .form-scroll::-webkit-scrollbar { width: 6px; }
-    .form-scroll::-webkit-scrollbar-track { background: #e0f2fe; border-radius: 10px; }
-    .form-scroll::-webkit-scrollbar-thumb { background: #38bdf8; border-radius: 10px; }
-    .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; font-weight: 600; margin-bottom: 6px; color: #1e293b; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; }
-    .form-group label i { color: #0ea5e9; }
-    .form-group input, .form-group textarea { width: 100%; padding: 11px 14px; border: 2px solid #93c5fd; border-radius: 12px; font-size: 0.95rem; background: #fff; font-family: 'Roboto', sans-serif; transition: all 0.25s ease; color: #1e293b; }
-    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #0ea5e9; box-shadow: 0 0 0 4px rgba(14,165,233,0.15); transform: translateY(-1px); }
-    .form-group textarea { min-height: 100px; resize: vertical; line-height: 1.5; }
-    .form-group input:disabled { background: #f1f5f9; color: #64748b; cursor: not-allowed; }
-    .form-hint { font-size: 0.78rem; color: #64748b; margin-top: 5px; display: block; padding-left: 3px; }
-    
-    /* 🔹 Token para créditos - Campo visible pero bloqueado */
-    .token-section { background: linear-gradient(135deg, #f0f9ff, #e0f2fe); border: 2px dashed #38bdf8; border-radius: 14px; padding: 14px; margin: 10px 0; }
-    .token-section label { display: flex; align-items: center; gap: 8px; font-size: 0.88rem; color: #0c4a6e; font-weight: 600; margin-bottom: 8px; }
-    .token-section label i { color: #0ea5e9; }
-    .token-input-wrap { display: flex; gap: 8px; align-items: center; }
-    .token-input-wrap input { flex: 1; padding: 8px 12px; border: 2px solid #93c5fd; border-radius: 8px; font-size: 0.9rem; }
-    .token-input-wrap input:focus { border-color: #0ea5e9; outline: none; }
-    .token-btn { background: linear-gradient(135deg, #0ea5e9, #38bdf8); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
-    .token-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(14,165,233,0.4); }
-    .token-status { font-size: 0.8rem; margin-top: 6px; display: none; }
-    .token-status.valid { display: block; color: #16a34a; font-weight: 500; }
-    .token-status.invalid { display: block; color: #dc2626; font-weight: 500; }
-    
-    /* 🔹 Créditos: visible siempre, editable solo con token */
-    .credits-field input:disabled { background: #f1f5f9; color: #64748b; cursor: not-allowed; opacity: 0.7; }
-    .credits-field input:not(:disabled) { border-color: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,0.15); }
-    
-    /* 🔹 Selector de colores de partículas */
-    .color-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-    .color-input { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 140px; }
-    .color-input input[type="color"] { width: 50px; height: 40px; border: 2px solid #93c5fd; border-radius: 8px; cursor: pointer; padding: 2px; background: #fff; }
-    .color-input input[type="color"]::-webkit-color-swatch { border: none; border-radius: 6px; }
-    .color-input label { font-size: 0.85rem; color: #555; margin: 0; font-weight: 500; }
-    
-    .phrase-list { display: flex; flex-direction: column; gap: 8px; }
-    .phrase-item { display: flex; gap: 8px; align-items: center; }
-    .phrase-item input { flex: 1; }
-    .phrase-item button { background: #0ea5e9; color: white; border: none; width: 36px; height: 36px; border-radius: 10px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
-    .phrase-item button:hover { background: #0284c7; transform: scale(1.05); }
-    .btn { width: 100%; padding: 13px; background: linear-gradient(135deg, #0ea5e9, #38bdf8); color: white; border: none; border-radius: 14px; font-size: 1.05rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-family: 'Roboto', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 8px; position: relative; overflow: hidden; }
-    .btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.5s; }
-    .btn:hover::before { left: 100%; }
-    .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(14,165,233,0.5); }
-    .btn:disabled { background: linear-gradient(135deg, #94a3b8, #cbd5e1); cursor: not-allowed; transform: none; box-shadow: none; }
-    .loading { text-align: center; padding: 18px; color: #0ea5e9; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 10px; }
-    .loading i { animation: spin 1s linear infinite; }
-    @keyframes spin { 100% { transform: rotate(360deg); } }
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 20px; opacity: 0; visibility: hidden; transition: all 0.35s ease; animation: modalFade 0.3s ease; }
-    @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
-    .modal-overlay.active { opacity: 1; visibility: visible; }
-    .loading-modal { background: linear-gradient(145deg, #ffffff, #f0f9ff); border: 3px solid #38bdf8; border-radius: 24px; padding: 32px 28px; width: 100%; max-width: 420px; text-align: center; color: #1e293b; box-shadow: 0 25px 80px rgba(14,165,233,0.5); transform: scale(0.95) translateY(15px); opacity: 0; transition: all 0.4s cubic-bezier(0.175,0.885,0.32,1.275); position: relative; overflow: hidden; animation: modalSlide 0.4s ease forwards; }
-    @keyframes modalSlide { to { transform: scale(1) translateY(0); opacity: 1; } }
-    .loading-spinner { width: 70px; height: 70px; margin: 0 auto 20px; border: 5px solid rgba(14,165,233,0.2); border-top-color: #0ea5e9; border-radius: 50%; animation: spin 1s linear infinite; }
-    .loading-modal h3 { font-family: 'Pacifico', cursive; font-size: 1.4rem; color: #0ea5e9; margin-bottom: 8px; }
-    .loading-modal p { font-size: 0.95rem; color: #475569; }
-    .success-modal { background: linear-gradient(145deg, #ffffff, #f0f9ff); border: 3px solid #22c55e; border-radius: 24px; padding: 28px; width: 100%; max-width: 460px; text-align: center; color: #166534; box-shadow: 0 25px 80px rgba(34,197,94,0.5); transform: scale(0.9) translateY(20px); opacity: 0; transition: all 0.45s cubic-bezier(0.175,0.885,0.32,1.275); position: relative; overflow: hidden; animation: modalSlide 0.45s ease forwards; }
-    .modal-close { position: absolute; top: 15px; right: 18px; background: rgba(255,255,255,0.9); border: 2px solid #38bdf8; font-size: 1.4rem; color: #0ea5e9; cursor: pointer; transition: all 0.25s ease; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10; font-weight: 700; animation: pulseBtn 2s infinite; }
-    @keyframes pulseBtn { 0%,100%{transform:scale(1);} 50%{transform:scale(1.1);} }
-    .modal-close:hover { background: #0ea5e9; color: white; transform: rotate(90deg) scale(1.1); }
-    .success-modal .check-icon { width: 75px; height: 75px; background: linear-gradient(135deg, #22c55e, #38bdf8); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; box-shadow: 0 12px 35px rgba(34,197,94,0.5); animation: popIn 0.5s ease; }
-    @keyframes popIn { 0%{transform:scale(0);} 50%{transform:scale(1.2);} 100%{transform:scale(1);} }
-    .success-modal .check-icon i { font-size: 2.1rem; color: white; }
-    .success-modal h3 { font-family: 'Pacifico', cursive; font-size: 1.5rem; color: #0ea5e9; margin-bottom: 10px; }
-    .success-modal p { font-size: 0.95rem; line-height: 1.6; margin-bottom: 15px; }
-    .success-modal strong { color: #0ea5e9; font-weight: 700; }
-    .share-box { background: linear-gradient(135deg, #f8fafc, #fff); border: 2px dashed #22c55e; border-radius: 16px; padding: 15px; margin: 15px 0; text-align: left; }
-    .share-box label { font-size: 0.88rem; color: #334155; font-weight: 600; display: block; margin-bottom: 8px; }
-    .share-url { font-size: 0.85rem; color: #1e293b; word-break: break-all; background: white; padding: 10px 12px; border-radius: 10px; border: 1px solid #cbd5e1; font-family: monospace; }
-    .modal-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
-    .btn-square { padding: 14px 12px; border: none; border-radius: 16px; cursor: pointer; font-size: 0.95rem; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 7px; transition: all 0.28s ease; font-family: 'Roboto', sans-serif; }
-    .btn-square:active { transform: translateY(1px); }
-    .btn-copy { background: linear-gradient(135deg, #64748b, #475569); color: white; }
-    .btn-view { background: linear-gradient(135deg, #22c55e, #38bdf8); color: white; }
-    .permanent-notice { background: linear-gradient(135deg, #fffbeb, #fef3c7); border: 2px solid #f59e0b; border-radius: 14px; padding: 14px; margin: 12px 0; text-align: left; font-size: 0.9rem; color: #92400e; animation: gentlePulse 3s infinite; }
-    @keyframes gentlePulse { 0%,100%{box-shadow:0 0 0 rgba(245,158,11,0);} 50%{box-shadow:0 0 20px rgba(245,158,11,0.3);} }
-    .permanent-notice strong { color: #b45309; }
-    .btn-contact { width: 100%; padding: 14px; margin-top: 10px; background: linear-gradient(135deg, #7c3aed, #38bdf8); color: white; border: none; border-radius: 16px; font-size: 1rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.28s ease; font-family: 'Roboto', sans-serif; box-shadow: 0 5px 18px rgba(124,58,237,0.35); }
-    .btn-contact:hover { transform: translateY(-3px); box-shadow: 0 9px 28px rgba(124,58,237,0.55); }
-    .confetti { position: fixed; width: 10px; height: 10px; background: #38bdf8; border-radius: 50%; animation: confettiFall 3s ease-out forwards; pointer-events: none; z-index: 1999; }
-    @keyframes confettiFall { 0% { transform: translateY(-100px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
-    .decoration { position: absolute; width: 60px; height: auto; opacity: 0.6; pointer-events: none; animation: float 3s ease-in-out infinite; filter: drop-shadow(0 4px 8px rgba(14,165,233,0.3)); }
-    .dec-1 { top: 30px; left: 30px; animation-delay: 0s; }
-    .dec-2 { bottom: 40px; right: 30px; animation-delay: 1s; width: 45px; }
-    @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px) rotate(5deg);} }
-    
-    /* 🎵 TikTok opcional - tema celeste con animaciones */
-    .tiktok-optional { margin-top: 15px; padding-top: 15px; border-top: 1px dashed #93c5fd; text-align: center; animation: fadeInUp 0.5s ease; }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    .tiktok-optional p { font-size: 0.85rem; color: #64748b; margin-bottom: 10px; }
-    .tiktok-mini-profile { display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #fff, #f0f9ff); border: 2px solid #93c5fd; border-radius: 14px; padding: 8px 14px; cursor: pointer; transition: all 0.25s ease; }
-    .tiktok-mini-profile:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 5px 15px rgba(14,165,233,0.3); border-color: #38bdf8; }
-    .tiktok-mini-avatar { width: 32px; height: 32px; border-radius: 50%; overflow: hidden; border: 2px solid #38bdf8; flex-shrink: 0; animation: pulseAvatar 2s infinite; }
-    @keyframes pulseAvatar { 0%,100%{transform:scale(1);} 50%{transform:scale(1.05);} }
-    .tiktok-mini-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .tiktok-mini-info { text-align: left; }
-    .tiktok-mini-username { font-weight: 600; color: #1e293b; font-size: 0.9rem; }
-    .tiktok-mini-handle { font-size: 0.75rem; color: #64748b; }
-    
-    @media (max-width: 520px) { .panel-container { padding: 20px 18px; border-radius: 20px; } .panel-title { font-size: 1.5rem; } .modal-buttons { grid-template-columns: 1fr; } .decoration { width: 40px; } .color-row { flex-direction: column; align-items: flex-start; } }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>✨ Personaliza tu Galaxia</title>
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Roboto', sans-serif; background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; color: #cbd5e1; }
+.panel { background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(10px); border-radius: 24px; padding: 25px; width: 100%; max-width: 480px; box-shadow: 0 20px 60px rgba(14, 165, 233, 0.3), 0 0 0 1px rgba(56, 189, 248, 0.2); border: 2px solid #38bdf8; animation: slideIn 0.4s ease; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.header { text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px dashed #475569; }
+.header h1 { font-family: 'Patrick Hand', cursive; font-size: 1.8rem; color: #38bdf8; text-shadow: 0 0 10px rgba(56,189,248,0.5); margin-bottom: 5px; }
+.form-scroll { max-height: 55vh; overflow-y: auto; padding-right: 5px; scrollbar-width: thin; }
+.form-group { margin-bottom: 14px; }
+.form-group label { display: block; font-weight: 600; margin-bottom: 6px; color: #94a3b8; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; }
+.form-group label i { color: #38bdf8; }
+input, textarea { width: 100%; padding: 11px 14px; border: 2px solid #475569; border-radius: 12px; font-size: 0.95rem; background: #0f172a; color: #f1f5f9; font-family: 'Roboto', sans-serif; transition: 0.25s; }
+input:focus, textarea:focus { outline: none; border-color: #38bdf8; box-shadow: 0 0 0 4px rgba(56,189,248,0.15); }
+textarea { min-height: 90px; resize: vertical; }
+.hint { font-size: 0.78rem; color: #64748b; margin-top: 5px; display: block; }
+/* Selector Imágenes */
+.img-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; }
+.img-opt { aspect-ratio: 1; border-radius: 10px; overflow: hidden; cursor: pointer; border: 2px solid transparent; transition: 0.2s; position: relative; }
+.img-opt img { width: 100%; height: 100%; object-fit: cover; }
+.img-opt.selected { border-color: #38bdf8; box-shadow: 0 0 10px rgba(56,189,248,0.5); }
+.img-opt.selected::after { content: '✓'; position: absolute; inset: 0; background: rgba(56,189,248,0.3); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: bold; font-size: 1.2rem; }
+.img-opt.disabled { opacity: 0.3; pointer-events: none; }
+/* Token */
+.token-row { display: flex; gap: 8px; }
+.btn-check { padding: 0 12px; background: #38bdf8; color: #0f172a; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+.btn-check:hover { background: #0ea5e9; }
+.locked { opacity: 0.4; pointer-events: none; filter: grayscale(0.8); }
+/* Botones */
+.btn { width: 100%; padding: 13px; background: linear-gradient(135deg, #0ea5e9, #38bdf8); color: #0f172a; border: none; border-radius: 14px; font-size: 1.05rem; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; }
+.btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(56,189,248,0.5); }
+.btn:disabled { background: #475569; cursor: not-allowed; transform: none; box-shadow: none; }
+/* Modales */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
+.modal-overlay.active { display: flex; }
+.modal { background: #0f172a; border: 2px solid #38bdf8; border-radius: 20px; padding: 24px; width: 100%; max-width: 400px; text-align: center; color: #f1f5f9; animation: popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275); }
+@keyframes popIn { from { transform: scale(0.9) translateY(20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+.modal h3 { font-family: 'Patrick Hand', cursive; font-size: 1.4rem; margin-bottom: 12px; }
+.modal p { font-size: 0.9rem; color: #94a3b8; margin-bottom: 16px; }
+.spinner { width: 40px; height: 40px; border: 4px solid #334155; border-top-color: #38bdf8; border-radius: 50%; margin: 16px auto; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.close-btn { position: absolute; top: 10px; right: 12px; background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; }
+.close-btn:hover { color: #38bdf8; }
+.success-box { background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; border-radius: 12px; padding: 12px; margin: 12px 0; }
+.success-box a { color: #38bdf8; word-break: break-all; }
+.btn-action { width: 100%; padding: 10px; background: #334155; color: #f1f5f9; border: none; border-radius: 8px; margin-top: 8px; cursor: pointer; transition: 0.2s; }
+.btn-action:hover { background: #475569; }
+.tiktok-avatar { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 12px; border: 3px solid #38bdf8; overflow: hidden; }
+.tiktok-avatar img { width: 100%; height: 100%; object-fit: cover; }
+</style>
 </head>
 <body>
-  <div class="decoration dec-1">✨</div>
-  <div class="decoration dec-2">💫</div>
-  
-  <div class="panel-container">
-    <div class="panel-header">
-      <div class="panel-title">🌌 Personaliza tu Galaxy</div>
-      <div class="panel-subtitle">Edita frases, colores y música 💙</div>
-    </div>
-    <div class="form-scroll">
-      
-      <!-- Frase del corazón central -->
-      <div class="form-group">
-        <label for="center-text"><i class="fas fa-heart"></i> Frase del corazón central:</label>
-        <input type="text" id="center-text" maxlength="40" value="👑Te quiero👑">
-        <small class="form-hint">💡 Texto que aparece en el corazón grande del centro</small>
-      </div>
-
-      <!-- Frase de los corazones pequeños -->
-      <div class="form-group">
-        <label for="heart-text"><i class="fas fa-heart-circle"></i> Frase de corazones orbitales:</label>
-        <input type="text" id="heart-text" maxlength="30" value="💙Mi Amor💙">
-        <small class="form-hint">💡 Texto que aparece en cada corazón que orbita</small>
-      </div>
-
-      <!-- Frases románticas flotantes -->
-      <div class="form-group">
-        <label><i class="fas fa-comment-heart"></i> Frases flotantes (una por línea):</label>
-        <textarea id="romantic-phrases">💙 Te amo 💙
-🌊 Mi amor 🌊
-⭐ Mi estrella ⭐
-💜 And 💜
-🌌 Eres todo 🌌
-💫 Para siempre 💫
-🌟 Mi vida 🌟
-☁️ Mi cielo ☁️
-🌅 Mi sol 🌅
-🌸 Bella 🌸
-🌺 Hermosa 🌺
-🌷 Preciosa 🌷
-🍬 Dulzura 🍬
-🤗 Cariño 🤗
-💝 Amor mío 💝
-👸 Mi princesa 👸
-👼 Mi ángel 👼
-✨ Mi luz ✨
-🌍 Mi mundo 🌍
-💎 Eres única 💎
-😍 Te adoro 😍
-🎁 Mi tesoro 🎁
-😊 Mi felicidad 😊
-🕊️ Mi paz 🕊️
-🎉 Mi alegría 🎉
-♾️ Por siempre ♾️
-💍 Amor de mi vida 💍</textarea>
-        <small class="form-hint">💡 Una frase por línea. Se mostrarán flotando en la galaxia</small>
-      </div>
-
-      <!-- 🔹 Colores de partículas (SOLO 2 colores) -->
-      <div class="form-group">
-        <label><i class="fas fa-palette"></i> Colores de las partículas:</label>
-        <div class="color-row">
-          <div class="color-input">
-            <input type="color" id="inside-color" value="#0ea5e9" title="Color interior">
-            <label for="inside-color">Interior</label>
-          </div>
-          <div class="color-input">
-            <input type="color" id="outside-color" value="#38bdf8" title="Color exterior">
-            <label for="outside-color">Exterior</label>
-          </div>
-        </div>
-        <small class="form-hint">🎨 Elige los 2 colores del gradiente de las partículas</small>
-      </div>
-
-      <!-- Música -->
-      <div class="form-group">
-        <label><i class="fas fa-music"></i> Música de fondo (URL MP3):</label>
-        <input type="url" id="music-url" placeholder="https://ejemplo.com/cancion.mp3"
-          value="https://github.com/Baque2005/Organizador/raw/refs/heads/master/Mi%20Coraz%C3%B3n%20Es%20Tuyo%20-%20Axel,%20Kaay%20%20Letra..mp3">
-        <small class="form-hint">🎵 URL directa a archivo .mp3 (debe permitir CORS)</small>
-      </div>
-
-      <!-- 🔹 Token para créditos - Campo visible pero bloqueado -->
-      <div class="token-section">
-        <label><i class="fas fa-key"></i> ¿Editar créditos?</label>
-        <div class="token-input-wrap">
-          <input type="password" id="token-input" placeholder="Ingresa el token (101123)" maxlength="6">
-          <button class="token-btn" id="token-btn">Validar</button>
-        </div>
-        <div class="token-status" id="token-status"></div>
-      </div>
-
-      <!-- Créditos: VISIBLE siempre, EDITABLE solo con token -->
-      <div class="form-group credits-field" id="credits-field">
-        <label for="credits-text"><i class="fas fa-signature"></i> Créditos (pie de página):</label>
-        <input type="text" id="credits-text" maxlength="30" value="BerMatCode" disabled>
-        <small class="form-hint">✍️ Ingresa el token para editar este campo</small>
-      </div>
-
-    </div>
-    
-    <button class="btn" id="generate-btn" onclick="generateLink()">
-      <i class="fas fa-magic"></i> Generar mi Galaxy ✨
-    </button>
-    <div id="loading-inline" class="loading" style="display:none;">
-      <i class="fas fa-spinner"></i> Creando tu galaxia...
-    </div>
+<div class="panel">
+  <div class="header">
+    <h1>🌌 Panel Galaxia</h1>
+    <p style="font-size:0.9rem">💙 Configura tu universo personalizado</p>
   </div>
-  
-  <!-- Modal de carga con animación -->
-  <div class="modal-overlay" id="loading-modal">
-    <div class="loading-modal">
-      <div class="loading-spinner"></div>
-      <h3>𝐆𝐞𝐧𝐞𝐫𝐚𝐧𝐝𝐨 𝐓𝐮 𝐆𝐚𝐥𝐚𝐱𝐢𝐚</h3>
-      <p>Un momento, estamos creando tu detalle especial 💫</p>
+  <div class="form-scroll">
+    <div class="form-group">
+      <label><i class="fas fa-font"></i> Título Principal</label>
+      <input type="text" id="f-title" value="Te Amo Yorchi" maxlength="40">
     </div>
-  </div>
-  
-  <!-- Modal de éxito con animaciones -->
-  <div class="modal-overlay" id="success-modal">
-    <div class="success-modal">
-      <button class="modal-close" onclick="closeModal('success-modal')" title="Cerrar">×</button>
-      <div class="check-icon"><i class="fas fa-check"></i></div>
-      <h3>𝗚𝗮𝗹𝗮𝘅𝗶𝗮 𝗖𝗿𝗲𝗮𝗱𝗮 𝗖𝗼𝗻 𝗘𝘅𝗶𝘁𝗼</h3>
-      <p><strong>Tu detalle ha sido generado con éxito.</strong><br>
-      Ya está guardado en la base de datos de <strong>BerMatCode</strong> 💙</p>
-      <div class="permanent-notice">
-        <i class="fas fa-clock" style="margin-right:6px"></i>
-        <strong>⏰ Importante:</strong><br>
-        Tu link estará disponible por <strong>24 horas</strong>. Para hacerlo permanente, contáctame.
+    <div class="form-group">
+      <label><i class="fas fa-comment-dots"></i> Texto de Entrada / Mensaje</label>
+      <textarea id="f-msg">💖Toca la pantalla💘</textarea>
+      <span class="hint">Mensaje que aparece al inicio</span>
+    </div>
+    <div class="form-group">
+      <label><i class="fas fa-music"></i> Música (URL MP3)</label>
+      <input type="url" id="f-music" value="https://github.com/BerMatCode/Archivos/raw/refs/heads/main/Multimedia/TikVid.io_7471239338752363781.mp3">
+    </div>
+    <div class="form-group">
+      <label><i class="fas fa-image"></i> Imágenes Flotantes (Máx 4)</label>
+      <div class="img-grid" id="img-grid"></div>
+      <span class="hint">Haz clic para seleccionar. Predeterminadas marcadas en azul.</span>
+    </div>
+    <div class="form-group">
+      <label><i class="fas fa-lock"></i> Desbloquear Avanzado</label>
+      <div class="token-row">
+        <input type="text" id="f-token" placeholder="Ingresa token" style="flex:1">
+        <button class="btn-check" onclick="checkToken()">✓</button>
       </div>
-      <button class="btn-contact" onclick="contactDeveloper()">
-        <i class="fas fa-user-circle"></i> Contactar al Desarrollador
-      </button>
-      <div class="share-box">
-        <label>🔗 Tu link para compartir:</label>
-        <div class="share-url" id="share-url"></div>
-      </div>
-      <div class="modal-buttons">
-        <button class="btn-square btn-copy" onclick="copyLink()">
-          <i class="fas fa-copy"></i> Copiar Link
-        </button>
-        <button class="btn-square btn-view" onclick="viewMyPage()">
-          <i class="fas fa-eye"></i> Ver mi Galaxy
-        </button>
-      </div>
-      
-      <!-- 🎵 TikTok opcional con animaciones -->
-      <div class="tiktok-optional">
-        <p>¡Sígueme para más Proyectos!</p>
-        <div class="tiktok-mini-profile" onclick="openTikTok()">
-          <div class="tiktok-mini-avatar">
-            <img src="https://raw.githubusercontent.com/BerMatCode/Galafire/main/Multimedia/Screenshot_20260225-092058.jpg" alt="TikTok" onerror="this.src='https://via.placeholder.com/32/38bdf8/ffffff?text=💙'">
-          </div>
-          <div class="tiktok-mini-info">
-            <div class="tiktok-mini-username">BerMatCode</div>
-            <div class="tiktok-mini-handle">@bermatcode</div>
-          </div>
-          <i class="fab fa-tiktok" style="color:#0ea5e9;font-size:1.1rem;margin-left:5px;animation:pulseIcon 1.5s infinite"></i>
-        </div>
+    </div>
+    <div class="form-group locked" id="adv-group">
+      <label><i class="fas fa-atom"></i> Imagen del Núcleo</label>
+      <input type="url" id="f-nucleus" placeholder="https://...">
+      <div class="form-group" style="margin-top:8px; margin-bottom:0;">
+        <label><i class="fas fa-copyright"></i> Créditos Inferiores</label>
+        <input type="text" id="f-credits" value="𖤍BerMatCode𖤍" placeholder="Texto inferior">
       </div>
     </div>
   </div>
-  
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    
-    const firebaseConfig = {
-      apiKey: "AIzaSyAVQn_t-gwbA75W6c1FLLP7OnzuU2jhbs0",
-      authDomain: "galaxia-2026.firebaseapp.com",
-      projectId: "galaxia-2026",
-      storageBucket: "galaxia-2026.firebasestorage.app",
-      messagingSenderId: "30252830415",
-      appId: "1:30252830415:web:463fbdc73c3fb730d671ba",
-      measurementId: "G-XCSVYH6KEG"
-    };
-    
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    window.firebaseDB = db;
-    window.generatedMessageId = null;
-    window.DEVELOPER_CONTACT = "https://wa.me/51930569195";
-    window.TIKTOK_PROFILE = "https://www.tiktok.com/@bermatcode";
-    
-    // 🔹 Token validation
-    let creditsUnlocked = false;
-    const VALID_TOKEN = "101123";
-    
-    // 🔹 Actualizar tema de Chrome dinámicamente
-    function updateThemeColor(color) {
-      const meta = document.getElementById('theme-color');
-      if (meta) meta.setAttribute('content', color);
-    }
-    
-    // 🔹 Validar token para habilitar edición de créditos
-    document.getElementById('token-btn').addEventListener('click', function() {
-      const token = document.getElementById('token-input').value.trim();
-      const status = document.getElementById('token-status');
-      const creditsInput = document.getElementById('credits-text');
-      
-      if (token === VALID_TOKEN) {
-        creditsUnlocked = true;
-        status.textContent = '✓ Token válido - Ahora puedes editar los créditos';
-        status.className = 'token-status valid';
-        creditsInput.disabled = false;
-        creditsInput.focus();
-      } else {
-        creditsUnlocked = false;
-        status.textContent = '✗ Token incorrecto';
-        status.className = 'token-status invalid';
-        creditsInput.disabled = true;
-      }
-    });
-    
-    // 🔹 Actualizar tema de Chrome al cambiar colores
-    document.getElementById('inside-color').addEventListener('input', (e) => updateThemeColor(e.target.value));
-    document.getElementById('outside-color').addEventListener('input', (e) => updateThemeColor(e.target.value));
-    
-    window.generateLink = async function() {
-      const centerText = document.getElementById('center-text').value.trim() || '👑Te quiero👑';
-      const heartText = document.getElementById('heart-text').value.trim() || '💙Mi Amor💙';
-      const phrasesText = document.getElementById('romantic-phrases').value.trim();
-      const romanticPhrases = phrasesText.split('\n').map(p => p.trim()).filter(p => p.length > 0);
-      const insideColor = document.getElementById('inside-color').value;
-      const outsideColor = document.getElementById('outside-color').value;
-      const musicUrl = document.getElementById('music-url').value.trim();
-      // 🔹 Créditos: solo editable si token válido, sino usa default
-      const credits = creditsUnlocked ? (document.getElementById('credits-text').value.trim() || 'BerMatCode') : 'BerMatCode';
-      
-      if (romanticPhrases.length === 0) { 
-        showToast('💌 Por favor, escribe al menos una frase romántica'); 
-        return; 
-      }
-      
-      // Mostrar modal de generación con animación
-      document.getElementById('loading-modal').classList.add('active');
-      document.getElementById('generate-btn').disabled = true;
-      document.body.style.overflow = 'hidden';
-      
-      try {
-        const docRef = await addDoc(collection(window.firebaseDB, "messages"), {
-          centerText,
-          heartText,
-          romanticPhrases,
-          insideColor,
-          outsideColor,
-          musicUrl: musicUrl || 'https://github.com/Baque2005/Organizador/raw/refs/heads/master/Mi%20Coraz%C3%B3n%20Es%20Tuyo%20-%20Axel,%20Kaay%20%20Letra..mp3',
-          credits,
-          createdAt: serverTimestamp()
-        });
-        
-        window.generatedMessageId = docRef.id;
-        const shareUrl = `${window.location.origin}${window.location.pathname.replace('panel.html','index.html')}?id=${docRef.id}`;
-        
-        // Ocultar loading y mostrar éxito con animación
-        document.getElementById('loading-modal').classList.remove('active');
-        document.getElementById('share-url').textContent = shareUrl;
-        document.getElementById('success-modal').classList.add('active');
-        document.getElementById('generate-btn').disabled = false;
-        document.body.style.overflow = '';
-        
-        createConfetti();
-        
-      } catch (error) {
-        console.error("Error:", error);
-        document.getElementById('loading-modal').classList.remove('active');
-        document.getElementById('generate-btn').disabled = false;
-        document.body.style.overflow = '';
-        showToast('❌ Error al crear tu galaxy. Intenta de nuevo.');
-      }
-    };
-    
-    window.openTikTok = function() { window.open(window.TIKTOK_PROFILE, '_blank'); };
-    window.copyLink = function() {
-      const url = document.getElementById('share-url').textContent;
-      navigator.clipboard.writeText(url).then(() => showToast('🔗 Link copiado al portapapeles ✨')).catch(() => {
-        const ta = document.createElement('textarea'); ta.value = url; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); showToast('🔗 Link copiado');
-      });
-    };
-    window.viewMyPage = function() { if (window.generatedMessageId) window.location.href = `index.html?id=${window.generatedMessageId}`; };
-    window.contactDeveloper = function() { window.open(window.DEVELOPER_CONTACT, '_blank'); };
-    window.closeModal = function(modalId) { document.getElementById(modalId).classList.remove('active'); document.body.style.overflow = ''; };
-    
-    function showToast(msg) {
-      const t = document.createElement('div');
-      t.style.cssText = `position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#1e293b,#334155);color:white;padding:12px 24px;border-radius:30px;font-size:0.95rem;z-index:3000;animation:slideUp 0.3s ease;box-shadow:0 8px 25px rgba(0,0,0,0.3);font-weight:500;`;
-      t.innerHTML = `<i class="fas fa-check-circle" style="margin-right:8px"></i>${msg}`;
-      document.body.appendChild(t);
-      setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(-50%) translateY(10px)';setTimeout(()=>t.remove(),300)},2500);
-    }
-    
-    window.createConfetti = function() {
-      const colors = ['#0ea5e9', '#38bdf8', '#7dd3fc', '#22c55e', '#7c3aed', '#f472b6'];
-      for(let i = 0; i < 50; i++) {
-        const confetti = document.createElement('div');
-        confetti.className = 'confetti';
-        confetti.style.left = Math.random() * 100 + 'vw';
-        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
-        confetti.style.animationDelay = Math.random() * 0.5 + 's';
-        document.body.appendChild(confetti);
-        setTimeout(() => confetti.remove(), 3000);
-      }
-    };
-    
-    // Exponer funciones globalmente
-    window.generateLink = generateLink;
-    window.openTikTok = openTikTok;
-    window.copyLink = copyLink;
-    window.viewMyPage = viewMyPage;
-    window.contactDeveloper = contactDeveloper;
-    window.closeModal = closeModal;
-    window.createConfetti = createConfetti;
-  </script>
-  
-  <script>
-    // Cerrar modals con animación
-    document.getElementById('success-modal').addEventListener('click', (e) => { if(e.target.id === 'success-modal') closeModal('success-modal'); });
-    document.getElementById('loading-modal').addEventListener('click', (e) => { if(e.target.id === 'loading-modal') {} });
-    document.addEventListener('keydown', (e) => { if(e.key === 'Escape' && document.getElementById('success-modal').classList.contains('active')) closeModal('success-modal'); });
-  </script>
+  <button class="btn" id="gen-btn" onclick="startGen()"><i class="fas fa-rocket"></i> Generar mi Galaxia</button>
+</div>
+
+<!-- TikTok Modal -->
+<div class="modal-overlay" id="m-tiktok">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal('m-tiktok')">×</button>
+    <div class="tiktok-avatar"><img src="https://raw.githubusercontent.com/BerMatCode/Galafire/main/Multimedia/Screenshot_20260225-092058.jpg"></div>
+    <h3>🎵 Sigue en TikTok</h3>
+    <p>Para desbloquear tu galaxia personalizada, <strong style="color:#38bdf8">sigue mi perfil</strong> y regresa.</p>
+    <button class="btn" onclick="followTiktok()" style="background:#000; color:#fff;"><i class="fab fa-tiktok"></i> Seguir Ahora</button>
+  </div>
+</div>
+
+<!-- Loading -->
+<div class="modal-overlay" id="m-load">
+  <div class="modal">
+    <div class="spinner"></div>
+    <h3>🌌 Generando Universo...</h3>
+    <p>Configurando estrellas y partículas...</p>
+  </div>
+</div>
+
+<!-- Success -->
+<div class="modal-overlay" id="m-success">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal('m-success')">×</button>
+    <h3>✨ ¡Universo Creado!</h3>
+    <div class="success-box">
+      <p style="color:#cbd5e1; font-size:0.85rem">🔗 Enlace para compartir:</p>
+      <a id="share-url" href="#" target="_blank">https://...</a>
+    </div>
+    <button class="btn-action" onclick="copyLnk()"><i class="fas fa-copy"></i> Copiar Enlace</button>
+    <button class="btn-action" onclick="viewLnk()" style="background:#10b981"><i class="fas fa-eye"></i> Ver Galaxia</button>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+const app = initializeApp({ apiKey:"AIzaSyAVQn_t-gwbA75W6c1FLLP7OnzuU2jhbs0", authDomain:"galaxia-2026.firebaseapp.com", projectId:"galaxia-2026", storageBucket:"galaxia-2026.firebasestorage.app", messagingSenderId:"30252830415", appId:"1:30252830415:web:463fbdc73c3fb730d671ba" });
+const db = getFirestore(app);
+
+// Datos de imágenes
+const IMG_LIST = [
+  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda.png',
+  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda1.png',
+  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda2.png',
+  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda3.png',
+  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda4.png',
+  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda5.png',
+  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda6.png',
+  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda7.png',
+  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda8.png',
+  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda9.png',
+  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/pandaa.png',
+  'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/pandad.png'
+];
+let selectedImgs = [];
+let tokenUnlocked = false;
+const TOKEN_CODE = "101123";
+
+// Render Grid
+const grid = document.getElementById('img-grid');
+IMG_LIST.forEach((url, idx) => {
+  const div = document.createElement('div');
+  div.className = 'img-opt';
+  div.dataset.url = url;
+  div.innerHTML = `<img src="${url}" alt="img${idx}">`;
+  // Predeterminadas (índices 2, 3, 6 -> panda2, panda3, panda6)
+  if ([2, 3, 6].includes(idx)) div.classList.add('selected');
+  if ([2, 3, 6].includes(idx)) selectedImgs.push(url);
+  div.onclick = () => toggleImg(div, url);
+  grid.appendChild(div);
+});
+
+window.toggleImg = function(el, url) {
+  if (el.classList.contains('selected')) {
+    el.classList.remove('selected');
+    selectedImgs = selectedImgs.filter(u => u !== url);
+  } else {
+    if (selectedImgs.length >= 4) { alert('⚠️ Máximo 4 imágenes permitidas'); return; }
+    el.classList.add('selected');
+    selectedImgs.push(url);
+  }
+  updateDisabled();
+};
+function updateDisabled() {
+  document.querySelectorAll('.img-opt').forEach(el => {
+    el.classList.toggle('disabled', selectedImgs.length >= 4 && !el.classList.contains('selected'));
+  });
+}
+
+window.checkToken = function() {
+  const val = document.getElementById('f-token').value.trim();
+  if (val === TOKEN_CODE) {
+    tokenUnlocked = true;
+    document.getElementById('adv-group').classList.remove('locked');
+    document.querySelector('.token-row').style.opacity = '0.5';
+    document.querySelector('.token-row').style.pointerEvents = 'none';
+  } else { alert('🔒 Token incorrecto'); }
+};
+
+window.startGen = function() {
+  document.getElementById('m-tiktok').classList.add('active');
+};
+window.followTiktok = function() {
+  window.open('https://www.tiktok.com/@bermatcode', '_blank');
+  closeModal('m-tiktok');
+  document.getElementById('m-load').classList.add('active');
+  setTimeout(saveToDb, 2200);
+};
+
+async function saveToDb() {
+  const data = {
+    title: document.getElementById('f-title').value.trim() || "Te Amo Yorchi",
+    entryText: document.getElementById('f-msg').value.trim() || "💖Toca la pantalla💘",
+    musicUrl: document.getElementById('f-music').value.trim(),
+    images: selectedImgs.length ? selectedImgs : ["https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda2.png","https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda3.png"],
+    createdAt: serverTimestamp()
+  };
+  if (tokenUnlocked) {
+    data.nucleusUrl = document.getElementById('f-nucleus').value.trim();
+    data.credits = document.getElementById('f-credits').value.trim();
+  }
+  try {
+    const ref = await addDoc(collection(db, "messages"), data);
+    const link = `${window.location.origin}${window.location.pathname.replace('panel.html','index.html')}?id=${ref.id}`;
+    document.getElementById('share-url').textContent = link;
+    document.getElementById('share-url').href = link;
+    closeModal('m-load');
+    document.getElementById('m-success').classList.add('active');
+  } catch(e) {
+    console.error(e); alert('❌ Error al crear la galaxia'); closeModal('m-load');
+  }
+}
+
+window.copyLnk = function() {
+  navigator.clipboard.writeText(document.getElementById('share-url').href).then(()=>alert('📋 Copiado'));
+};
+window.viewLnk = function() { window.open(document.getElementById('share-url').href, '_blank'); };
+window.closeModal = function(id) { document.getElementById(id).classList.remove('active'); };
+</script>
 </body>
 </html>
