@@ -3,79 +3,185 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🌌 Galaxia de Amor</title>
-  <meta property="og:title" content="Galaxia de Amor">
-  <meta property="og:type" content="website">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <title>✨ Crea tu Galaxia</title>
+  <!-- ✅ Color de la barra de navegación del navegador -->
+  <meta name="theme-color" content="#D97F88">
+  <meta name="apple-mobile-web-app-status-bar-style" content="#D97F88">
   <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
   <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    html,body{width:100%;height:100%;margin:0;overflow:hidden;background:radial-gradient(circle at center,#1a0f14 0%,#000 100%);font-family:'Patrick Hand',cursive;cursor:grab;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
-    body:active{cursor:grabbing}
-    canvas{display:block;position:fixed;top:0;left:0;z-index:1}
-    #main-title{position:absolute;top:40px;left:50%;transform:translateX(-50%);font-size:4.5em;color:#F6D1D5;text-shadow:0 0 15px #E8A2A8,0 0 25px #D97F88;z-index:10;pointer-events:none;text-align:center;white-space:nowrap;animation:titleGlow 3s infinite alternate}
-    @keyframes titleGlow{0%{text-shadow:0 0 15px #E8A2A8,0 0 25px #D97F88}100%{text-shadow:0 0 25px #E8A2A8,0 0 35px #D97F88}}
-    #entry-screen{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:9999;background:rgba(0,0,0,.4);backdrop-filter:blur(10px);cursor:pointer;transition:opacity .6s ease}
-    #entry-text{font-size:2.6em;color:#F6D1D5;text-shadow:0 0 20px #E8A2A8,0 0 40px #D97F88;text-align:center;animation:pulse 2s infinite ease-in-out;padding:30px 50px;background:rgba(246,209,213,.1);border-radius:20px;border:2px solid rgba(232,162,168,.3);font-family:'Patrick Hand',cursive;box-shadow:0 8px 30px rgba(0,0,0,.4)}
-    @keyframes pulse{0%,100%{opacity:.7;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
-    #credits{position:fixed;bottom:15px;left:50%;transform:translateX(-50%);font-family:'Patrick Hand',cursive;font-size:.9em;color:#F6D1D5;text-shadow:0 0 10px #E8A2A8,0 0 20px rgba(232,162,168,.5);z-index:50;pointer-events:none;white-space:nowrap}
+    :root {
+      --p: #E8A2A8; --pd: #D97F88; --l: #F6D1D5; --s: #F2B9BF;
+      --bg: #fff9fb; --txt: #5a3a42; --sh: 0 4px 20px rgba(217,127,136,.25);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family:'Patrick Hand',cursive; background:linear-gradient(135deg,#fff5f7,#fde8ea); color:var(--txt);
+      min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px;
+    }
+    .card {
+      background:rgba(255,255,255,.95); border-radius:24px; padding:35px; max-width:520px; width:100%;
+      box-shadow:var(--sh); border:2px solid var(--p); text-align:center; backdrop-filter:blur(8px);
+    }
+    h1 { font-size:2.4em; color:var(--pd); margin-bottom:8px; text-shadow:0 0 10px var(--p); }
+    p.sub { opacity:.85; margin-bottom:25px; font-size:1.1em; }
     
-    /* Error Modal */
-    #error-modal{position:fixed;top:0;left:0;width:100%;height:100%;display:none;justify-content:center;align-items:center;background:linear-gradient(135deg,#1a0a12,#0f0508);z-index:10000;text-align:center;padding:20px;color:#F6D1D5;font-family:'Patrick Hand',cursive;backdrop-filter:blur(12px)}
-    #error-modal.active{display:flex;animation:fadeIn .5s}
-    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-    .error-card{background:rgba(255,255,255,.08);padding:35px;border-radius:24px;max-width:480px;width:90%;border:2px solid #E8A2A8;box-shadow:0 10px 40px rgba(217,127,136,.3);backdrop-filter:blur(8px)}
-    .error-card h2{font-size:2.5em;color:#E8A2A8;text-shadow:0 0 20px #D97F88;margin-bottom:15px}
-    .error-card p{font-size:1.2em;line-height:1.6;opacity:.9;margin:15px 0}
-    .error-card .btn{display:inline-block;margin:12px 8px;padding:14px 30px;background:linear-gradient(135deg,#E8A2A8,#D97F88);color:white;border:none;border-radius:50px;font-family:inherit;font-size:1.1em;cursor:pointer;text-decoration:none;transition:transform .3s,box-shadow .3s;box-shadow:0 4px 15px rgba(217,127,136,.4)}
-    .error-card .btn:hover{transform:scale(1.05);box-shadow:0 6px 20px rgba(217,127,136,.6)}
-    .error-card .btn-whatsapp{background:linear-gradient(135deg,#25D366,#128C7E)}
-    .error-card .btn-whatsapp:hover{background:linear-gradient(135deg,#128C7E,#075E54)}
+    .field { text-align:left; margin:20px 0; }
+    label { display:block; font-weight:bold; color:var(--pd); margin-bottom:6px; }
+    input {
+      width:100%; padding:12px 15px; border:2px solid var(--s); border-radius:12px;
+      font-family:inherit; font-size:1.05em; background:#fff; transition:.3s;
+    }
+    input:focus { outline:none; border-color:var(--p); box-shadow:0 0 0 3px rgba(232,162,168,.25); }
+    input:disabled { background:#f8f9fa; cursor:not-allowed; }
     
-    /* Loading */
-    #loading{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;background:#000;z-index:9998;color:#F6D1D5;font-size:1.5em;flex-direction:column;gap:20px}
-    .spinner{width:50px;height:50px;border:4px solid rgba(232,162,168,.3);border-top-color:#E8A2A8;border-radius:50%;animation:spin 1s linear infinite}
-    @keyframes spin{to{transform:rotate(360deg)}}
+    .phrases { max-height:220px; overflow-y:auto; padding-right:5px; margin:10px 0; }
+    .phrase { display:flex; gap:8px; margin:8px 0; align-items:center; }
+    .phrase input { flex:1; margin:0; padding:10px 12px; }
+    .phrase button {
+      width:32px; height:32px; border:none; border-radius:50%; background:var(--pd);
+      color:white; cursor:pointer; font-size:1.1em; transition:transform .2s; box-shadow:0 2px 6px rgba(0,0,0,.2);
+    }
+    .phrase button:hover { transform:scale(1.1); }
     
-    @media(max-width:768px){#main-title{font-size:3.4em;top:25px}#entry-text{font-size:2em;padding:20px 30px}#credits{font-size:.8em;bottom:10px}.error-card h2{font-size:2em}}
-    @media(max-width:480px){#main-title{font-size:2.5em;top:20px}#entry-text{font-size:1.6em}}
+    .btn {
+      padding:14px 35px; border:none; border-radius:50px; font-family:inherit; font-size:1.2em;
+      cursor:pointer; transition:all .3s; font-weight:bold; box-shadow:var(--sh); margin:10px 5px;
+    }
+    .btn-primary { background:linear-gradient(135deg,var(--p),var(--pd)); color:white; }
+    .btn-outline { background:white; border:2px solid var(--p); color:var(--txt); }
+    .btn:hover { transform:translateY(-3px); box-shadow:0 6px 25px rgba(217,127,136,.4); }
+    .btn:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+    
+    .advanced-visible {
+      margin-top:15px; text-align:left; padding:15px; background:var(--bg);
+      border-radius:12px; border:2px dashed var(--s); position:relative; transition:all .3s;
+    }
+    .advanced-visible.locked { opacity:.7; pointer-events:none; }
+    .advanced-visible.locked::before {
+      content:"🔒 Ingresa la Key para editar";
+      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+      background:rgba(255,255,255,.95); padding:8px 16px; border-radius:10px;
+      font-size:.95em; color:var(--pd); border:2px solid var(--p); z-index:2;
+      white-space:nowrap; box-shadow:0 2px 8px rgba(0,0,0,.1);
+    }
+    
+    .modal {
+      display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+      background:rgba(0,0,0,.5); justify-content:center; align-items:center; z-index:1000;
+      backdrop-filter:blur(6px); animation:fadeIn .3s;
+    }
+    .modal.active { display:flex; }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    
+    .modal-content {
+      background:white; padding:30px; border-radius:20px; max-width:420px; width:90%;
+      text-align:center; box-shadow:0 10px 40px rgba(0,0,0,.25); border:3px solid var(--p);
+    }
+    .modal-content h3 { color:var(--pd); margin-bottom:15px; font-size:1.6em; }
+    .modal-content input {
+      margin:15px 0; text-align:center; font-size:1.2em; padding:10px;
+    }
+    .modal-buttons { display:flex; gap:12px; justify-content:center; margin-top:20px; }
+    .modal-buttons button {
+      padding:10px 25px; border:none; border-radius:50px; font-family:inherit;
+      font-size:1.05em; cursor:pointer; transition:transform .2s;
+    }
+    .modal-buttons button:hover { transform:scale(1.05); }
+    .modal-buttons .ok { background:var(--p); color:white; }
+    .modal-buttons .cancel { background:#e8e8e8; color:var(--txt); }
+    
+    .link-box {
+      background:#f8f4f5; padding:15px; border-radius:12px; margin:15px 0;
+      word-break:break-all; font-family:monospace; font-size:.95em; border-left:4px solid var(--p);
+    }
+    
+    .counter { text-align:right; font-size:.9em; color:var(--pd); margin-top:5px; }
+    
+    @media(max-width:500px) {
+      .card { padding:25px; }
+      h1 { font-size:2em; }
+      .btn { width:100%; margin:8px 0; }
+    }
   </style>
 </head>
 <body>
-  <div id="loading"><div class="spinner"></div><div>Cargando tu galaxia... ✨</div></div>
-  
-  <div id="error-modal">
-    <div class="error-card">
-      <h2>🌠 Archivo No Encontrado</h2>
-      <p>Lo sentimos, esta galaxia no existe o el enlace ha expirado.</p>
-      <p>Puedes crear una nueva o contactarme para ayudarte:</p>
-      <a href="panel.html" class="btn">✨ Crear mi galaxia</a>
-      <a href="https://wa.me/51930569195" target="_blank" class="btn btn-whatsapp">💬 WhatsApp: 930569195</a>
+  <div class="card">
+    <h1>✨ Tu Galaxia de Amor</h1>
+    <p class="sub">Personaliza y genera tu enlace único 🌹</p>
+    
+    <div class="field">
+      <label for="title">💌 Título Principal (arriba)</label>
+      <input type="text" id="title" placeholder="Ej: Te Amo Yorchi" maxlength="100" value="Te Amo Yorchi">
+    </div>
+    
+    <div class="field">
+      <label>💬 Frases de Amor (máx 15)</label>
+      <div class="phrases" id="phraseList"></div>
+      <button class="btn btn-outline" id="addPhrase" style="padding:8px 20px; font-size:1em;">+ Agregar</button>
+      <div class="counter" id="phraseCount">0/15</div>
+    </div>
+    
+    <div class="field">
+      <label for="music">🎵 Música de Fondo (opcional - cambiar la actual)</label>
+      <input type="url" id="music" placeholder="Dejar vacío para usar la música por defecto" maxlength="500">
+      <small style="display:block; opacity:.7; margin-top:4px;">Si no cambias este campo, se usará la música original ✨</small>
+    </div>
+    
+    <div class="field">
+      <label>🔐 Opciones Avanzadas</label>
+      <button class="btn btn-outline" id="unlockBtn" style="width:100%; margin-top:10px;">🔑 Ingresar Key para desbloquear</button>
+      
+      <div class="advanced-visible locked" id="advanced">
+        <label for="nucleus" style="margin-top:0;">🌌 Imagen del Núcleo (URL)</label>
+        <input type="url" id="nucleus" placeholder="https://.../imagen.png" disabled>
+        
+        <label for="credits" style="margin-top:12px;">✍️ Créditos (abajo)</label>
+        <input type="text" id="credits" placeholder="Ej: 𖤍BerMatCode𖤍" maxlength="60" value="𖤍BerMatCode𖤍" disabled>
+      </div>
+    </div>
+    
+    <button class="btn btn-primary" id="generate" style="width:100%; margin-top:20px;">✨ Generar mi Galaxia</button>
+  </div>
+
+  <!-- Modal Key -->
+  <div class="modal" id="keyModal">
+    <div class="modal-content">
+      <h3>🔐 Ingresa tu Key</h3>
+      <p>Para editar opciones avanzadas</p>
+      <input type="password" id="keyInput" placeholder="••••••" maxlength="10">
+      <p id="keyErr" style="color:#d9534f; font-size:.95em; display:none; margin:5px 0;">❌ Incorrecta</p>
+      <div class="modal-buttons">
+        <button class="ok" id="keyOk">✅ Confirmar</button>
+        <button class="cancel" id="keyCancel">✖️ Cancelar</button>
+      </div>
     </div>
   </div>
-  
-  <h1 id="main-title">Cargando...</h1>
-  <div id="entry-screen"><div id="entry-text">💖Toca la pantalla💘</div></div>
-  <div id="credits">𖤍BerMatCode𖤍</div>
-  
-  <!-- ✅ Audio configurado para reproducción confiable -->
-  <audio id="background-music" loop preload="auto" playsinline></audio>
-  
-  <canvas id="galaxy-canvas"></canvas>
 
-  <script type="importmap">
-  {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
-  </script>
-  
+  <!-- Modal Loading -->
+  <div class="modal" id="loadModal">
+    <div class="modal-content">
+      <div style="width:40px; height:40px; border:4px solid var(--s); border-top-color:var(--p); border-radius:50%; margin:20px auto; animation:spin 1s linear infinite;"></div>
+      <p style="font-size:1.2em;">Creando tu galaxia... ✨</p>
+    </div>
+  </div>
+  <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+
+  <!-- Modal Resultado -->
+  <div class="modal" id="resultModal">
+    <div class="modal-content">
+      <h3>🎉 ¡Listo!</h3>
+      <p>Tu galaxia está creada</p>
+      <div class="link-box" id="shareLink"></div>
+      <button class="btn btn-outline" id="copyBtn" style="margin:5px;">📋 Copiar</button>
+      <a id="openLink" href="#" target="_blank" class="btn btn-primary" style="margin:5px; text-decoration:none; display:inline-block;">👁️ Abrir</a>
+      <br>
+      <button class="btn btn-outline" id="newBtn" style="margin-top:15px; font-size:1em;">✨ Crear otra</button>
+    </div>
+  </div>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-    import * as THREE from 'three';
-    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAVQn_t-gwbA75W6c1FLLP7OnzuU2jhbs0",
@@ -86,168 +192,148 @@
       appId: "1:30252830415:web:463fbdc73c3fb730d671ba",
       measurementId: "G-XCSVYH6KEG"
     };
+
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const DEFAULT = {
-      title: "Te Amo Yorchi",
-      phrases: ["Siempre contigo","Eres mi calma","Me haces feliz","Tu sonrisa brilla","Qué bonito coincidir","Mi lugar favorito","Contigo todo mejora","Tu luz me inspira","Eres increíble","Gracias por existir","Mi corazón te elige","Qué suerte tenerte","Eres mi paz"],
-      musicUrl: "",
-      nucleusImage: "https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/imagen%20del%20n%C3%BAcleo.png",
-      credits: "𖤍BerMatCode𖤍"
-    };
-
-    let USER_CFG = {...DEFAULT};
+    // ✅ Música por defecto original
+    const DEFAULT_MUSIC = "https://github.com/BerMatCode/Archivos/raw/refs/heads/main/Multimedia/TikVid.io_7471239338752363781.mp3";
     
-    const CONFIG = {
-      galaxy: { rotationSpeed: 0.12, centerExclusionRadius: 45 },
-      elementExclusionRadius: 40,
-      blackHole: { radius: 12, segments: 64, color1: '#000000', color2: '#050505', imageUrl: DEFAULT.nucleusImage },
-      accretionDisk: { innerRadius: 18, outerRadius: 32, particleCount: 3500, particleSize: 0.35, colors: ['#E8A2A8','#D97F88','#F6D1D5','#F2B9BF'], brightness: 0.25, orbitalRings: 8 },
-      particles: {
-        coreStars: { count: 20000, radius: 120, maxHeight: 60, size: 0.25 },
-        sphericalHalo: { count: 18000, radiusXZ: 110, radiusY: 55, size: 0.18, minDistFromCenter: 28 },
-        backgroundStars: { count: 8000, radius: 600, size: 0.15, floatSpeed: 0.02 },
-        floatingSpace: { count: 2500, radius: 200, size: 0.25, speed: 0.008 },
-        texts: { count: 50, width: 45, height: 20, minRadius: null, maxRadius: 120, content: DEFAULT.phrases, colors: [{fill:'#E8A2A8',shadow:'#D97F88'},{fill:'#F6D1D5',shadow:'#E8A2A8'},{fill:'#F2B9BF',shadow:'#D97F88'}] },
-        emojis: { count: 25, size: 10, minRadius: null, maxRadius: 120, content: ['https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda2.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda3.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda6.png'], colors: [{fill:'#F6D1D5',shadow:'#D97F88'},{fill:'#F2B9BF',shadow:'#E8A2A8'},{fill:'#E8A2A8',shadow:'#D97F88'}] }
-      },
-      shootingStars: { enabled: true, spawnProbability: 0.01, speed: 1.2 },
-      lighting: { ambientLight: { color: '#ffffff', intensity: 0.08 }, pointLight: { color: '#E8A2A8', intensity: 1.8, distance: 350 } },
-      bloomEffect: { threshold: 0.55, strength: 0.5, radius: 0.4 },
-      cameraControls: { minDistance: 30, maxDistance: 250 }
+    let unlocked = false;
+    const VALID_KEY = "101123";
+    const MAX_PHRASES = 15;
+    
+    let phrases = [
+      "Siempre contigo","Eres mi calma","Me haces feliz","Tu sonrisa brilla",
+      "Qué bonito coincidir","Mi lugar favorito","Contigo todo mejora",
+      "Tu luz me inspira","Eres increíble","Gracias por existir",
+      "Mi corazón te elige","Qué suerte tenerte","Eres mi paz"
+    ];
+
+    const phraseList = document.getElementById('phraseList');
+    const phraseCount = document.getElementById('phraseCount');
+    const addPhrase = document.getElementById('addPhrase');
+    const title = document.getElementById('title');
+    const music = document.getElementById('music');
+    const nucleus = document.getElementById('nucleus');
+    const credits = document.getElementById('credits');
+    const advanced = document.getElementById('advanced');
+    const unlockBtn = document.getElementById('unlockBtn');
+    const generate = document.getElementById('generate');
+    
+    const keyModal = document.getElementById('keyModal');
+    const keyInput = document.getElementById('keyInput');
+    const keyOk = document.getElementById('keyOk');
+    const keyCancel = document.getElementById('keyCancel');
+    const keyErr = document.getElementById('keyErr');
+    
+    const loadModal = document.getElementById('loadModal');
+    const resultModal = document.getElementById('resultModal');
+    const shareLink = document.getElementById('shareLink');
+    const copyBtn = document.getElementById('copyBtn');
+    const openLink = document.getElementById('openLink');
+    const newBtn = document.getElementById('newBtn');
+
+    function renderPhrases() {
+      phraseList.innerHTML = '';
+      phrases.forEach((p, i) => {
+        const div = document.createElement('div');
+        div.className = 'phrase';
+        div.innerHTML = `<input type="text" value="${p}" data-i="${i}" maxlength="80"><button data-i="${i}">✕</button>`;
+        phraseList.appendChild(div);
+      });
+      phraseCount.textContent = `${phrases.length}/${MAX_PHRASES}`;
+      phraseList.querySelectorAll('input').forEach(inp => { inp.oninput = e => phrases[e.target.dataset.i] = e.target.value; });
+      phraseList.querySelectorAll('button').forEach(btn => { btn.onclick = e => { phrases.splice(e.target.dataset.i, 1); renderPhrases(); }; });
+    }
+    renderPhrases();
+
+    addPhrase.onclick = () => {
+      if (phrases.length >= MAX_PHRASES) return alert(`⚠️ Máximo ${MAX_PHRASES} frases`);
+      phrases.push("Nueva frase...");
+      renderPhrases();
     };
 
-    let scene, camera, renderer, controls, galaxyGroup, clock, composer;
-    let loveTexts=[], loveImages=[], shootingStars=[], floatingParticles=[], orbitalParticles=[];
-    let occupiedPositions=[], raycaster, mouse, blackHoleMesh;
-    let musicPlayed = false;
+    unlockBtn.onclick = () => {
+      if (unlocked) return;
+      keyModal.classList.add('active');
+      keyInput.value = ''; keyErr.style.display = 'none'; keyInput.focus();
+    };
 
-    const urlParams = new URLSearchParams(location.search);
-    const galaxyId = urlParams.get('id');
+    keyCancel.onclick = () => keyModal.classList.remove('active');
+    
+    keyOk.onclick = () => {
+      if (keyInput.value.trim() === VALID_KEY) {
+        unlocked = true;
+        keyModal.classList.remove('active');
+        advanced.classList.remove('locked');
+        nucleus.disabled = false;
+        credits.disabled = false;
+        unlockBtn.textContent = '✅ Desbloqueado';
+        unlockBtn.disabled = true;
+      } else {
+        keyErr.style.display = 'block';
+        keyInput.value = '';
+        keyInput.focus();
+      }
+    };
+    keyInput.onkeypress = e => { if (e.key === 'Enter') keyOk.click(); };
 
-    async function loadConfig() {
-      if (!galaxyId) { showError(); return; }
+    const validUrl = u => { try { const url = new URL(u); return /^https?:/.test(url.protocol); } catch { return false; } };
+    const genId = () => 'gal_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+
+    generate.onclick = async () => {
+      const t = title.value.trim();
+      if (!t) return alert('⚠️ El título no puede estar vacío');
+      const validPhrases = phrases.filter(p => p.trim()).map(p => p.trim()).slice(0, MAX_PHRASES);
+      if (validPhrases.length === 0) return alert('⚠️ Agrega al menos una frase');
+      
+      // ✅ Si no ingresa música nueva, usar la por defecto
+      const m = music.value.trim();
+      if (m && !validUrl(m)) return alert('⚠️ URL de música no válida');
+      const finalMusic = m || DEFAULT_MUSIC; // Si está vacío, usa la música original
+      
+      let config = { title: t, phrases: validPhrases, musicUrl: finalMusic, createdAt: Date.now() };
+      
+      if (unlocked) {
+        const n = nucleus.value.trim(), c = credits.value.trim();
+        if (n && !validUrl(n)) return alert('⚠️ URL de imagen no válida');
+        config.nucleusImage = n || 'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/imagen%20del%20n%C3%BAcleo.png';
+        config.credits = c || '𖤍BerMatCode𖤍';
+      }
+      
+      loadModal.classList.add('active');
       try {
-        const snap = await getDoc(doc(db, "galaxies", galaxyId));
-        if (snap.exists()) {
-          const d = snap.data();
-          USER_CFG = {
-            ...DEFAULT,
-            ...d,
-            phrases: Array.isArray(d.phrases) && d.phrases.length ? d.phrases.slice(0,15) : DEFAULT.phrases
-          };
-          applyCfg();
-          init();
-        } else { showError(); }
-      } catch(e) { console.error('Error:', e); showError(); }
-    }
-
-    function applyCfg() {
-      document.getElementById('main-title').textContent = USER_CFG.title || DEFAULT.title;
-      document.getElementById('credits').textContent = USER_CFG.credits || DEFAULT.credits;
-      CONFIG.blackHole.imageUrl = USER_CFG.nucleusImage || DEFAULT.nucleusImage;
-      CONFIG.particles.texts.content = USER_CFG.phrases || DEFAULT.phrases;
-      
-      // ✅ Audio: asignar y preparar sin reproducir aún
-      const music = document.getElementById('background-music');
-      if (USER_CFG.musicUrl?.trim()) {
-        music.src = USER_CFG.musicUrl.trim();
-        music.volume = 0.75; // Volumen agradable por defecto
-        music.load(); // Precarga activa para respuesta inmediata
+        const id = genId();
+        await setDoc(doc(db, "galaxies", id), config);
+        const url = `${location.origin}${location.pathname.replace('panel.html','index.html')}?id=${id}`;
+        shareLink.textContent = url; openLink.href = url;
+        loadModal.classList.remove('active');
+        resultModal.classList.add('active');
+        copyBtn.onclick = () => {
+          navigator.clipboard.writeText(url).then(() => {
+            const orig = copyBtn.textContent; copyBtn.textContent = '✅ Copiado';
+            setTimeout(() => copyBtn.textContent = orig, 1500);
+          });
+        };
+      } catch (err) {
+        loadModal.classList.remove('active');
+        alert('❌ Error: ' + err.message); console.error(err);
       }
-    }
-
-    function showError() {
-      document.getElementById('loading').style.display = 'none';
-      document.getElementById('error-modal').classList.add('active');
-      if (renderer) { renderer.dispose(); renderer = null; }
-    }
-
-    function init() {
-      document.getElementById('loading').style.display = 'none';
-      scene = new THREE.Scene();
-      clock = new THREE.Clock();
-      raycaster = new THREE.Raycaster();
-      mouse = new THREE.Vector2();
-      camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 1000);
-      renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('galaxy-canvas'), antialias: true });
-      renderer.setPixelRatio(devicePixelRatio);
-      renderer.setSize(innerWidth, innerHeight);
-      
-      controls = new OrbitControls(camera, renderer.domElement);
-      controls.enableDamping = true; controls.dampingFactor = 0.05;
-      controls.minDistance = CONFIG.cameraControls.minDistance;
-      controls.maxDistance = CONFIG.cameraControls.maxDistance;
-      
-      const renderScene = new RenderPass(scene, camera);
-      const bloomPass = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 1.5, 0.4, 0.85);
-      bloomPass.threshold = CONFIG.bloomEffect.threshold;
-      bloomPass.strength = CONFIG.bloomEffect.strength;
-      bloomPass.radius = CONFIG.bloomEffect.radius;
-      composer = new EffectComposer(renderer);
-      composer.addPass(renderScene);
-      composer.addPass(bloomPass);
-      
-      const { ambientLight, pointLight } = CONFIG.lighting;
-      scene.add(new THREE.AmbientLight(ambientLight.color, ambientLight.intensity));
-      const mainLight = new THREE.PointLight(pointLight.color, pointLight.intensity, pointLight.distance);
-      mainLight.position.set(0,0,0);
-      scene.add(mainLight);
-      
-      galaxyGroup = new THREE.Group();
-      scene.add(galaxyGroup);
-      
-      createBlackHole(); createAccretionDiskParticles(); createOrbitalRings();
-      createCoreStars(); createSphericalHalo(); createBackgroundStars();
-      createFloatingSpaceParticles(); createLoveElements();
-      
-      addEventListener('resize', onWindowResize);
-      onWindowResize();
-      animate();
-    }
-    
-    // ... [Las funciones de Three.js son IDÉNTICAS a tu versión original] ...
-    function createBlackHole() { const bh=CONFIG.blackHole; const tex=new THREE.TextureLoader().load(bh.imageUrl,t=>{t.colorSpace=THREE.SRGBColorSpace},undefined,e=>console.warn('Núcleo:',e)); const geo=new THREE.SphereGeometry(bh.radius,bh.segments,bh.segments); const mat=new THREE.MeshBasicMaterial({map:tex,transparent:false,opacity:1}); blackHoleMesh=new THREE.Mesh(geo,mat); scene.add(blackHoleMesh); }
-    function createAccretionDiskParticles() { const dc=CONFIG.accretionDisk; const geo=new THREE.BufferGeometry(); const pos=new Float32Array(dc.particleCount*3), col=new Float32Array(dc.particleCount*3), sizes=new Float32Array(dc.particleCount); const c=new THREE.Color(); for(let i=0;i<dc.particleCount;i++){const r=dc.innerRadius+Math.random()*(dc.outerRadius-dc.innerRadius),a=Math.random()*Math.PI*2,sp=0.8;const x=r*Math.cos(a),z=r*Math.sin(a),y=(Math.random()-.5)*sp;pos.set([x,y,z],i*3);const ch=dc.colors[Math.floor(Math.random()*dc.colors.length)];c.set(ch);col.set([c.r*dc.brightness,c.g*dc.brightness,c.b*dc.brightness],i*3);const bs=dc.particleSize,df=1-(r-dc.innerRadius)/(dc.outerRadius-dc.innerRadius);sizes[i]=bs*(.6+df*.8);} geo.setAttribute('position',new THREE.BufferAttribute(pos,3)); geo.setAttribute('color',new THREE.BufferAttribute(col,3)); geo.setAttribute('size',new THREE.BufferAttribute(sizes,1)); const mat=new THREE.PointsMaterial({size:dc.particleSize,blending:THREE.AdditiveBlending,vertexColors:true,transparent:true,opacity:.7,sizeAttenuation:true}); const pts=new THREE.Points(geo,mat); pts.rotation.x=0; galaxyGroup.add(pts); }
-    function createOrbitalRings() { const dc=CONFIG.accretionDisk; for(let r=0;r<dc.orbitalRings;r++){const radius=dc.innerRadius+(dc.outerRadius-dc.innerRadius)*(r/dc.orbitalRings);const ppr=Math.floor(400+r*30);const geo=new THREE.BufferGeometry();const pos=new Float32Array(ppr*3),col=new Float32Array(ppr*3);const c=new THREE.Color();for(let i=0;i<ppr;i++){const a=(i/ppr)*Math.PI*2,x=radius*Math.cos(a),z=radius*Math.sin(a),y=0;pos.set([x,y,z],i*3);const ch=dc.colors[r%dc.colors.length];c.set(ch);const br=dc.brightness*(.7+Math.random()*.3);col.set([c.r*br,c.g*br,c.b*br],i*3);} geo.setAttribute('position',new THREE.BufferAttribute(pos,3)); geo.setAttribute('color',new THREE.BufferAttribute(col,3)); const mat=new THREE.PointsMaterial({size:.4,blending:THREE.AdditiveBlending,vertexColors:true,transparent:true,opacity:.8});const ring=new THREE.Points(geo,mat);ring.userData={radius,speed:.002+r*.0003,offset:Math.random()*Math.PI*2};ring.rotation.x=0;galaxyGroup.add(ring);orbitalParticles.push(ring);} }
-    function createCoreStars() { const cc=CONFIG.particles.coreStars; const geo=new THREE.BufferGeometry(); const pos=new Float32Array(cc.count*3),col=new Float32Array(cc.count*3); const c=new THREE.Color(); for(let i=0;i<cc.count;i++){const d=CONFIG.accretionDisk.outerRadius+Math.random()*(cc.radius-CONFIG.accretionDisk.outerRadius);const a=Math.random()*Math.PI*2;const y=(Math.random()-.5)*cc.maxHeight*Math.pow(1-(d/cc.radius),1.5);pos.set([Math.cos(a)*d,y,Math.sin(a)*d],i*3);const h=.82+Math.random()*.12,s=.8+Math.random()*.2,l=.6+Math.random()*.4;c.setHSL(h%1,s,l);col.set([c.r,c.g,c.b],i*3);} geo.setAttribute('position',new THREE.BufferAttribute(pos,3)); geo.setAttribute('color',new THREE.BufferAttribute(col,3)); const mat=new THREE.PointsMaterial({size:cc.size,blending:THREE.AdditiveBlending,vertexColors:true,transparent:true}); galaxyGroup.add(new THREE.Points(geo,mat)); }
-    function createSphericalHalo() { const hc=CONFIG.particles.sphericalHalo; const geo=new THREE.BufferGeometry(); const pos=new Float32Array(hc.count*3),col=new Float32Array(hc.count*3); const c=new THREE.Color(); let filled=0; while(filled<hc.count){const rx=Math.random()*2-1,ry=Math.random()*2-1,rz=Math.random()*2-1;if(rx*rx+ry*ry+rz*rz>1)continue;const x=rx*hc.radiusXZ,y=ry*hc.radiusY,z=rz*hc.radiusXZ;const dfc=Math.sqrt(x*x+y*y+z*z);if(dfc<hc.minDistFromCenter)continue;const rn=dfc/Math.max(hc.radiusXZ,hc.radiusY);if(Math.random()>Math.pow(1-rn*.7,1.2))continue;pos.set([x,y,z],filled*3);const h=.82+Math.random()*.12,s=.6+Math.random()*.4,l=.45+Math.random()*.45;c.setHSL(h%1,s,l);col.set([c.r,c.g,c.b],filled*3);filled++;} geo.setAttribute('position',new THREE.BufferAttribute(pos,3)); geo.setAttribute('color',new THREE.BufferAttribute(col,3)); const mat=new THREE.PointsMaterial({size:hc.size,blending:THREE.AdditiveBlending,vertexColors:true,transparent:true,opacity:.65}); galaxyGroup.add(new THREE.Points(geo,mat)); }
-    function createBackgroundStars() { const bc=CONFIG.particles.backgroundStars; const geo=new THREE.BufferGeometry(); const pos=new Float32Array(bc.count*3),vel=new Float32Array(bc.count*3); for(let i=0;i<bc.count;i++){const r=bc.radius;pos.set([(Math.random()-.5)*2*r,(Math.random()-.5)*2*r,(Math.random()-.5)*2*r],i*3);vel.set([(Math.random()-.5)*bc.floatSpeed,(Math.random()-.5)*bc.floatSpeed,(Math.random()-.5)*bc.floatSpeed],i*3);} geo.setAttribute('position',new THREE.BufferAttribute(pos,3)); geo.setAttribute('velocity',new THREE.BufferAttribute(vel,3)); const mat=new THREE.PointsMaterial({size:bc.size,color:0xffffff,transparent:true,opacity:.4}); const stars=new THREE.Points(geo,mat); stars.userData.isBackground=true; scene.add(stars); }
-    function createFloatingSpaceParticles() { const fc=CONFIG.particles.floatingSpace; const geo=new THREE.BufferGeometry(); const pos=new Float32Array(fc.count*3),col=new Float32Array(fc.count*3),vel=new Float32Array(fc.count*3); const co=new THREE.Color(); for(let i=0;i<fc.count;i++){const th=Math.random()*Math.PI*2,ph=Math.acos(2*Math.random()-1),r=fc.radius*Math.pow(Math.random(),.3);const x=r*Math.sin(ph)*Math.cos(th),y=r*Math.cos(ph),z=r*Math.sin(ph)*Math.sin(th);pos.set([x,y,z],i*3);const h=.8+Math.random()*.15,s=.5+Math.random()*.3,l=.7+Math.random()*.25;co.setHSL(h,s,l);col.set([co.r*.5,co.g*.5,co.b*.5],i*3);vel.set([(Math.random()-.5)*fc.speed,(Math.random()-.5)*fc.speed,(Math.random()-.5)*fc.speed],i*3);} geo.setAttribute('position',new THREE.BufferAttribute(pos,3)); geo.setAttribute('color',new THREE.BufferAttribute(col,3)); geo.setAttribute('velocity',new THREE.BufferAttribute(vel,3)); const mat=new THREE.PointsMaterial({size:fc.size,blending:THREE.AdditiveBlending,vertexColors:true,transparent:true,opacity:.6}); const fl=new THREE.Points(geo,mat); fl.userData.isFloating=true; scene.add(fl); floatingParticles.push(fl); }
-    function createLoveElements() { const tc=CONFIG.particles.texts,ec=CONFIG.particles.emojis; for(let i=0;i<tc.count;i++){const cd=tc.colors[i%tc.colors.length];const ph=tc.content[i%tc.content.length];const tex=createTextTexture(ph,cd);const mat=new THREE.MeshPhongMaterial({map:tex,transparent:true,alphaTest:.1,emissive:cd.fill,emissiveIntensity:1.2});const mesh=new THREE.Mesh(new THREE.PlaneGeometry(tc.width,tc.height),mat);setElementOrbitPosition(mesh,tc.minRadius,tc.maxRadius);galaxyGroup.add(mesh);loveTexts.push(mesh);} const tl=new THREE.TextureLoader(); for(let i=0;i<ec.count;i++){const img=ec.content[i%ec.content.length],cd=ec.colors[i%ec.colors.length];const tex=tl.load(img,t=>{t.colorSpace=THREE.SRGBColorSpace;t.transparent=true},undefined,e=>console.warn('Img:',img,e));tex.minFilter=tex.magFilter=THREE.LinearFilter;const mat=new THREE.SpriteMaterial({map:tex,transparent:true,depthWrite:false});const sp=new THREE.Sprite(mat);sp.scale.set(ec.size,ec.size,1);setElementOrbitPosition(sp,ec.minRadius,ec.maxRadius);galaxyGroup.add(sp);loveImages.push(sp);} }
-    function createShootingStar() { const geo=new THREE.BufferGeometry(); geo.setAttribute('position',new THREE.BufferAttribute(new Float32Array([0,0,0]),3)); const mat=new THREE.PointsMaterial({color:0xffffff,size:1.8,blending:THREE.AdditiveBlending,transparent:true}); const star=new THREE.Points(geo,mat); const [x,y,z]=[THREE.MathUtils.randFloatSpread(800),THREE.MathUtils.randFloat(100,300),THREE.MathUtils.randFloatSpread(800)]; star.position.set(x,y,z); star.userData.velocity=new THREE.Vector3((Math.random()<.5?-1:1)*CONFIG.shootingStars.speed,-CONFIG.shootingStars.speed*.5,(Math.random()-.5)*2); star.userData.life=0; shootingStars.push(star); scene.add(star); }
-    function setElementOrbitPosition(el,minR,maxR) { const sMin=minR||CONFIG.elementExclusionRadius,sMax=maxR||CONFIG.particles.coreStars.radius; const minSep=18,maxAtt=50; let valid=false,att=0,fp={x:0,y:0,z:0}; while(!valid&&att<maxAtt){att++;const r=sMin+Math.random()*(sMax-sMin),th=Math.random()*Math.PI*2,mvo=15;const y=(Math.random()-.5)*mvo,x=r*Math.cos(th),z=r*Math.sin(th);valid=true;for(let p of occupiedPositions){const d=Math.sqrt((x-p.x)**2+(y-p.y)**2+(z-p.z)**2);if(d<minSep){valid=false;break;}}if(valid)fp={x,y,z};} el.position.set(fp.x,fp.y,fp.z); occupiedPositions.push(fp); }
-    function createTextTexture(text,color) { const cv=document.createElement('canvas');cv.width=1536;cv.height=512;const ctx=cv.getContext('2d');ctx.font='84px "Patrick Hand",cursive';ctx.fillStyle=color.fill;ctx.textAlign='center';ctx.textBaseline='middle';ctx.shadowColor=color.shadow;ctx.shadowBlur=3;const words=text.split(' ');let lines=[],cl=words[0];const mw=cv.width-100,lh=100;for(let i=1;i<words.length;i++){const tl=cl+' '+words[i];if(ctx.measureText(tl).width>mw&&cl.length>0){lines.push(cl);cl=words[i];}else cl=tl;} lines.push(cl);const sy=cv.height/2-(lines.length-1)*lh/2;lines.forEach((l,idx)=>ctx.fillText(l,cv.width/2,sy+idx*lh));return new THREE.CanvasTexture(cv); }
-    function onWindowResize() { const w=innerWidth,h=innerHeight; renderer.setSize(w,h); composer.setSize(w,h); camera.aspect=w/h; camera.position.set(0,35,w<768?150:120); camera.updateProjectionMatrix(); }
-    function animate() { requestAnimationFrame(animate); const et=clock.getElapsedTime(); galaxyGroup.rotation.y=et*CONFIG.galaxy.rotationSpeed; if(blackHoleMesh)blackHoleMesh.rotation.y=et*.05; orbitalParticles.forEach(r=>{r.rotation.y=et*r.userData.speed+r.userData.offset;}); floatingParticles.forEach(fp=>{const pos=fp.geometry.attributes.position,vel=fp.geometry.attributes.velocity;for(let i=0;i<pos.count;i++)pos.setXYZ(i,pos.getX(i)+vel.getX(i),pos.getY(i)+vel.getY(i),pos.getZ(i)+vel.getZ(i));pos.needsUpdate=true;}); const bg=scene.children.find(c=>c.userData?.isBackground); if(bg){const pos=bg.geometry.attributes.position,vel=bg.geometry.attributes.velocity;for(let i=0;i<pos.count;i++){let x=pos.getX(i)+vel.getX(i),y=pos.getY(i)+vel.getY(i),z=pos.getZ(i)+vel.getZ(i);const r=CONFIG.particles.backgroundStars.radius;if(Math.abs(x)>r)x=-Math.sign(x)*r*.95;if(Math.abs(y)>r)y=-Math.sign(y)*r*.95;if(Math.abs(z)>r)z=-Math.sign(z)*r*.95;pos.setXYZ(i,x,y,z);}pos.needsUpdate=true;} loveTexts.forEach(t=>t.lookAt(camera.position)); loveImages.forEach(i=>i.lookAt(camera.position)); if(CONFIG.shootingStars.enabled&&Math.random()<CONFIG.shootingStars.spawnProbability)createShootingStar(); shootingStars.forEach((star,idx)=>{star.position.add(star.userData.velocity);star.userData.life++;if(star.userData.life>300){scene.remove(star);shootingStars.splice(idx,1);}}); controls.update(); composer.render(); }
-
-    // ✅ LÓGICA DE AUDIO CORREGIDA Y ROBUSTA
-    document.getElementById('entry-screen').addEventListener('click', async () => {
-      const screen = document.getElementById('entry-screen');
-      screen.style.opacity = '0';
-      setTimeout(() => screen.style.display = 'none', 600);
-
-      if (!musicPlayed) {
-        const music = document.getElementById('background-music');
-        if (music.src) {
-          try {
-            await music.play();
-            musicPlayed = true;
-            console.log('✅ Música reproduciéndose correctamente');
-          } catch (err) {
-            console.warn('⚠️ Reproducción bloqueada o error:', err);
-          }
-        }
-      }
-    });
-
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    document.onkeydown = function(e) {
-      if (e.keyCode==123 || (e.ctrlKey && e.shiftKey && (e.keyCode=='I'.charCodeAt(0)||e.keyCode=='J'.charCodeAt(0)||e.keyCode=='C'.charCodeAt(0))) || (e.ctrlKey && (e.keyCode=='U'.charCodeAt(0)||e.keyCode=='S'.charCodeAt(0)))) return false;
     };
 
-    loadConfig();
+    newBtn.onclick = () => {
+      resultModal.classList.remove('active');
+      title.value = "Te Amo Yorchi"; music.value = ""; nucleus.value = ""; credits.value = "𖤍BerMatCode𖤍";
+      phrases = ["Siempre contigo","Eres mi calma","Me haces feliz","Tu sonrisa brilla","Qué bonito coincidir","Mi lugar favorito","Contigo todo mejora","Tu luz me inspira","Eres increíble","Gracias por existir","Mi corazón te elige","Qué suerte tenerte","Eres mi paz"];
+      renderPhrases();
+      unlocked = false; advanced.classList.add('locked'); nucleus.disabled = true; credits.disabled = true;
+      unlockBtn.textContent = '🔑 Ingresar Key para desbloquear'; unlockBtn.disabled = false;
+    };
+
+    window.onbeforeunload = e => {
+      if (phrases.length > 0 || title.value !== "Te Amo Yorchi") { e.preventDefault(); e.returnValue = ''; }
+    };
   </script>
 </body>
 </html>
