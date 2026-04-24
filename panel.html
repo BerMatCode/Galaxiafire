@@ -45,10 +45,11 @@
     .modal-buttons .cancel{background:#e8e8e8;color:var(--txt)}
     .link-box{background:#f8f4f5;padding:15px;border-radius:12px;margin:15px 0;word-break:break-all;font-family:monospace;font-size:.95em;border-left:4px solid var(--p)}
     .counter{text-align:right;font-size:.9em;color:var(--pd);margin-top:5px}
-    .tiktok-btn{background:linear-gradient(135deg,#000,#25F4EE);color:white;padding:12px 25px;border:none;border-radius:50px;font-family:inherit;font-size:1.1em;cursor:pointer;margin:15px 0;display:flex;align-items:center;gap:10px;transition:transform .3s}
-    .tiktok-btn:hover{transform:scale(1.05)}
-    .tiktok-btn svg{width:24px;height:24px}
-    .info-text{background:#fff3f5;padding:12px;border-radius:10px;margin:15px 0;font-size:.95em;color:var(--pd);border-left:3px solid var(--p);text-align:left}
+    .tiktok-note{background:linear-gradient(135deg,#000,#1a1a2e);color:#fff;padding:12px;border-radius:10px;margin:15px 0;font-size:.95em}
+    .tiktok-note a{color:#69C9D0;text-decoration:none;font-weight:bold}
+    .tiktok-note a:hover{text-decoration:underline}
+    .info-text{background:#fff3f5;padding:12px;border-radius:10px;margin:15px 0;font-size:.95em;color:var(--txt);border-left:3px solid var(--p)}
+    .info-text strong{color:var(--pd)}
     @media(max-width:500px){.card{padding:25px}h1{font-size:2em}.btn{width:100%;margin:8px 0}}
   </style>
 </head>
@@ -90,239 +91,104 @@
   </div>
 
   <!-- Modal Key -->
-  <div class="modal" id="keyModal">
-    <div class="modal-content">
-      <h3>🔐 Ingresa tu Key</h3>
-      <p>Para editar opciones avanzadas</p>
-      <input type="password" id="keyInput" placeholder="••••••" maxlength="10">
-      <p id="keyErr" style="color:#d9534f;font-size:.95em;display:none;margin:5px 0">❌ Incorrecta</p>
-      <div class="modal-buttons">
-        <button class="ok" id="keyOk">✅ Confirmar</button>
-        <button class="cancel" id="keyCancel">✖️ Cancelar</button>
-      </div>
-    </div>
-  </div>
+  <div class="modal" id="keyModal"><div class="modal-content"><h3>🔐 Ingresa tu Key</h3><p>Para editar opciones avanzadas</p><input type="password" id="keyInput" placeholder="••••••" maxlength="10"><p id="keyErr" style="color:#d9534f;font-size:.95em;display:none;margin:5px 0">❌ Incorrecta</p><div class="modal-buttons"><button class="ok" id="keyOk">✅ Confirmar</button><button class="cancel" id="keyCancel">✖️ Cancelar</button></div></div></div>
 
-  <!-- Modal TikTok (nuevo) -->
-  <div class="modal" id="tiktokModal">
-    <div class="modal-content">
-      <h3>🎵 ¡Casi listo!</h3>
-      <p>Antes de generar tu galaxia, sígueme en TikTok para más creaciones ✨</p>
-      <button class="tiktok-btn" id="goTiktok">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
-        Seguir en TikTok @bermat_code
-      </button>
-      <p style="font-size:.9em;opacity:.8;margin-top:10px">Al hacer clic, se abrirá TikTok. Vuelve aquí para continuar.</p>
-      <button class="btn btn-outline" id="skipTiktok" style="margin-top:10px;font-size:1em">⏭️ Saltar y generar ahora</button>
-    </div>
-  </div>
+  <!-- Modal TikTok (OBLIGATORIO) -->
+  <div class="modal" id="tiktokModal"><div class="modal-content"><h3>🎵 Sigue al creador</h3><p>Para generar tu galaxia, primero sígueme en TikTok:</p><div class="tiktok-note">👉 <a href="https://www.tiktok.com/@bermat_code?_r=1&_t=ZS-95ojOpR0wxJ" target="_blank" id="tiktokLink">@bermat_code</a></div><p style="font-size:.95em;opacity:.85;margin:15px 0">Una vez que me sigas, regresa aquí y espera 2 segundos para continuar ✨</p><div class="modal-buttons"><button class="ok" id="tiktokConfirm">✅ Ya seguí, continuar</button></div></div></div>
 
   <!-- Modal Loading -->
-  <div class="modal" id="loadModal">
-    <div class="modal-content">
-      <div style="width:40px;height:40px;border:4px solid var(--s);border-top-color:var(--p);border-radius:50%;margin:20px auto;animation:spin 1s linear infinite"></div>
-      <p style="font-size:1.2em">Creando tu galaxia... ✨</p>
-    </div>
-  </div>
+  <div class="modal" id="loadModal"><div class="modal-content"><div style="width:40px;height:40px;border:4px solid var(--s);border-top-color:var(--p);border-radius:50%;margin:20px auto;animation:spin 1s linear infinite"></div><p style="font-size:1.2em">Creando tu galaxia... ✨</p></div></div>
   <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 
   <!-- Modal Resultado -->
-  <div class="modal" id="resultModal">
-    <div class="modal-content">
-      <h3>🎉 ¡Listo!</h3>
-      <p>Tu galaxia está creada</p>
-      <div class="link-box" id="shareLink"></div>
-      <button class="btn btn-outline" id="copyBtn" style="margin:5px">📋 Copiar</button>
-      <a id="openLink" href="#" target="_blank" class="btn btn-primary" style="margin:5px;text-decoration:none;display:inline-block">👁️ Abrir</a>
-      
-      <!-- Texto informativo (NO funcional, solo texto) -->
-      <div class="info-text">
-        <strong>⏰ Nota importante:</strong><br>
-        Este archivo estará disponible solamente por <strong>24 horas</strong>.<br><br>
-        Si quieres que el archivo sea permanente, contacta con el desarrollador:
-        <div style="margin-top:10px">
-          <a href="https://wa.me/51930569195" target="_blank" class="btn btn-primary" style="padding:10px 20px;font-size:1em;text-decoration:none">
-            💬 Contactar por WhatsApp
-          </a>
-        </div>
-      </div>
-      
-      <button class="btn btn-outline" id="newBtn" style="margin-top:15px;font-size:1em">✨ Crear otra</button>
-    </div>
-  </div>
+  <div class="modal" id="resultModal"><div class="modal-content"><h3>🎉 ¡Listo!</h3><p>Tu galaxia está creada</p><div class="info-text"><strong>⏰ Nota:</strong> Este archivo estará disponible solamente por <strong>24 horas</strong>. Si deseas que sea permanente, contáctame:</div><a href="https://wa.me/51930569195" target="_blank" class="btn btn-outline" style="margin:10px 0">💬 Contactar al desarrollador</a><div class="link-box" id="shareLink"></div><button class="btn btn-outline" id="copyBtn" style="margin:5px">📋 Copiar</button><a id="openLink" href="#" target="_blank" class="btn btn-primary" style="margin:5px;text-decoration:none;display:inline-block">👁️ Abrir</a><br><button class="btn btn-outline" id="newBtn" style="margin-top:15px;font-size:1em">✨ Crear otra</button></div></div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import{getFirestore,doc,setDoc}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAVQn_t-gwbA75W6c1FLLP7OnzuU2jhbs0",
-      authDomain: "galaxia-2026.firebaseapp.com",
-      projectId: "galaxia-2026",
-      storageBucket: "galaxia-2026.firebasestorage.app",
-      messagingSenderId: "30252830415",
-      appId: "1:30252830415:web:463fbdc73c3fb730d671ba",
-      measurementId: "G-XCSVYH6KEG"
-    };
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    const firebaseConfig={apiKey:"AIzaSyAVQn_t-gwbA75W6c1FLLP7OnzuU2jhbs0",authDomain:"galaxia-2026.firebaseapp.com",projectId:"galaxia-2026",storageBucket:"galaxia-2026.firebasestorage.app",messagingSenderId:"30252830415",appId:"1:30252830415:web:463fbdc73c3fb730d671ba",measurementId:"G-XCSVYH6KEG"};
+    const app=initializeApp(firebaseConfig),db=getFirestore(app);
 
-    const DEFAULT_MUSIC = "https://github.com/BerMatCode/Archivos/raw/refs/heads/main/Multimedia/TikVid.io_7471239338752363781.mp3";
-    let unlocked = false;
-    const VALID_KEY = "101123";
-    const MAX_PHRASES = 15;
-    
-    let phrases = ["Siempre contigo","Eres mi calma","Me haces feliz","Tu sonrisa brilla","Qué bonito coincidir","Mi lugar favorito","Contigo todo mejora","Tu luz me inspira","Eres increíble","Gracias por existir","Mi corazón te elige","Qué suerte tenerte","Eres mi paz"];
+    // ✅ Música por defecto
+    const DEFAULT_MUSIC="https://github.com/BerMatCode/Archivos/raw/refs/heads/main/Multimedia/TikVid.io_7471239338752363781.mp3";
+    let unlocked=false,VALID_KEY="101123",MAX_PHRASES=15;
+    let phrases=["Siempre contigo","Eres mi calma","Me haces feliz","Tu sonrisa brilla","Qué bonito coincidir","Mi lugar favorito","Contigo todo mejora","Tu luz me inspira","Eres increíble","Gracias por existir","Mi corazón te elige","Qué suerte tenerte","Eres mi paz"];
 
-    const phraseList = document.getElementById('phraseList');
-    const phraseCount = document.getElementById('phraseCount');
-    const addPhrase = document.getElementById('addPhrase');
-    const title = document.getElementById('title');
-    const music = document.getElementById('music');
-    const nucleus = document.getElementById('nucleus');
-    const credits = document.getElementById('credits');
-    const advanced = document.getElementById('advanced');
-    const unlockBtn = document.getElementById('unlockBtn');
-    const generate = document.getElementById('generate');
-    const keyModal = document.getElementById('keyModal');
-    const keyInput = document.getElementById('keyInput');
-    const keyOk = document.getElementById('keyOk');
-    const keyCancel = document.getElementById('keyCancel');
-    const keyErr = document.getElementById('keyErr');
-    const tiktokModal = document.getElementById('tiktokModal');
-    const goTiktok = document.getElementById('goTiktok');
-    const skipTiktok = document.getElementById('skipTiktok');
-    const loadModal = document.getElementById('loadModal');
-    const resultModal = document.getElementById('resultModal');
-    const shareLink = document.getElementById('shareLink');
-    const copyBtn = document.getElementById('copyBtn');
-    const openLink = document.getElementById('openLink');
-    const newBtn = document.getElementById('newBtn');
+    // DOM refs (optimizado: cacheados)
+    const $=id=>document.getElementById(id);
+    const phraseList=$('phraseList'),phraseCount=$('phraseCount'),addPhrase=$('addPhrase'),title=$('title'),music=$('music'),nucleus=$('nucleus'),credits=$('credits'),advanced=$('advanced'),unlockBtn=$('unlockBtn'),generate=$('generate'),keyModal=$('keyModal'),keyInput=$('keyInput'),keyOk=$('keyOk'),keyCancel=$('keyCancel'),keyErr=$('keyErr'),loadModal=$('loadModal'),resultModal=$('resultModal'),shareLink=$('shareLink'),copyBtn=$('copyBtn'),openLink=$('openLink'),newBtn=$('newBtn'),tiktokModal=$('tiktokModal'),tiktokConfirm=$('tiktokConfirm');
 
-    // ✅ Optimización: Event listeners pasivos para scroll/touch
-    document.addEventListener('touchstart', ()=>{}, {passive:true});
-    document.addEventListener('touchmove', ()=>{}, {passive:true});
-
-    function renderPhrases() {
-      phraseList.innerHTML = '';
-      phrases.forEach((p, i) => {
-        const div = document.createElement('div');
-        div.className = 'phrase';
-        div.innerHTML = `<input type="text" value="${p}" data-i="${i}" maxlength="80"><button data-i="${i}">✕</button>`;
+    // Render frases (optimizado: event delegation)
+    function renderPhrases(){
+      phraseList.innerHTML='';
+      phrases.forEach((p,i)=>{
+        const div=document.createElement('div');div.className='phrase';
+        div.innerHTML=`<input type="text" value="${p}" data-i="${i}" maxlength="80"><button data-i="${i}">✕</button>`;
         phraseList.appendChild(div);
       });
-      phraseCount.textContent = `${phrases.length}/${MAX_PHRASES}`;
-      phraseList.querySelectorAll('input').forEach(inp => { inp.oninput = e => phrases[e.target.dataset.i] = e.target.value; });
-      phraseList.querySelectorAll('button').forEach(btn => { btn.onclick = e => { phrases.splice(e.target.dataset.i, 1); renderPhrases(); }; });
+      phraseCount.textContent=`${phrases.length}/${MAX_PHRASES}`;
     }
+    phraseList.addEventListener('input',e=>{if(e.target.dataset.i)phrases[e.target.dataset.i]=e.target.value});
+    phraseList.addEventListener('click',e=>{if(e.target.tagName==='BUTTON'){phrases.splice(e.target.dataset.i,1);renderPhrases()}});
     renderPhrases();
 
-    addPhrase.onclick = () => {
-      if (phrases.length >= MAX_PHRASES) return alert(`⚠️ Máximo ${MAX_PHRASES} frases`);
-      phrases.push("Nueva frase...");
-      renderPhrases();
-    };
+    addPhrase.onclick=()=>{if(phrases.length>=MAX_PHRASES)return alert(`⚠️ Máximo ${MAX_PHRASES} frases`);phrases.push("Nueva frase...");renderPhrases()};
 
-    unlockBtn.onclick = () => {
-      if (unlocked) return;
-      keyModal.classList.add('active');
-      keyInput.value = ''; keyErr.style.display = 'none'; keyInput.focus();
-    };
-    keyCancel.onclick = () => keyModal.classList.remove('active');
-    keyOk.onclick = () => {
-      if (keyInput.value.trim() === VALID_KEY) {
-        unlocked = true; keyModal.classList.remove('active');
-        advanced.classList.remove('locked'); nucleus.disabled = false; credits.disabled = false;
-        unlockBtn.textContent = '✅ Desbloqueado'; unlockBtn.disabled = true;
-      } else { keyErr.style.display = 'block'; keyInput.value = ''; keyInput.focus(); }
-    };
-    keyInput.onkeypress = e => { if (e.key === 'Enter') keyOk.click(); };
+    // Key modal
+    unlockBtn.onclick=()=>{if(unlocked)return;keyModal.classList.add('active');keyInput.value='';keyErr.style.display='none';keyInput.focus()};
+    keyCancel.onclick=()=>keyModal.classList.remove('active');
+    keyOk.onclick=()=>{if(keyInput.value.trim()===VALID_KEY){unlocked=true;keyModal.classList.remove('active');advanced.classList.remove('locked');nucleus.disabled=false;credits.disabled=false;unlockBtn.textContent='✅ Desbloqueado';unlockBtn.disabled=true}else{keyErr.style.display='block';keyInput.value='';keyInput.focus()}};
+    keyInput.onkeypress=e=>{if(e.key==='Enter')keyOk.click()};
 
-    const validUrl = u => { try { const url = new URL(u); return /^https?:/.test(url.protocol); } catch { return false; } };
-    const genId = () => 'gal_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+    // Validaciones
+    const validUrl=u=>{try{const url=new URL(u);return/^https?:/.test(url.protocol)}catch{return false}};
+    const genId=()=>`gal_${Math.random().toString(36).slice(2,10)}${Date.now().toString(36)}`;
 
-    // ✅ Flujo: Generar → TikTok Modal → (opcional) TikTok → 2s delay → Loading → Resultado
-    generate.onclick = () => {
-      // Validaciones previas
-      const t = title.value.trim();
-      if (!t) return alert('⚠️ El título no puede estar vacío');
-      const validPhrases = phrases.filter(p => p.trim()).map(p => p.trim()).slice(0, MAX_PHRASES);
-      if (validPhrases.length === 0) return alert('⚠️ Agrega al menos una frase');
-      const m = music.value.trim();
-      if (m && !validUrl(m)) return alert('⚠️ URL de música no válida');
-      
-      // Mostrar modal TikTok primero
+    // ✅ Flujo TikTok + Generación
+    generate.onclick=async()=>{
+      // 1. Validaciones básicas
+      const t=title.value.trim();if(!t)return alert('⚠️ El título no puede estar vacío');
+      const validPhrases=phrases.filter(p=>p.trim()).map(p=>p.trim()).slice(0,MAX_PHRASES);
+      if(validPhrases.length===0)return alert('⚠️ Agrega al menos una frase');
+      const m=music.value.trim();if(m&&!validUrl(m))return alert('⚠️ URL de música no válida');
+      const finalMusic=m||DEFAULT_MUSIC;
+
+      // 2. Mostrar modal TikTok (OBLIGATORIO - sin skip)
       tiktokModal.classList.add('active');
-    };
-
-    // Ir a TikTok
-    goTiktok.onclick = () => {
-      window.open('https://www.tiktok.com/@bermat_code?_r=1&_t=ZS-95ojOpR0wxJ', '_blank');
-      tiktokModal.classList.remove('active');
-      // Esperar 2 segundos después de que el usuario regrese (simulado con timeout)
-      setTimeout(startGeneration, 2000);
-    };
-
-    // Saltar TikTok
-    skipTiktok.onclick = () => {
-      tiktokModal.classList.remove('active');
-      setTimeout(startGeneration, 2000);
-    };
-
-    // Función que inicia la generación real
-    async function startGeneration() {
-      const t = title.value.trim();
-      const validPhrases = phrases.filter(p => p.trim()).map(p => p.trim()).slice(0, MAX_PHRASES);
-      const m = music.value.trim();
-      const finalMusic = m || DEFAULT_MUSIC;
       
-      let config = { title: t, phrases: validPhrases, musicUrl: finalMusic, createdAt: Date.now() };
-      if (unlocked) {
-        const n = nucleus.value.trim(), c = credits.value.trim();
-        if (n && !validUrl(n)) return alert('⚠️ URL de imagen no válida');
-        config.nucleusImage = n || 'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/imagen%20del%20n%C3%BAcleo.png';
-        config.credits = c || '𖤍BerMatCode𖤍';
-      }
-      
-      loadModal.classList.add('active');
-      try {
-        const id = genId();
-        await setDoc(doc(db, "galaxies", id), config);
-        const url = `${location.origin}${location.pathname.replace('panel.html','index.html')}?id=${id}`;
-        shareLink.textContent = url; openLink.href = url;
-        loadModal.classList.remove('active');
-        resultModal.classList.add('active');
-        copyBtn.onclick = () => {
-          navigator.clipboard.writeText(url).then(() => {
-            const orig = copyBtn.textContent; copyBtn.textContent = '✅ Copiado';
-            setTimeout(() => copyBtn.textContent = orig, 1500);
-          });
+      // 3. Esperar confirmación + 2 segundos
+      await new Promise(resolve=>{
+        const onConfirm=()=>{
+          tiktokConfirm.removeEventListener('click',onConfirm);
+          tiktokModal.classList.remove('active');
+          setTimeout(resolve,2000); // 2 segundos de espera
         };
-      } catch (err) {
-        loadModal.classList.remove('active');
-        alert('❌ Error: ' + err.message); console.error(err);
-      }
-    }
+        tiktokConfirm.addEventListener('click',onConfirm);
+      });
 
-    newBtn.onclick = () => {
-      resultModal.classList.remove('active');
-      title.value = "Te Amo Yorchi"; music.value = ""; nucleus.value = ""; credits.value = "𖤍BerMatCode𖤍";
-      phrases = ["Siempre contigo","Eres mi calma","Me haces feliz","Tu sonrisa brilla","Qué bonito coincidir","Mi lugar favorito","Contigo todo mejora","Tu luz me inspira","Eres increíble","Gracias por existir","Mi corazón te elige","Qué suerte tenerte","Eres mi paz"];
-      renderPhrases();
-      unlocked = false; advanced.classList.add('locked'); nucleus.disabled = true; credits.disabled = true;
-      unlockBtn.textContent = '🔑 Ingresar Key para desbloquear'; unlockBtn.disabled = false;
+      // 4. Mostrar loading y generar
+      loadModal.classList.add('active');
+      try{
+        const id=genId();
+        const config={title:t,phrases:validPhrases,musicUrl:finalMusic,createdAt:Date.now(),ttl:Date.now()+24*60*60*1000}; // TTL 24h
+        if(unlocked){
+          const n=nucleus.value.trim(),c=credits.value.trim();
+          if(n&&!validUrl(n))return alert('⚠️ URL de imagen no válida');
+          config.nucleusImage=n||'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/imagen%20del%20n%C3%BAcleo.png';
+          config.credits=c||'𖤍BerMatCode𖤍';
+        }
+        await setDoc(doc(db,"galaxies",id),config);
+        const url=`${location.origin}${location.pathname.replace('panel.html','index.html')}?id=${id}`;
+        shareLink.textContent=url;openLink.href=url;
+        loadModal.classList.remove('active');resultModal.classList.add('active');
+        copyBtn.onclick=()=>{navigator.clipboard.writeText(url).then(()=>{const orig=copyBtn.textContent;copyBtn.textContent='✅ Copiado';setTimeout(()=>copyBtn.textContent=orig,1500)})};
+      }catch(err){loadModal.classList.remove('active');alert('❌ Error: '+err.message);console.error(err)}
     };
 
-    // ✅ Optimización: Debounce para resize
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => { /* lógica de resize si fuera necesaria */ }, 250);
-    });
+    newBtn.onclick=()=>{resultModal.classList.remove('active');title.value="Te Amo Yorchi";music.value="";nucleus.value="";credits.value="𖤍BerMatCode𖤍";phrases=["Siempre contigo","Eres mi calma","Me haces feliz","Tu sonrisa brilla","Qué bonito coincidir","Mi lugar favorito","Contigo todo mejora","Tu luz me inspira","Eres increíble","Gracias por existir","Mi corazón te elige","Qué suerte tenerte","Eres mi paz"];renderPhrases();unlocked=false;advanced.classList.add('locked');nucleus.disabled=true;credits.disabled=true;unlockBtn.textContent='🔑 Ingresar Key para desbloquear';unlockBtn.disabled=false};
 
-    window.onbeforeunload = e => {
-      if (phrases.length > 0 || title.value !== "Te Amo Yorchi") { e.preventDefault(); e.returnValue = ''; }
-    };
+    window.onbeforeunload=e=>{if(phrases.length>0||title.value!=="Te Amo Yorchi"){e.preventDefault();e.returnValue=''}};
   </script>
 </body>
 </html>
