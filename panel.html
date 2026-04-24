@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>✨ Crea tu Galaxia</title>
+  <!-- ✅ Color de la barra de navegación del navegador -->
+  <meta name="theme-color" content="#D97F88">
+  <meta name="apple-mobile-web-app-status-bar-style" content="#D97F88">
   <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -103,7 +106,7 @@
 </head>
 <body>
   <div class="card">
-    <h1>✨ Tu Galaxia de Amor</h1>
+    <h1>Panel Galaxia de Amor</h1>
     <p class="sub">Personaliza y genera tu enlace único 🌹</p>
     
     <div class="field">
@@ -119,8 +122,9 @@
     </div>
     
     <div class="field">
-      <label for="music">🎵 Música (link MP3 directo)</label>
-      <input type="url" id="music" placeholder="https://.../cancion.mp3">
+      <label for="music">🎵 Música de Fondo (opcional - cambiar la actual)</label>
+      <input type="url" id="music" placeholder="Dejar vacío para usar la música por defecto" maxlength="500">
+      <small style="display:block; opacity:.7; margin-top:4px;">Si no cambias este campo, se usará la música original ✨</small>
     </div>
     
     <div class="field">
@@ -192,6 +196,9 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    // ✅ Música por defecto original
+    const DEFAULT_MUSIC = "https://github.com/BerMatCode/Archivos/raw/refs/heads/main/Multimedia/TikVid.io_7471239338752363781.mp3";
+    
     let unlocked = false;
     const VALID_KEY = "101123";
     const MAX_PHRASES = 15;
@@ -280,10 +287,14 @@
       if (!t) return alert('⚠️ El título no puede estar vacío');
       const validPhrases = phrases.filter(p => p.trim()).map(p => p.trim()).slice(0, MAX_PHRASES);
       if (validPhrases.length === 0) return alert('⚠️ Agrega al menos una frase');
+      
+      // ✅ Si no ingresa música nueva, usar la por defecto
       const m = music.value.trim();
       if (m && !validUrl(m)) return alert('⚠️ URL de música no válida');
+      const finalMusic = m || DEFAULT_MUSIC; // Si está vacío, usa la música original
       
-      let config = { title: t, phrases: validPhrases, musicUrl: m || '', createdAt: Date.now() };
+      let config = { title: t, phrases: validPhrases, musicUrl: finalMusic, createdAt: Date.now() };
+      
       if (unlocked) {
         const n = nucleus.value.trim(), c = credits.value.trim();
         if (n && !validUrl(n)) return alert('⚠️ URL de imagen no válida');
