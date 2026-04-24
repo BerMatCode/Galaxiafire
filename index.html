@@ -3,1076 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨ Panel Galaxia - Personaliza tu Universo</title>
+    <title>Galaxia Te Amo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #E8A2A8;
-            --primary-dark: #D97F88;
-            --secondary: #F6D1D5;
-            --accent: #F2B9BF;
-            --bg-light: #FFF9FA;
-            --bg-card: #FFFFFF;
-            --text-dark: #5A4A52;
-            --text-light: #8B7B83;
-            --shadow: 0 8px 32px rgba(217, 127, 136, 0.15);
-            --border-radius: 20px;
-        }
-        
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Patrick Hand', cursive;
-            background: var(--bg-light);
-            color: var(--text-dark);
-            line-height: 1.6;
+            background: #0a0a0f;
+            color: #F6D1D5;
             min-height: 100vh;
-            padding-bottom: 40px;
-        }
-        
-        /* Barra de navegación */
-        .navbar {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            padding: 15px 30px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            text-align: center;
+            padding: 20px;
+            overflow: hidden;
         }
         
-        .navbar-brand {
-            font-size: 1.8em;
-            color: white;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .error-container {
+            max-width: 600px;
+            padding: 40px;
+            background: rgba(246, 209, 213, 0.08);
+            border-radius: 25px;
+            border: 2px solid rgba(232, 162, 168, 0.3);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.6s ease-out;
         }
         
-        .navbar-actions {
-            display: flex;
-            gap: 12px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        .btn {
-            padding: 10px 24px;
-            border: none;
-            border-radius: 50px;
-            font-family: 'Patrick Hand', cursive;
+        .error-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .error-title {
+            font-size: 2.2em;
+            color: #E8A2A8;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(232, 162, 168, 0.5);
+        }
+        
+        .error-message {
+            font-size: 1.3em;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            color: #F2B9BF;
+        }
+        
+        .error-hint {
             font-size: 1.1em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .btn-primary {
-            background: white;
-            color: var(--primary-dark);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-        }
-        
-        .btn-secondary {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 2px solid white;
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(255,255,255,0.3);
-        }
-        
-        .btn-advanced {
-            background: var(--accent);
-            color: var(--text-dark);
-        }
-        
-        /* Contenedor principal */
-        .container {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-        
-        .card {
-            background: var(--bg-card);
-            border-radius: var(--border-radius);
-            padding: 30px;
+            color: #D97F88;
             margin-bottom: 25px;
-            box-shadow: var(--shadow);
-            border: 2px solid var(--secondary);
-        }
-        
-        .card-title {
-            font-size: 1.6em;
-            color: var(--primary-dark);
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px dashed var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        /* Inputs y textos */
-        .input-group {
-            margin-bottom: 20px;
-        }
-        
-        .input-label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 1.2em;
-            color: var(--text-dark);
-        }
-        
-        .input-field {
-            width: 100%;
-            padding: 14px 18px;
-            border: 2px solid var(--secondary);
-            border-radius: 15px;
-            font-family: 'Patrick Hand', cursive;
-            font-size: 1.1em;
-            background: var(--bg-light);
-            transition: border-color 0.3s;
-        }
-        
-        .input-field:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(232, 162, 168, 0.2);
-        }
-        
-        .input-hint {
-            font-size: 0.9em;
-            color: var(--text-light);
-            margin-top: 5px;
             font-style: italic;
         }
         
-        /* Lista de frases */
-        .phrases-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-height: 400px;
-            overflow-y: auto;
-            padding-right: 8px;
-        }
-        
-        .phrase-item {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            padding: 12px 18px;
-            background: var(--bg-light);
-            border-radius: 15px;
-            border-left: 4px solid var(--primary);
-        }
-        
-        .phrase-input {
-            flex: 1;
-            padding: 8px 14px;
-            border: 2px solid var(--secondary);
-            border-radius: 12px;
-            font-family: 'Patrick Hand', cursive;
-            font-size: 1.1em;
-            background: white;
-        }
-        
-        .phrase-actions {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .btn-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.2em;
-            transition: all 0.2s;
-        }
-        
-        .btn-delete {
-            background: #ffebee;
-            color: #c62828;
-        }
-        
-        .btn-delete:hover {
-            background: #ffcdd2;
-            transform: scale(1.1);
-        }
-        
-        .btn-add {
-            background: var(--primary);
+        .btn-create {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #E8A2A8, #D97F88);
             color: white;
-            width: 100%;
-            margin-top: 15px;
-            justify-content: center;
-        }
-        
-        .btn-add:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        
-        .counter {
-            text-align: right;
-            font-size: 0.95em;
-            color: var(--text-light);
-            margin-top: 8px;
-        }
-        
-        /* Sección avanzada */
-        .advanced-section {
-            border: 2px dashed var(--accent);
-            background: rgba(242, 185, 191, 0.08);
-        }
-        
-        .locked-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--primary);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.95em;
-            margin-bottom: 15px;
-        }
-        
-        .unlock-btn {
-            background: none;
-            border: none;
-            color: var(--primary-dark);
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.3em;
             font-family: 'Patrick Hand', cursive;
-            font-size: 1em;
+            box-shadow: 0 8px 25px rgba(217, 127, 136, 0.4);
+            transition: all 0.3s ease;
+            border: none;
             cursor: pointer;
-            text-decoration: underline;
-            padding: 0;
         }
         
-        /* Modal */
-        .modal-overlay {
+        .btn-create:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(217, 127, 136, 0.6);
+        }
+        
+        .btn-create:active {
+            transform: translateY(-1px);
+        }
+        
+        .particles {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
+            pointer-events: none;
+            z-index: -1;
         }
         
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .modal {
-            background: white;
-            border-radius: var(--border-radius);
-            padding: 35px;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-            transform: translateY(20px);
-            transition: transform 0.3s;
-        }
-        
-        .modal-overlay.active .modal {
-            transform: translateY(0);
-        }
-        
-        .modal-title {
-            font-size: 1.8em;
-            color: var(--primary-dark);
-            margin-bottom: 20px;
-        }
-        
-        .modal-input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid var(--secondary);
-            border-radius: 15px;
-            font-family: 'Patrick Hand', cursive;
-            font-size: 1.2em;
-            text-align: center;
-            margin: 20px 0;
-        }
-        
-        .modal-actions {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 25px;
-        }
-        
-        /* URL Generator */
-        .url-generator {
-            background: var(--bg-light);
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 15px;
-        }
-        
-        .url-steps {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 15px;
-        }
-        
-        .url-step {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 1.05em;
-        }
-        
-        .step-number {
-            background: var(--primary);
-            color: white;
-            width: 28px;
-            height: 28px;
+        .particle {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: rgba(246, 209, 213, 0.6);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            flex-shrink: 0;
+            animation: twinkle 3s infinite ease-in-out;
         }
         
-        .generated-url {
-            background: white;
-            padding: 12px 18px;
-            border-radius: 12px;
-            border: 2px solid var(--accent);
-            font-family: monospace;
-            word-break: break-all;
-            margin: 10px 0;
-            display: none;
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.3); }
         }
         
-        .generated-url.show {
-            display: block;
-        }
-        
-        .url-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-        
-        .btn-small {
-            padding: 8px 16px;
-            font-size: 0.95em;
-        }
-        
-        /* Loading */
-        .loading-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(255,249,250,0.95);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            gap: 25px;
-        }
-        
-        .spinner {
-            width: 60px;
-            height: 60px;
-            border: 5px solid var(--secondary);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .loading-text {
-            font-size: 1.4em;
-            color: var(--primary-dark);
-        }
-        
-        /* Toast notifications */
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: white;
-            padding: 15px 25px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            border-left: 5px solid var(--primary);
-            font-size: 1.1em;
-            z-index: 3000;
-            transform: translateX(400px);
-            transition: transform 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .toast.show {
-            transform: translateX(0);
-        }
-        
-        .toast.success { border-left-color: #4caf50; }
-        .toast.error { border-left-color: #f44336; }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .navbar {
-                flex-direction: column;
-                gap: 15px;
-                padding: 15px 20px;
-            }
-            
-            .card {
-                padding: 25px 20px;
-            }
-            
-            .phrase-item {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .phrase-actions {
-                justify-content: flex-end;
-            }
-        }
-        
-        /* Animaciones */
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-        
-        .pulse {
-            animation: pulse 2s infinite;
+        @media (max-width: 480px) {
+            .error-container { padding: 30px 25px; }
+            .error-title { font-size: 1.8em; }
+            .error-message { font-size: 1.15em; }
+            .btn-create { padding: 12px 30px; font-size: 1.15em; }
         }
     </style>
 </head>
 <body>
-    <!-- Loading Overlay -->
-    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
-        <div class="spinner"></div>
-        <div class="loading-text">✨ Guardando tu universo...</div>
+    <!-- Partículas de fondo -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Contenido de error -->
+    <div class="error-container">
+        <div class="error-icon">🌌</div>
+        <h1 class="error-title">Galaxia No Encontrada</h1>
+        <p class="error-message">
+            Lo sentimos, no pudimos encontrar la configuración de tu galaxia personalizada.<br><br>
+            Es posible que el archivo haya sido eliminado, el enlace esté incorrecto, 
+            o aún no hayas creado tu universo.
+        </p>
+        <p class="error-hint">✨ ¿Quieres crear tu propia galaxia del amor?</p>
+        <a href="panel.html" class="btn-create">Crear mi Galaxia 💖</a>
     </div>
-    
-    <!-- Key Modal -->
-    <div class="modal-overlay" id="keyModal">
-        <div class="modal">
-            <div class="modal-title">🔐 Acceso Avanzado</div>
-            <p>Ingresa tu clave para editar opciones especiales:</p>
-            <input type="password" class="modal-input" id="keyInput" placeholder="••••••" maxlength="6">
-            <div class="modal-actions">
-                <button class="btn btn-secondary" onclick="closeKeyModal()">Cancelar</button>
-                <button class="btn btn-primary" onclick="verifyKey()">Desbloquear ✨</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Confirmation Modal -->
-    <div class="modal-overlay" id="confirmModal">
-        <div class="modal">
-            <div class="modal-title" id="confirmTitle">¿Confirmar cambios?</div>
-            <p id="confirmMessage">¿Estás seguro de guardar estos cambios?</p>
-            <div class="modal-actions">
-                <button class="btn btn-secondary" onclick="closeConfirmModal()">Cancelar</button>
-                <button class="btn btn-primary" id="confirmActionBtn">Confirmar ✓</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- URL Generated Modal -->
-    <div class="modal-overlay" id="urlModal">
-        <div class="modal">
-            <div class="modal-title">🎉 ¡Listo!</div>
-            <p>Tu enlace ha sido generado correctamente:</p>
-            <div class="generated-url show" id="generatedUrlDisplay"></div>
-            <div class="url-actions">
-                <button class="btn btn-primary btn-small" onclick="copyUrl()">📋 Copiar</button>
-                <button class="btn btn-secondary btn-small" onclick="openUrl()">🔗 Abrir</button>
-                <button class="btn btn-secondary btn-small" onclick="closeUrlModal()">Cerrar</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Toast Notification -->
-    <div class="toast" id="toast">
-        <span id="toastIcon">✓</span>
-        <span id="toastMessage">Operación exitosa</span>
-    </div>
-    
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="navbar-brand">
-            <span>🌌</span>
-            <span>Panel Galaxia</span>
-        </div>
-        <div class="navbar-actions">
-            <button class="btn btn-secondary" onclick="previewGalaxy()">👁️ Previsualizar</button>
-            <button class="btn btn-primary" onclick="saveConfiguration()">💾 Guardar Todo</button>
-        </div>
-    </nav>
-    
-    <!-- Main Container -->
-    <div class="container">
-        <!-- Título Principal -->
-        <div class="card">
-            <h2 class="card-title">✏️ Título Principal</h2>
-            <div class="input-group">
-                <label class="input-label">Texto que aparece arriba en la galaxia:</label>
-                <input type="text" class="input-field" id="mainTitle" value="Te Amo Yorchi" maxlength="50" placeholder="Ej: Te Amo [Nombre]">
-                <p class="input-hint">Máximo 50 caracteres • Aparece en la parte superior de tu galaxia</p>
-            </div>
-        </div>
-        
-        <!-- Frases de Amor -->
-        <div class="card">
-            <h2 class="card-title">💬 Frases Flotantes</h2>
-            <p style="margin-bottom: 15px; color: var(--text-light);">
-                Estas son las palabras que flotan en tu galaxia. Puedes editar, borrar o agregar nuevas.
-            </p>
+
+    <script>
+        // Crear partículas animadas de fondo
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 50;
             
-            <div class="phrases-list" id="phrasesList">
-                <!-- Las frases se generan con JavaScript -->
-            </div>
-            
-            <p class="counter"><span id="phraseCount">13</span>/50 frases</p>
-            <button class="btn btn-add" id="addPhraseBtn" onclick="addNewPhrase()">
-                ➕ Agregar nueva frase
-            </button>
-            <p class="input-hint" style="margin-top: 10px;">
-                ⚠️ Límite: 50 frases • Cada frase máximo 100 caracteres
-            </p>
-        </div>
-        
-        <!-- Sección Avanzada (Protegida) -->
-        <div class="card advanced-section">
-            <h2 class="card-title">🔒 Opciones Avanzadas</h2>
-            <div class="locked-badge">
-                🔐 <span id="advancedStatus">Bloqueado</span>
-                <button class="unlock-btn" onclick="openKeyModal()">Desbloquear</button>
-            </div>
-            
-            <div id="advancedContent" style="display: none; opacity: 0.6; pointer-events: none;">
-                <!-- Imagen del Núcleo -->
-                <div class="input-group">
-                    <label class="input-label">🌑 Imagen del Núcleo (URL directa)</label>
-                    <input type="url" class="input-field" id="nucleusUrl" placeholder="https://ejemplo.com/imagen.png" value="https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/imagen%20del%20n%C3%BAcleo.png">
-                    <p class="input-hint">Debe ser un enlace directo a imagen (.png, .jpg, .webp)</p>
-                    
-                    <div class="url-generator">
-                        <p style="font-weight: bold; margin-bottom: 10px;">📎 Generar enlace válido:</p>
-                        <div class="url-steps">
-                            <div class="url-step"><span class="step-number">1</span> Ingresa tu URL directa</div>
-                            <div class="url-step"><span class="step-number">2</span> Presiona "Generar y Validar"</div>
-                            <div class="url-step"><span class="step-number">3</span> Confirma en la ventana emergente</div>
-                            <div class="url-step"><span class="step-number">4</span> Copia o usa tu enlace verificado</div>
-                        </div>
-                        <button class="btn btn-primary" style="margin-top: 15px;" onclick="generateAndValidateUrl('nucleusUrl', 'nucleusGenerated')">
-                            ✨ Generar y Validar Enlace
-                        </button>
-                        <div class="generated-url" id="nucleusGenerated"></div>
-                        <div class="url-actions" id="nucleusActions" style="display: none;">
-                            <button class="btn btn-small btn-primary" onclick="copyGeneratedUrl('nucleusGenerated')">📋 Copiar</button>
-                            <button class="btn btn-small btn-secondary" onclick="previewImage('nucleusGenerated')">👁️ Ver</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Música de Fondo -->
-                <div class="input-group">
-                    <label class="input-label">🎵 Música de Fondo (MP3 directo)</label>
-                    <input type="url" class="input-field" id="musicUrl" placeholder="https://ejemplo.com/cancion.mp3" value="https://github.com/BerMatCode/Archivos/raw/refs/heads/main/Multimedia/TikVid.io_7471239338752363781.mp3">
-                    <p class="input-hint">Debe ser un enlace directo a archivo .mp3</p>
-                    
-                    <div class="url-generator">
-                        <button class="btn btn-primary" style="margin-top: 10px;" onclick="generateAndValidateUrl('musicUrl', 'musicGenerated')">
-                            ✨ Generar y Validar Enlace
-                        </button>
-                        <div class="generated-url" id="musicGenerated"></div>
-                        <div class="url-actions" id="musicActions" style="display: none;">
-                            <button class="btn btn-small btn-primary" onclick="copyGeneratedUrl('musicGenerated')">📋 Copiar</button>
-                            <button class="btn btn-small btn-secondary" onclick="previewAudio('musicGenerated')">🔊 Probar</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Créditos Inferior -->
-                <div class="input-group">
-                    <label class="input-label">✍️ Créditos (parte inferior)</label>
-                    <input type="text" class="input-field" id="creditsText" value="𖤍BerMatCode𖤍" maxlength="30" placeholder="Ej: 𖤍TuNombre𖤍">
-                    <p class="input-hint">Máximo 30 caracteres • Aparece centrado en la parte inferior</p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Nota Importante -->
-        <div class="card" style="border-left: 5px solid var(--primary);">
-            <p style="font-size: 1.1em;">
-                <strong>💡 Recuerda:</strong> El texto "💖Toca la pantalla💘" <em>no puede ser editado</em> para mantener la experiencia mágica de descubrimiento. 
-                ¡Es parte de la sorpresa para quien reciba tu galaxia! ✨
-            </p>
-        </div>
-    </div>
-    
-    <!-- Firebase SDK -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-
-        // Configuración de Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyAVQn_t-gwbA75W6c1FLLP7OnzuU2jhbs0",
-            authDomain: "galaxia-2026.firebaseapp.com",
-            projectId: "galaxia-2026",
-            storageBucket: "galaxia-2026.firebasestorage.app",
-            messagingSenderId: "30252830415",
-            appId: "1:30252830415:web:463fbdc73c3fb730d671ba",
-            measurementId: "G-XCSVYH6KEG"
-        };
-
-        // Inicializar Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const analytics = getAnalytics(app);
-
-        // Variables globales
-        let isAdvancedUnlocked = false;
-        const MAX_PHRASES = 50;
-        const MAX_PHRASE_LENGTH = 100;
-        const VALID_KEY = "101123";
-        let currentGalaxiaId = null;
-
-        // Frases por defecto
-        const defaultPhrases = [
-            "Siempre contigo", "Eres mi calma", "Me haces feliz", "Tu sonrisa brilla", 
-            "Qué bonito coincidir", "Mi lugar favorito", "Contigo todo mejora", 
-            "Tu luz me inspira", "Eres increíble", "Gracias por existir", 
-            "Mi corazón te elige", "Qué suerte tenerte", "Eres mi paz"
-        ];
-
-        // Inicialización
-        document.addEventListener('DOMContentLoaded', async () => {
-            renderPhrases(defaultPhrases);
-            
-            // Generar ID único para esta galaxia si no existe
-            currentGalaxiaId = localStorage.getItem('galaxiaId');
-            if (!currentGalaxiaId) {
-                currentGalaxiaId = 'galaxia_' + Math.random().toString(36).substr(2, 9);
-                localStorage.setItem('galaxiaId', currentGalaxiaId);
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 3 + 's';
+                particle.style.animationDuration = (2 + Math.random() * 3) + 's';
+                container.appendChild(particle);
             }
+        }
+        
+        // Verificar si hay ID de galaxia en la URL
+        function checkGalaxiaId() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const galaxiaId = urlParams.get('id');
             
-            // Intentar cargar configuración guardada
-            await loadConfiguration();
-            
-            // Event listeners
-            document.getElementById('mainTitle').addEventListener('input', validateTitle);
-            setupPhraseInputs();
+            if (galaxiaId) {
+                // Aquí se cargaría la configuración desde Firebase
+                // Por simplicidad, mostramos el error si no se implementa el loader
+                console.log('Buscando galaxia con ID:', galaxiaId);
+                // En producción: cargar desde Firestore y renderizar la galaxia
+            }
+        }
+        
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            checkGalaxiaId();
         });
-
-        // Renderizar lista de frases
-        function renderPhrases(phrases) {
-            const list = document.getElementById('phrasesList');
-            list.innerHTML = '';
-            
-            phrases.forEach((phrase, index) => {
-                const item = document.createElement('div');
-                item.className = 'phrase-item';
-                item.innerHTML = `
-                    <input type="text" class="phrase-input" value="${escapeHtml(phrase)}" 
-                           maxlength="${MAX_PHRASE_LENGTH}" data-index="${index}"
-                           placeholder="Escribe tu frase...">
-                    <div class="phrase-actions">
-                        <button class="btn-icon btn-delete" onclick="removePhrase(${index})" title="Eliminar">🗑️</button>
-                    </div>
-                `;
-                list.appendChild(item);
-            });
-            
-            updatePhraseCount();
-            setupPhraseInputs();
-        }
-
-        // Configurar eventos de inputs de frases
-        function setupPhraseInputs() {
-            document.querySelectorAll('.phrase-input').forEach(input => {
-                input.addEventListener('input', (e) => {
-                    updatePhraseCount();
-                    validatePhraseInput(e.target);
-                });
-            });
-        }
-
-        // Validar input de frase
-        function validatePhraseInput(input) {
-            if (input.value.length > MAX_PHRASE_LENGTH) {
-                input.value = input.value.substring(0, MAX_PHRASE_LENGTH);
-                showToast('⚠️ Límite de caracteres alcanzado', 'error');
-            }
-        }
-
-        // Actualizar contador de frases
-        function updatePhraseCount() {
-            const count = document.querySelectorAll('.phrase-input').length;
-            document.getElementById('phraseCount').textContent = count;
-            document.getElementById('addPhraseBtn').disabled = count >= MAX_PHRASES;
-        }
-
-        // Agregar nueva frase
-        function addNewPhrase() {
-            const list = document.getElementById('phrasesList');
-            if (list.children.length >= MAX_PHRASES) {
-                showToast('⚠️ Has alcanzado el límite de 50 frases', 'error');
-                return;
-            }
-            
-            const item = document.createElement('div');
-            item.className = 'phrase-item';
-            item.innerHTML = `
-                <input type="text" class="phrase-input" value="" 
-                       maxlength="${MAX_PHRASE_LENGTH}" 
-                       placeholder="Escribe tu frase...">
-                <div class="phrase-actions">
-                    <button class="btn-icon btn-delete" onclick="removePhrase(this)" title="Eliminar">🗑️</button>
-                </div>
-            `;
-            list.appendChild(item);
-            
-            setupPhraseInputs();
-            updatePhraseCount();
-            item.querySelector('.phrase-input').focus();
-            showToast('✨ Nueva frase agregada', 'success');
-        }
-
-        // Eliminar frase
-        function removePhrase(indexOrBtn) {
-            let item;
-            if (typeof indexOrBtn === 'number') {
-                item = document.querySelectorAll('.phrase-item')[indexOrBtn];
-            } else {
-                item = indexOrBtn.closest('.phrase-item');
-            }
-            
-            if (item) {
-                item.remove();
-                updatePhraseCount();
-                showToast('🗑️ Frase eliminada', 'success');
-            }
-        }
-
-        // Validar título principal
-        function validateTitle(e) {
-            if (e.target.value.length > 50) {
-                e.target.value = e.target.value.substring(0, 50);
-                showToast('⚠️ Límite de 50 caracteres', 'error');
-            }
-        }
-
-        // Modal de Key
-        function openKeyModal() {
-            document.getElementById('keyModal').classList.add('active');
-            document.getElementById('keyInput').value = '';
-            document.getElementById('keyInput').focus();
-        }
-
-        function closeKeyModal() {
-            document.getElementById('keyModal').classList.remove('active');
-        }
-
-        function verifyKey() {
-            const input = document.getElementById('keyInput').value.trim();
-            
-            if (input === VALID_KEY) {
-                isAdvancedUnlocked = true;
-                document.getElementById('advancedStatus').textContent = 'Desbloqueado ✨';
-                document.getElementById('advancedContent').style.display = 'block';
-                document.getElementById('advancedContent').style.opacity = '1';
-                document.getElementById('advancedContent').style.pointerEvents = 'all';
-                closeKeyModal();
-                showToast('🔓 Acceso avanzado activado', 'success');
-            } else {
-                showToast('❌ Clave incorrecta', 'error');
-                document.getElementById('keyInput').value = '';
-                document.getElementById('keyInput').focus();
-            }
-        }
-
-        // Modal de confirmación
-        function openConfirmModal(title, message, onConfirm) {
-            document.getElementById('confirmTitle').textContent = title;
-            document.getElementById('confirmMessage').textContent = message;
-            document.getElementById('confirmActionBtn').onclick = () => {
-                closeConfirmModal();
-                if (onConfirm) onConfirm();
-            };
-            document.getElementById('confirmModal').classList.add('active');
-        }
-
-        function closeConfirmModal() {
-            document.getElementById('confirmModal').classList.remove('active');
-        }
-
-        // Generar y validar URL
-        function generateAndValidateUrl(inputId, outputId) {
-            const input = document.getElementById(inputId);
-            const url = input.value.trim();
-            
-            if (!url) {
-                showToast('⚠️ Por favor ingresa una URL', 'error');
-                return;
-            }
-            
-            // Validación básica de URL
-            try {
-                new URL(url);
-            } catch {
-                showToast('❌ URL no válida', 'error');
-                return;
-            }
-            
-            openConfirmModal(
-                '¿Confirmar enlace?',
-                `¿Deseas usar este enlace?\n\n${url.substring(0, 60)}${url.length > 60 ? '...' : ''}`,
-                () => {
-                    document.getElementById(outputId).textContent = url;
-                    document.getElementById(outputId).classList.add('show');
-                    document.getElementById(outputId.replace('Generated', 'Actions')).style.display = 'flex';
-                    showToast('✅ Enlace validado y listo', 'success');
-                }
-            );
-        }
-
-        // Copiar URL generada
-        function copyGeneratedUrl(elementId) {
-            const url = document.getElementById(elementId).textContent;
-            navigator.clipboard.writeText(url).then(() => {
-                showToast('📋 ¡Copiado al portapapeles!', 'success');
-            });
-        }
-
-        // Copiar URL del modal
-        function copyUrl() {
-            const url = document.getElementById('generatedUrlDisplay').textContent;
-            navigator.clipboard.writeText(url).then(() => {
-                showToast('📋 ¡Copiado!', 'success');
-            });
-        }
-
-        // Abrir URL
-        function openUrl() {
-            const url = document.getElementById('generatedUrlDisplay').textContent;
-            window.open(url, '_blank');
-        }
-
-        // Previsualizar imagen
-        function previewImage(elementId) {
-            const url = document.getElementById(elementId).textContent;
-            window.open(url, '_blank');
-        }
-
-        // Previsualizar audio
-        function previewAudio(elementId) {
-            const url = document.getElementById(elementId).textContent;
-            const audio = new Audio(url);
-            audio.play().catch(e => {
-                showToast('⚠️ No se pudo reproducir el audio', 'error');
-                console.error(e);
-            });
-            showToast('🔊 Reproduciendo...', 'success');
-        }
-
-        // Cerrar modal de URL
-        function closeUrlModal() {
-            document.getElementById('urlModal').classList.remove('active');
-        }
-
-        // Mostrar toast notification
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            const icon = document.getElementById('toastIcon');
-            const text = document.getElementById('toastMessage');
-            
-            toast.className = `toast ${type}`;
-            icon.textContent = type === 'success' ? '✓' : '⚠️';
-            text.textContent = message;
-            
-            toast.classList.add('show');
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-
-        // Escapar HTML para prevenir XSS
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        // Cargar configuración desde Firebase
-        async function loadConfiguration() {
-            showLoading(true);
-            
-            try {
-                const docRef = doc(db, "galaxias", currentGalaxiaId);
-                const docSnap = await getDoc(docRef);
-                
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    
-                    // Cargar título
-                    if (data.tituloPrincipal) {
-                        document.getElementById('mainTitle').value = data.tituloPrincipal;
-                    }
-                    
-                    // Cargar frases
-                    if (data.frasesAmor && Array.isArray(data.frasesAmor)) {
-                        renderPhrases(data.frasesAmor);
-                    }
-                    
-                    // Cargar opciones avanzadas si existen
-                    if (data.imagenNucleo) {
-                        document.getElementById('nucleusUrl').value = data.imagenNucleo;
-                    }
-                    if (data.musicaFondo) {
-                        document.getElementById('musicUrl').value = data.musicaFondo;
-                    }
-                    if (data.creditosInferior) {
-                        document.getElementById('creditsText').value = data.creditosInferior;
-                    }
-                    
-                    showToast('✨ Configuración cargada', 'success');
-                }
-            } catch (error) {
-                console.error('Error cargando configuración:', error);
-                showToast('⚠️ No se pudo cargar configuración guardada', 'error');
-            } finally {
-                showLoading(false);
-            }
-        }
-
-        // Guardar configuración en Firebase
-        async function saveConfiguration() {
-            // Validar datos básicos
-            const titulo = document.getElementById('mainTitle').value.trim();
-            if (!titulo) {
-                showToast('⚠️ El título principal no puede estar vacío', 'error');
-                return;
-            }
-            
-            const frases = Array.from(document.querySelectorAll('.phrase-input'))
-                .map(input => input.value.trim())
-                .filter(phrase => phrase.length > 0);
-            
-            if (frases.length === 0) {
-                showToast('⚠️ Debes tener al menos una frase', 'error');
-                return;
-            }
-            
-            // Preparar objeto de configuración
-            const config = {
-                tituloPrincipal: titulo,
-                frasesAmor: frases,
-                fechaCreacion: serverTimestamp(),
-                ultimaModificacion: serverTimestamp(),
-                version: '1.0'
-            };
-            
-            // Agregar campos avanzados solo si está desbloqueado
-            if (isAdvancedUnlocked) {
-                const nucleusUrl = document.getElementById('nucleusUrl').value.trim();
-                const musicUrl = document.getElementById('musicUrl').value.trim();
-                const creditsText = document.getElementById('creditsText').value.trim();
-                
-                if (nucleusUrl) config.imagenNucleo = nucleusUrl;
-                if (musicUrl) config.musicaFondo = musicUrl;
-                if (creditsText) config.creditosInferior = creditsText;
-            }
-            
-            showLoading(true);
-            
-            try {
-                await setDoc(doc(db, "galaxias", currentGalaxiaId), config, { merge: true });
-                
-                // Guardar ID en URL para compartir
-                const shareUrl = `${window.location.origin}/index.html?id=${currentGalaxiaId}`;
-                document.getElementById('generatedUrlDisplay').textContent = shareUrl;
-                document.getElementById('urlModal').classList.add('active');
-                
-                showToast('💾 ¡Tu galaxia ha sido guardada!', 'success');
-            } catch (error) {
-                console.error('Error guardando:', error);
-                showToast('❌ Error al guardar. Intenta de nuevo.', 'error');
-            } finally {
-                showLoading(false);
-            }
-        }
-
-        // Previsualizar galaxia
-        function previewGalaxy() {
-            showToast('👁️ Generando previsualización...', 'success');
-            // Aquí se podría abrir una ventana con la galaxia en tiempo real
-            // Por ahora, solo mostramos un mensaje
-            setTimeout(() => {
-                showToast('✨ Previsualización lista (simulada)', 'success');
-            }, 1500);
-        }
-
-        // Mostrar/ocultar loading
-        function showLoading(show) {
-            document.getElementById('loadingOverlay').style.display = show ? 'flex' : 'none';
-        }
-
-        // Exponer funciones al scope global para los onclick
-        window.addNewPhrase = addNewPhrase;
-        window.removePhrase = removePhrase;
-        window.openKeyModal = openKeyModal;
-        window.closeKeyModal = closeKeyModal;
-        window.verifyKey = verifyKey;
-        window.closeConfirmModal = closeConfirmModal;
-        window.generateAndValidateUrl = generateAndValidateUrl;
-        window.copyGeneratedUrl = copyGeneratedUrl;
-        window.copyUrl = copyUrl;
-        window.openUrl = openUrl;
-        window.closeUrlModal = closeUrlModal;
-        window.previewImage = previewImage;
-        window.previewAudio = previewAudio;
-        window.previewGalaxy = previewGalaxy;
-        window.saveConfiguration = saveConfiguration;
     </script>
 </body>
 </html>
