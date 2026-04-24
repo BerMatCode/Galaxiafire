@@ -4,62 +4,63 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Galaxia Personalizada</title>
-<meta property="og:title" content="Galaxia Te amo">
+<meta property="og:title" content="Mi Galaxia de Amor">
 <meta property="og:image" content="https://mi-universo-perfecto.netlify.app/assets/icon.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background-color: #000000; font-family: 'Patrick Hand', cursive; cursor: grab; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #000; font-family: 'Patrick Hand', cursive; cursor: grab; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
 body:active { cursor: grabbing; }
 canvas { display: block; position: fixed; top: 0; left: 0; z-index: 1; }
 #main-title { position: absolute; top: 40px; left: 50%; transform: translateX(-50%); font-size: 4.5em; color: #F6D1D5; text-shadow: 0 0 15px #E8A2A8, 0 0 25px #D97F88; z-index: 10; pointer-events: none; text-align: center; white-space: nowrap; }
-#entry-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 9999; background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); cursor: pointer; }
-#entry-text { font-size: 2.5em; color: #F6D1D5; text-shadow: 0 0 20px #E8A2A8, 0 0 40px #D97F88; text-align: center; animation: pulse 2s infinite ease-in-out; padding: 30px 50px; background: rgba(246, 209, 213, 0.1); border-radius: 20px; border: 2px solid rgba(232, 162, 168, 0.3); font-family: 'Patrick Hand', cursive; }
-@keyframes pulse { 0%, 100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
-#credits { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); font-family: 'Patrick Hand', cursive; font-size: 0.9em; color: #F6D1D5; text-shadow: 0 0 10px #E8A2A8; z-index: 50; pointer-events: none; white-space: nowrap; }
+#entry-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 9999; background: rgba(0,0,0,0.4); backdrop-filter: blur(6px); cursor: pointer; }
+#entry-text { font-size: 2.5em; color: #F6D1D5; text-shadow: 0 0 20px #E8A2A8, 0 0 40px #D97F88; text-align: center; animation: pulse 2s infinite ease-in-out; padding: 30px 50px; background: rgba(246,209,213,0.1); border-radius: 20px; border: 2px solid rgba(232,162,168,0.3); }
+@keyframes pulse { 0%,100%{opacity:0.6;transform:scale(1);} 50%{opacity:1;transform:scale(1.05);} }
+#credits { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); font-size: 0.9em; color: #F6D1D5; text-shadow: 0 0 10px #E8A2A8; z-index: 50; pointer-events: none; white-space: nowrap; }
+@media(max-width:768px){ #main-title{font-size:3.4em;top:25px;} #entry-text{font-size:2em;} #credits{font-size:0.8em;bottom:10px;} }
+@media(max-width:480px){ #main-title{font-size:2.5em;top:20px;} #entry-text{font-size:1.6em;} }
 /* Error Modal */
-#error-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px; }
-#error-overlay.active { display: flex; }
-#error-box { background: #111; border: 2px solid #E8A2A8; border-radius: 16px; padding: 24px; max-width: 380px; width: 100%; text-align: center; color: #F6D1D5; animation: slideUp 0.4s ease; }
-@keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-#error-box h2 { font-size: 1.4rem; margin-bottom: 12px; }
-#error-box p { font-size: 0.95rem; line-height: 1.5; margin-bottom: 18px; }
-#whatsapp-btn { display: inline-block; padding: 10px 20px; background: #25D366; color: #fff; text-decoration: none; border-radius: 20px; font-weight: bold; transition: 0.3s; }
-#whatsapp-btn:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(37,211,102,0.4); }
-@media (max-width: 768px) {
-  #main-title { font-size: 3.4em; top: 25px; }
-  #entry-text { font-size: 2em; }
-  #credits { font-size: 0.8em; bottom: 10px; }
-}
-@media (max-width: 480px) {
-  #main-title { font-size: 2.5em; top: 20px; }
-  #entry-text { font-size: 1.6em; }
-}
+#error-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.92);display:none;align-items:center;justify-content:center;z-index:10000;padding:20px;animation:fadeIn .4s ease;}
+#error-overlay.active{display:flex;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+#error-box{background:linear-gradient(145deg,#111827,#1f2937);border:2px solid #38bdf8;border-radius:20px;padding:28px 24px;max-width:420px;width:100%;text-align:center;color:#f1f5f9;animation:slideUp .5s ease;box-shadow:0 15px 40px rgba(14,165,233,0.3);}
+@keyframes slideUp{from{transform:translateY(25px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+#error-icon{font-size:2.8rem;margin-bottom:15px;animation:bounce 1.2s infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+#error-box h2{font-family:'Patrick Hand',cursive;font-size:1.6rem;color:#38bdf8;margin-bottom:10px;text-shadow:0 0 10px rgba(56,189,248,0.5);}
+#error-box p{font-size:0.95rem;line-height:1.6;color:#94a3b8;margin-bottom:18px;}
+.error-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:5px;}
+.btn-error{padding:10px 18px;border-radius:14px;border:none;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:.3s;font-family:'Roboto',sans-serif;}
+.btn-wa{background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;}
+.btn-wa:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(37,211,102,0.4);}
+.btn-home{background:linear-gradient(135deg,#3b82f6,#0ea5e9);color:#fff;}
+.btn-home:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(59,130,246,0.4);}
 </style>
 </head>
 <body>
 <h1 id="main-title">Te Amo Yorchi</h1>
-<div id="entry-screen">
-  <div id="entry-text">💖Toca la pantalla💘</div>
-</div>
+<div id="entry-screen"><div id="entry-text">💖Toca la pantalla💘</div></div>
 <div id="credits">𖤍BerMatCode𖤍</div>
-<audio id="background-music" loop></audio>
+<audio id="bg-music" loop></audio>
 <canvas id="galaxy-canvas"></canvas>
 
 <div id="error-overlay">
   <div id="error-box">
-    <h2>⚠️ Detalle no encontrado</h2>
-    <p>El enlace puede haber expirado o sido eliminado.<br>¿Informar al creador?</p>
-    <a id="whatsapp-btn" href="https://wa.me/51930569195?text=Hola,%20mi%20detalle%20de%20la%20galaxia%20no%20carga." target="_blank">Contactar por WhatsApp</a>
+    <div class="error-icon">⚠️</div>
+    <h2>Universo No Encontrado</h2>
+    <p>Es posible que el enlace esté roto, haya expirado o que el administrador lo haya eliminado. Si crees que es un error, contáctanos directamente.</p>
+    <div class="error-actions">
+      <a id="wa-btn" class="btn-error btn-wa" target="_blank"><i class="fab fa-whatsapp"></i> Contactar por WhatsApp</a>
+      <a href="panel.html" class="btn-error btn-home"><i class="fas fa-plus"></i> Crear mi Galaxia</a>
+    </div>
   </div>
 </div>
 
 <script type="importmap">
 { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }
 </script>
-
 <script type="module">
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -69,30 +70,23 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAVQn_t-gwbA75W6c1FLLP7OnzuU2jhbs0",
-  authDomain: "galaxia-2026.firebaseapp.com",
-  projectId: "galaxia-2026",
-  storageBucket: "galaxia-2026.firebasestorage.app",
-  messagingSenderId: "30252830415",
-  appId: "1:30252830415:web:463fbdc73c3fb730d671ba"
-};
+const firebaseConfig = { apiKey:"AIzaSyAVQn_t-gwbA75W6c1FLLP7OnzuU2jhbs0", authDomain:"galaxia-2026.firebaseapp.com", projectId:"galaxia-2026", storageBucket:"galaxia-2026.firebasestorage.app", messagingSenderId:"30252830415", appId:"1:30252830415:web:463fbdc73c3fb730d671ba" };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Configuración Base (se actualizará dinámicamente)
+// CONFIG BASE (SE MODIFICARÁ DINÁMICAMENTE)
 const CONFIG = {
   galaxy: { rotationSpeed: 0.12, centerExclusionRadius: 45 },
   elementExclusionRadius: 40,
   blackHole: { radius: 12, segments: 64, imageUrl: 'https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/imagen%20del%20n%C3%BAcleo.png' },
-  accretionDisk: { innerRadius: 18, outerRadius: 65, particleCount: 8000, particleSize: 0.28, colors: ['#E8A2A8', '#D97F88', '#F6D1D5', '#F2B9BF', '#FFB6C1'], brightness: 0.18, orbitalRings: 18, ringParticleBase: 600, ringParticleIncrement: 55 },
+  accretionDisk: { innerRadius: 18, outerRadius: 65, particleCount: 8000, particleSize: 0.28, colors: ['#E8A2A8','#D97F88','#F6D1D5','#F2B9BF','#FFB6C1'], brightness: 0.18, orbitalRings: 18, ringParticleBase: 600, ringParticleIncrement: 55 },
   particles: {
     coreStars: { count: 25000, radius: 140, maxHeight: 70, size: 0.2 },
     sphericalHalo: { count: 22000, radiusXZ: 130, radiusY: 65, size: 0.15, minDistFromCenter: 32 },
     backgroundStars: { count: 12000, radius: 800, size: 0.1, floatSpeed: 0.012 },
     floatingSpace: { count: 5000, radius: 280, size: 0.2, speed: 0.005 },
-    texts: { count: 50, width: 45, height: 20, minRadius: null, maxRadius: 140, content: ["Siempre contigo", "Eres mi calma", "Me haces feliz", "Tu sonrisa brilla", "Qué bonito coincidir", "Mi lugar favorito", "Contigo todo mejora", "Tu luz me inspira", "Eres increíble", "Gracias por existir", "Mi corazón te elige", "Qué suerte tenerte", "Eres mi paz"], colors: [{ fill: '#E8A2A8', shadow: '#D97F88' }, { fill: '#F6D1D5', shadow: '#E8A2A8' }, { fill: '#F2B9BF', shadow: '#D97F88' }] },
-    emojis: { count: 25, size: 10, minRadius: null, maxRadius: 140, content: ['https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda2.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda3.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda6.png'], colors: [{ fill: '#F6D1D5', shadow: '#D97F88' }, { fill: '#F2B9BF', shadow: '#E8A2A8' }, { fill: '#E8A2A8', shadow: '#D97F88' }] }
+    texts: { count: 50, width: 45, height: 20, minRadius: null, maxRadius: 140, content: ["Siempre contigo","Eres mi calma","Me haces feliz","Tu sonrisa brilla","Qué bonito coincidir","Mi lugar favorito","Contigo todo mejora","Tu luz me inspira","Eres increíble","Gracias por existir","Mi corazón te elige","Qué suerte tenerte","Eres mi paz"], colors: [{fill:'#E8A2A8',shadow:'#D97F88'},{fill:'#F6D1D5',shadow:'#E8A2A8'},{fill:'#F2B9BF',shadow:'#D97F88'}] },
+    emojis: { count: 25, size: 10, minRadius: null, maxRadius: 140, content: ['https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda2.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda3.png','https://raw.githubusercontent.com/BerMatCode/Archivos/main/Multimedia/panda6.png'], colors: [{fill:'#F6D1D5',shadow:'#D97F88'},{fill:'#F2B9BF',shadow:'#E8A2A8'},{fill:'#E8A2A8',shadow:'#D97F88'}] }
   },
   shootingStars: { enabled: true, spawnProbability: 0.007, speed: 1.2 },
   lighting: { ambientLight: { color: '#ffffff', intensity: 0.06 }, pointLight: { color: '#E8A2A8', intensity: 1.5, distance: 400 } },
@@ -102,208 +96,73 @@ const CONFIG = {
 };
 
 let scene, camera, renderer, controls, galaxyGroup, clock, composer;
-let loveTexts = [], loveImages = [], shootingStars = [], floatingParticles = [], orbitalParticles = [];
-let occupiedPositions = [];
-let raycaster, mouse;
-let blackHoleMesh, diskParticles, bgStarsMesh, floatMesh;
-let frameCount = 0;
+let loveTexts=[], loveImages=[], shootingStars=[], floatingParticles=[], orbitalParticles=[];
+let occupiedPositions=[], raycaster, mouse, blackHoleMesh, diskParticles, bgStarsMesh, floatMesh, frameCount=0;
 
-async function loadPersonalization() {
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get('id');
-  if (!id) return false;
+async function loadCustomData() {
+  const id = new URLSearchParams(window.location.search).get('id');
+  if (!id) return showError();
   try {
     const snap = await getDoc(doc(db, "messages", id));
-    if (!snap.exists()) return false;
+    if (!snap.exists()) return showError();
     const d = snap.data();
     if (d.title) document.getElementById('main-title').textContent = d.title;
-    if (d.entryText) document.getElementById('entry-text').textContent = d.entryText;
-    if (d.credits) document.getElementById('credits').textContent = d.credits;
-    if (d.musicUrl) document.getElementById('background-music').src = d.musicUrl;
+    if (d.musicUrl) document.getElementById('bg-music').src = d.musicUrl;
     if (d.nucleusUrl) CONFIG.blackHole.imageUrl = d.nucleusUrl;
-    if (d.images && d.images.length > 0) {
-      CONFIG.particles.emojis.content = d.images;
-      CONFIG.particles.emojis.count = d.images.length * 8;
-    }
-    return true;
-  } catch (e) { return false; }
+    if (d.credits) document.getElementById('credits').textContent = d.credits;
+    if (d.phrases && d.phrases.length) CONFIG.particles.texts.content = d.phrases;
+    if (d.images && d.images.length) CONFIG.particles.emojis.content = d.images;
+    initGalaxy();
+    document.getElementById('wa-btn').href = `https://wa.me/51930569195?text=${encodeURIComponent('Hola, mi detalle de la galaxia con ID: '+id+' no carga correctamente.')}`;
+  } catch(e) { console.error(e); showError(); }
 }
 
 function showError() {
   document.getElementById('error-overlay').classList.add('active');
   document.getElementById('entry-screen').style.display = 'none';
+  window.hasError = true;
 }
 
+// === THREE.JS GALAXY (IDÉNTICO AL ORIGINAL, INYECTADO TRAS CARGA) ===
 window.initGalaxy = function() {
-  scene = new THREE.Scene();
-  clock = new THREE.Clock();
-  raycaster = new THREE.Raycaster();
-  mouse = new THREE.Vector2();
-  camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1500);
-  renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('galaxy-canvas'), antialias: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor(0x000000, 1);
-  controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true; controls.dampingFactor = 0.05;
-  controls.minDistance = CONFIG.cameraControls.minDistance;
-  controls.maxDistance = CONFIG.cameraControls.maxDistance;
-  controls.enablePan = false;
-  const renderScene = new RenderPass(scene, camera);
-  const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.2, 0.35, 0.75);
-  bloomPass.threshold = CONFIG.bloomEffect.threshold; bloomPass.strength = CONFIG.bloomEffect.strength; bloomPass.radius = CONFIG.bloomEffect.radius;
-  composer = new EffectComposer(renderer); composer.addPass(renderScene); composer.addPass(bloomPass);
-  const { ambientLight, pointLight } = CONFIG.lighting;
-  scene.add(new THREE.AmbientLight(ambientLight.color, ambientLight.intensity));
-  const mainLight = new THREE.PointLight(pointLight.color, pointLight.intensity, pointLight.distance); mainLight.position.set(0, 0, 0); scene.add(mainLight);
-  galaxyGroup = new THREE.Group(); scene.add(galaxyGroup);
+  scene=new THREE.Scene(); clock=new THREE.Clock(); raycaster=new THREE.Raycaster(); mouse=new THREE.Vector2();
+  camera=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,0.1,1500);
+  renderer=new THREE.WebGLRenderer({canvas:document.getElementById('galaxy-canvas'),antialias:true,powerPreference:'high-performance'});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,1.5)); renderer.setSize(innerWidth,innerHeight); renderer.setClearColor(0x000000,1);
+  controls=new OrbitControls(camera,renderer.domElement); controls.enableDamping=true; controls.dampingFactor=0.05; controls.minDistance=CONFIG.cameraControls.minDistance; controls.maxDistance=CONFIG.cameraControls.maxDistance; controls.enablePan=false;
+  const rp=new RenderPass(scene,camera); const bp=new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight),1.2,0.35,0.75);
+  bp.threshold=CONFIG.bloomEffect.threshold; bp.strength=CONFIG.bloomEffect.strength; bp.radius=CONFIG.bloomEffect.radius;
+  composer=new EffectComposer(renderer); composer.addPass(rp); composer.addPass(bp);
+  scene.add(new THREE.AmbientLight(CONFIG.lighting.ambientLight.color, CONFIG.lighting.ambientLight.intensity));
+  const pl=new THREE.PointLight(CONFIG.lighting.pointLight.color, CONFIG.lighting.pointLight.intensity, CONFIG.lighting.pointLight.distance); pl.position.set(0,0,0); scene.add(pl);
+  galaxyGroup=new THREE.Group(); scene.add(galaxyGroup);
   createBlackHole(); createAccretionDiskParticles(); createOrbitalRings(); createCoreStars(); createSphericalHalo(); createBackgroundStars(); createFloatingSpaceParticles(); createLoveElements();
-  window.addEventListener('resize', onWindowResize); onWindowResize(); animate();
+  window.addEventListener('resize',()=>{renderer.setSize(innerWidth,innerHeight); composer.setSize(innerWidth,innerHeight); camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix();});
+  camera.position.set(0,45,innerWidth<768?190:160); camera.updateProjectionMatrix(); animate();
 };
 
-function createBlackHole() {
-  const bhConfig = CONFIG.blackHole;
-  const textureLoader = new THREE.TextureLoader();
-  const nucleusTexture = textureLoader.load(bhConfig.imageUrl, (tex) => { tex.colorSpace = THREE.SRGBColorSpace; });
-  const sphereGeometry = new THREE.SphereGeometry(bhConfig.radius, bhConfig.segments, bhConfig.segments);
-  const sphereMaterial = new THREE.MeshBasicMaterial({ map: nucleusTexture, transparent: false, opacity: 1.0 });
-  blackHoleMesh = new THREE.Mesh(sphereGeometry, sphereMaterial); scene.add(blackHoleMesh);
-}
-function createAccretionDiskParticles() {
-  const diskConfig = CONFIG.accretionDisk;
-  const geometry = new THREE.BufferGeometry(); const positions = new Float32Array(diskConfig.particleCount * 3); const colors = new Float32Array(diskConfig.particleCount * 3);
-  const colorObj = new THREE.Color();
-  for (let i = 0; i < diskConfig.particleCount; i++) {
-    const radius = diskConfig.innerRadius + Math.random() * (diskConfig.outerRadius - diskConfig.innerRadius);
-    const angle = Math.random() * Math.PI * 2;
-    const spread = 0.5;
-    positions.set([radius * Math.cos(angle), (Math.random() - 0.5) * spread, radius * Math.sin(angle)], i * 3);
-    const colorHex = diskConfig.colors[Math.floor(Math.random() * diskConfig.colors.length)];
-    colorObj.set(colorHex);
-    colors.set([colorObj.r * diskConfig.brightness, colorObj.g * diskConfig.brightness, colorObj.b * diskConfig.brightness], i * 3);
-  }
-  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3)); geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-  const material = new THREE.PointsMaterial({ size: diskConfig.particleSize, blending: THREE.AdditiveBlending, vertexColors: true, transparent: true, opacity: 0.8, sizeAttenuation: true, depthWrite: false });
-  diskParticles = new THREE.Points(geometry, material); galaxyGroup.add(diskParticles);
-}
-function createOrbitalRings() {
-  const diskConfig = CONFIG.accretionDisk;
-  for (let r = 0; r < diskConfig.orbitalRings; r++) {
-    const radius = diskConfig.innerRadius + (diskConfig.outerRadius - diskConfig.innerRadius) * (r / diskConfig.orbitalRings);
-    const particlesPerRing = Math.min(diskConfig.ringParticleBase + r * diskConfig.ringParticleIncrement, 1000);
-    const geometry = new THREE.BufferGeometry(); const positions = new Float32Array(particlesPerRing * 3); const colors = new Float32Array(particlesPerRing * 3);
-    const colorObj = new THREE.Color();
-    for (let i = 0; i < particlesPerRing; i++) {
-      const angle = (i / particlesPerRing) * Math.PI * 2;
-      positions.set([radius * Math.cos(angle), 0, radius * Math.sin(angle)], i * 3);
-      const colorHex = diskConfig.colors[r % diskConfig.colors.length]; colorObj.set(colorHex);
-      const brightness = CONFIG.accretionDisk.brightness * (0.8 + Math.random() * 0.2);
-      colors.set([colorObj.r * brightness, colorObj.g * brightness, colorObj.b * brightness], i * 3);
-    }
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3)); geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    const material = new THREE.PointsMaterial({ size: 0.32, blending: THREE.AdditiveBlending, vertexColors: true, transparent: true, opacity: 0.9, depthWrite: false });
-    const ring = new THREE.Points(geometry, material); ring.userData = { radius, speed: 0.0012 + r * 0.0002, offset: Math.random() * Math.PI * 2 }; galaxyGroup.add(ring); orbitalParticles.push(ring);
-  }
-}
-function createCoreStars() {
-  const coreConfig = CONFIG.particles.coreStars; const geometry = new THREE.BufferGeometry(); const positions = new Float32Array(coreConfig.count * 3); const colors = new Float32Array(coreConfig.count * 3); const color = new THREE.Color();
-  for (let i = 0; i < coreConfig.count; i++) {
-    const distance = CONFIG.accretionDisk.outerRadius + Math.random() * (coreConfig.radius - CONFIG.accretionDisk.outerRadius); const angle = Math.random() * Math.PI * 2;
-    const y = (Math.random() - 0.5) * coreConfig.maxHeight * Math.pow(1 - (distance / coreConfig.radius), 1.5);
-    positions.set([Math.cos(angle) * distance, y, Math.sin(angle) * distance], i * 3);
-    color.setHSL((0.82 + Math.random() * 0.12) % 1, 0.8 + Math.random() * 0.2, 0.6 + Math.random() * 0.4); colors.set([color.r, color.g, color.b], i * 3);
-  }
-  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3)); geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-  galaxyGroup.add(new THREE.Points(geometry, new THREE.PointsMaterial({ size: coreConfig.size, blending: THREE.AdditiveBlending, vertexColors: true, transparent: true, depthWrite: false })));
-}
-function createSphericalHalo() {
-  const haloConfig = CONFIG.particles.sphericalHalo; const geometry = new THREE.BufferGeometry(); const positions = new Float32Array(haloConfig.count * 3); const colors = new Float32Array(haloConfig.count * 3); const color = new THREE.Color(); let filled = 0;
-  while (filled < haloConfig.count) {
-    const rx = (Math.random() * 2 - 1), ry = (Math.random() * 2 - 1), rz = (Math.random() * 2 - 1);
-    if (rx * rx + ry * ry + rz * rz > 1.0) continue;
-    const x = rx * haloConfig.radiusXZ, y = ry * haloConfig.radiusY, z = rz * haloConfig.radiusXZ;
-    const distFromCenter = Math.sqrt(x * x + y * y + z * z);
-    if (distFromCenter < haloConfig.minDistFromCenter) continue;
-    if (Math.random() > Math.pow(1.0 - (distFromCenter / Math.max(haloConfig.radiusXZ, haloConfig.radiusY)) * 0.7, 1.2)) continue;
-    positions.set([x, y, z], filled * 3); color.setHSL((0.82 + Math.random() * 0.12) % 1, 0.6 + Math.random() * 0.4, 0.45 + Math.random() * 0.45); colors.set([color.r, color.g, color.b], filled * 3); filled++;
-  }
-  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3)); geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-  galaxyGroup.add(new THREE.Points(geometry, new THREE.PointsMaterial({ size: haloConfig.size, blending: THREE.AdditiveBlending, vertexColors: true, transparent: true, opacity: 0.65, depthWrite: false })));
-}
-function createBackgroundStars() {
-  const bgConfig = CONFIG.particles.backgroundStars; const geometry = new THREE.BufferGeometry(); const positions = new Float32Array(bgConfig.count * 3); const velocities = new Float32Array(bgConfig.count * 3);
-  for (let i = 0; i < bgConfig.count; i++) { positions.set([(Math.random() - 0.5) * 2 * bgConfig.radius, (Math.random() - 0.5) * 2 * bgConfig.radius, (Math.random() - 0.5) * 2 * bgConfig.radius], i * 3); velocities.set([(Math.random() - 0.5) * bgConfig.floatSpeed, (Math.random() - 0.5) * bgConfig.floatSpeed, (Math.random() - 0.5) * bgConfig.floatSpeed], i * 3); }
-  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3)); geometry.setAttribute('velocity', new THREE.BufferAttribute(velocities, 3));
-  bgStarsMesh = new THREE.Points(geometry, new THREE.PointsMaterial({ size: bgConfig.size, color: 0xffffff, transparent: true, opacity: 0.3, depthWrite: false })); bgStarsMesh.userData.isBackground = true; scene.add(bgStarsMesh);
-}
-function createFloatingSpaceParticles() {
-  const floatConfig = CONFIG.particles.floatingSpace; const geometry = new THREE.BufferGeometry(); const positions = new Float32Array(floatConfig.count * 3); const colors = new Float32Array(floatConfig.count * 3); const velocities = new Float32Array(floatConfig.count * 3);
-  const colorObj = new THREE.Color();
-  for (let i = 0; i < floatConfig.count; i++) {
-    const theta = Math.random() * Math.PI * 2; const phi = Math.acos(2 * Math.random() - 1); const radius = floatConfig.radius * Math.pow(Math.random(), 0.3);
-    positions.set([radius * Math.sin(phi) * Math.cos(theta), radius * Math.cos(phi), radius * Math.sin(phi) * Math.sin(theta)], i * 3);
-    colorObj.setHSL(0.8 + Math.random() * 0.15, 0.5 + Math.random() * 0.3, 0.7 + Math.random() * 0.25); colors.set([colorObj.r * 0.4, colorObj.g * 0.4, colorObj.b * 0.4], i * 3);
-    velocities.set([(Math.random() - 0.5) * floatConfig.speed, (Math.random() - 0.5) * floatConfig.speed, (Math.random() - 0.5) * floatConfig.speed], i * 3);
-  }
-  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3)); geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3)); geometry.setAttribute('velocity', new THREE.BufferAttribute(velocities, 3));
-  floatMesh = new THREE.Points(geometry, new THREE.PointsMaterial({ size: floatConfig.size, blending: THREE.AdditiveBlending, vertexColors: true, transparent: true, opacity: 0.5, depthWrite: false })); floatMesh.userData.isFloating = true; scene.add(floatMesh); floatingParticles.push(floatMesh);
-}
-function createLoveElements() {
-  const textConfig = CONFIG.particles.texts; const emojiConfig = CONFIG.particles.emojis;
-  for (let i = 0; i < textConfig.count; i++) {
-    const colorData = textConfig.colors[i % textConfig.colors.length];
-    const canvas = document.createElement('canvas'); canvas.width = 1536; canvas.height = 512; const ctx = canvas.getContext('2d');
-    ctx.font = '84px "Patrick Hand", cursive'; ctx.fillStyle = colorData.fill; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.shadowColor = colorData.shadow; ctx.shadowBlur = 3;
-    const words = textConfig.content[i % textConfig.content.length].split(' '); let lines = []; let cur = words[0];
-    for (let j = 1; j < words.length; j++) { const test = cur + ' ' + words[j]; if (ctx.measureText(test).width > 1436 && cur.length > 0) { lines.push(cur); cur = words[j]; } else cur = test; }
-    lines.push(cur); const startY = 256 - (lines.length - 1) * 50; lines.forEach((l, idx) => ctx.fillText(l, 768, startY + idx * 100));
-    const tex = new THREE.CanvasTexture(canvas); tex.needsUpdate = true;
-    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(45, 20), new THREE.MeshPhongMaterial({ map: tex, transparent: true, alphaTest: 0.1, emissive: colorData.fill, emissiveIntensity: 1.2, depthWrite: false }));
-    setPos(mesh); galaxyGroup.add(mesh); loveTexts.push(mesh);
-  }
-  const textureLoader = new THREE.TextureLoader();
-  for (let i = 0; i < emojiConfig.count; i++) {
-    const url = emojiConfig.content[i % emojiConfig.content.length];
-    const tex = textureLoader.load(url, t => { t.colorSpace = THREE.SRGBColorSpace; });
-    const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false }));
-    sprite.scale.set(10, 10, 1); setPos(sprite); galaxyGroup.add(sprite); loveImages.push(sprite);
-  }
-}
-function setPos(el) {
-  const minR = 40, maxR = 140, sep = 22; let valid = false, att = 0, pos = {x:0,y:0,z:0};
-  while(!valid && att<40) { att++; const r = minR + Math.random()*(maxR-minR), t = Math.random()*Math.PI*2, y = (Math.random()-0.5)*20, x = r*Math.cos(t), z = r*Math.sin(t); valid = true; for(let p of occupiedPositions) if(Math.hypot(x-p.x, y-p.y, z-p.z)<sep){valid=false;break;} if(valid) pos={x,y,z}; }
-  el.position.set(pos.x, pos.y, pos.z); occupiedPositions.push(pos);
-}
-function onWindowResize() { const w = window.innerWidth, h = window.innerHeight; renderer.setSize(w, h); composer.setSize(w, h); camera.aspect = w / h; camera.position.set(0, 45, w < 768 ? 190 : 160); camera.updateProjectionMatrix(); }
-function updateFloatingParticles() { if (floatMesh && frameCount % CONFIG.performance.floatUpdateInterval === 0) { const pos = floatMesh.geometry.attributes.position, vel = floatMesh.geometry.attributes.velocity; for (let i = 0; i < pos.count; i++) pos.setXYZ(i, pos.getX(i) + vel.getX(i), pos.getY(i) + vel.getY(i), pos.getZ(i) + vel.getZ(i)); pos.needsUpdate = true; } }
-function updateBackgroundStars() { if (bgStarsMesh && frameCount % CONFIG.performance.floatUpdateInterval === 0) { const pos = bgStarsMesh.geometry.attributes.position, vel = bgStarsMesh.geometry.attributes.velocity, r = CONFIG.particles.backgroundStars.radius; for (let i = 0; i < pos.count; i++) { let x = pos.getX(i) + vel.getX(i), y = pos.getY(i) + vel.getY(i), z = pos.getZ(i) + vel.getZ(i); if (Math.abs(x) > r) x = -Math.sign(x) * r * 0.98; if (Math.abs(y) > r) y = -Math.sign(y) * r * 0.98; if (Math.abs(z) > r) z = -Math.sign(z) * r * 0.98; pos.setXYZ(i, x, y, z); } pos.needsUpdate = true; } }
-function animate() {
-  requestAnimationFrame(animate); frameCount++; const t = clock.getElapsedTime(); galaxyGroup.rotation.y = t * CONFIG.galaxy.rotationSpeed;
-  if (blackHoleMesh) blackHoleMesh.rotation.y = t * 0.05;
-  if (frameCount % CONFIG.performance.updateInterval === 0) orbitalParticles.forEach(r => { r.rotation.y = t * r.userData.speed + r.userData.offset; });
-  updateFloatingParticles(); updateBackgroundStars();
-  loveTexts.forEach(x => x.lookAt(camera.position)); loveImages.forEach(x => x.lookAt(camera.position));
-  if (CONFIG.shootingStars.enabled && Math.random() < CONFIG.shootingStars.spawnProbability) {
-    const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array([0,0,0]), 3));
-    const mat = new THREE.PointsMaterial({ color: 0xffffff, size: 1.8, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false });
-    const s = new THREE.Points(geo, mat); s.position.set(THREE.MathUtils.randFloatSpread(1000), THREE.MathUtils.randFloat(150, 400), THREE.MathUtils.randFloatSpread(1000));
-    s.userData.velocity = new THREE.Vector3((Math.random()<0.5?-1:1)*CONFIG.shootingStars.speed, -CONFIG.shootingStars.speed*0.5, (Math.random()-0.5)*2); s.userData.life = 0; shootingStars.push(s); scene.add(s);
-  }
-  for (let i = shootingStars.length - 1; i >= 0; i--) { const s = shootingStars[i]; s.position.add(s.userData.velocity); s.userData.life++; if (s.userData.life > 350) { scene.remove(s); shootingStars.splice(i, 1); } }
-  controls.update(); composer.render();
-}
+function createBlackHole(){ const c=CONFIG.blackHole; const t=new THREE.TextureLoader().load(c.imageUrl,tex=>{tex.colorSpace=THREE.SRGBColorSpace;}); const g=new THREE.SphereGeometry(c.radius,c.segments,c.segments); const m=new THREE.MeshBasicMaterial({map:t,transparent:false,opacity:1}); blackHoleMesh=new THREE.Mesh(g,m); scene.add(blackHoleMesh); }
+function createAccretionDiskParticles(){ const c=CONFIG.accretionDisk; const g=new THREE.BufferGeometry(); const p=new Float32Array(c.particleCount*3), col=new Float32Array(c.particleCount*3), co=new THREE.Color(); for(let i=0;i<c.particleCount;i++){const r=c.innerRadius+Math.random()*(c.outerRadius-c.innerRadius), a=Math.random()*Math.PI*2, y=(Math.random()-0.5)*0.5; p.set([r*Math.cos(a),y,r*Math.sin(a)],i*3); const h=c.colors[Math.floor(Math.random()*c.colors.length)]; co.set(h); col.set([co.r*c.brightness,co.g*c.brightness,co.b*c.brightness],i*3);} g.setAttribute('position',new THREE.BufferAttribute(p,3)); g.setAttribute('color',new THREE.BufferAttribute(col,3)); diskParticles=new THREE.Points(g,new THREE.PointsMaterial({size:c.particleSize,blending:THREE.AdditiveBlending,vertexColors:true,transparent:true,opacity:0.8,depthWrite:false})); galaxyGroup.add(diskParticles); }
+function createOrbitalRings(){ const c=CONFIG.accretionDisk; for(let r=0;r<c.orbitalRings;r++){const rad=c.innerRadius+(c.outerRadius-c.innerRadius)*(r/c.orbitalRings), pp=Math.min(c.ringParticleBase+r*c.ringParticleIncrement,1000); const g=new THREE.BufferGeometry(), p=new Float32Array(pp*3), col=new Float32Array(pp*3), co=new THREE.Color(); for(let i=0;i<pp;i++){const a=(i/pp)*Math.PI*2; p.set([rad*Math.cos(a),0,rad*Math.sin(a)],i*3); co.set(c.colors[r%c.colors.length]); const b=c.brightness*(0.8+Math.random()*0.2); col.set([co.r*b,co.g*b,co.b*b],i*3);} g.setAttribute('position',new THREE.BufferAttribute(p,3)); g.setAttribute('color',new THREE.BufferAttribute(col,3)); const ring=new THREE.Points(g,new THREE.PointsMaterial({size:0.32,blending:THREE.AdditiveBlending,vertexColors:true,transparent:true,opacity:0.9,depthWrite:false})); ring.userData={speed:0.0012+r*0.0002,offset:Math.random()*Math.PI*2}; galaxyGroup.add(ring); orbitalParticles.push(ring);}}
+function createCoreStars(){ const c=CONFIG.particles.coreStars; const g=new THREE.BufferGeometry(), p=new Float32Array(c.count*3), col=new Float32Array(c.count*3), co=new THREE.Color(); for(let i=0;i<c.count;i++){const d=CONFIG.accretionDisk.outerRadius+Math.random()*(c.radius-CONFIG.accretionDisk.outerRadius), a=Math.random()*Math.PI*2, y=(Math.random()-0.5)*c.maxHeight*Math.pow(1-(d/c.radius),1.5); p.set([Math.cos(a)*d,y,Math.sin(a)*d],i*3); co.setHSL((0.82+Math.random()*0.12)%1,0.8+Math.random()*0.2,0.6+Math.random()*0.4); col.set([co.r,co.g,co.b],i*3);} g.setAttribute('position',new THREE.BufferAttribute(p,3)); g.setAttribute('color',new THREE.BufferAttribute(col,3)); galaxyGroup.add(new THREE.Points(g,new THREE.PointsMaterial({size:c.size,blending:THREE.AdditiveBlending,vertexColors:true,transparent:true,depthWrite:false})));}
+function createSphericalHalo(){ const c=CONFIG.particles.sphericalHalo; const g=new THREE.BufferGeometry(), p=new Float32Array(c.count*3), col=new Float32Array(c.count*3), co=new THREE.Color(); let f=0; while(f<c.count){const rx=(Math.random()*2-1),ry=(Math.random()*2-1),rz=(Math.random()*2-1); if(rx*rx+ry*ry+rz*rz>1)continue; const x=rx*c.radiusXZ,y=ry*c.radiusY,z=rz*c.radiusXZ, d=Math.sqrt(x*x+y*y+z*z); if(d<c.minDistFromCenter)continue; if(Math.random()>Math.pow(1-(d/Math.max(c.radiusXZ,c.radiusY))*0.7,1.2))continue; p.set([x,y,z],f*3); co.setHSL((0.82+Math.random()*0.12)%1,0.6+Math.random()*0.4,0.45+Math.random()*0.45); col.set([co.r,co.g,co.b],f*3); f++;} g.setAttribute('position',new THREE.BufferAttribute(p,3)); g.setAttribute('color',new THREE.BufferAttribute(col,3)); galaxyGroup.add(new THREE.Points(g,new THREE.PointsMaterial({size:c.size,blending:THREE.AdditiveBlending,vertexColors:true,transparent:true,opacity:0.65,depthWrite:false})));}
+function createBackgroundStars(){ const c=CONFIG.particles.backgroundStars; const g=new THREE.BufferGeometry(), p=new Float32Array(c.count*3), v=new Float32Array(c.count*3); for(let i=0;i<c.count;i++){p.set([(Math.random()-0.5)*2*c.radius,(Math.random()-0.5)*2*c.radius,(Math.random()-0.5)*2*c.radius],i*3); v.set([(Math.random()-0.5)*c.floatSpeed,(Math.random()-0.5)*c.floatSpeed,(Math.random()-0.5)*c.floatSpeed],i*3);} g.setAttribute('position',new THREE.BufferAttribute(p,3)); g.setAttribute('velocity',new THREE.BufferAttribute(v,3)); bgStarsMesh=new THREE.Points(g,new THREE.PointsMaterial({size:c.size,color:0xffffff,transparent:true,opacity:0.3,depthWrite:false})); scene.add(bgStarsMesh);}
+function createFloatingSpaceParticles(){ const c=CONFIG.particles.floatingSpace; const g=new THREE.BufferGeometry(), p=new Float32Array(c.count*3), col=new Float32Array(c.count*3), v=new Float32Array(c.count*3), co=new THREE.Color(); for(let i=0;i<c.count;i++){const th=Math.random()*Math.PI*2, ph=Math.acos(2*Math.random()-1), r=c.radius*Math.pow(Math.random(),0.3); p.set([r*Math.sin(ph)*Math.cos(th),r*Math.cos(ph),r*Math.sin(ph)*Math.sin(th)],i*3); co.setHSL(0.8+Math.random()*0.15,0.5+Math.random()*0.3,0.7+Math.random()*0.25); col.set([co.r*0.4,co.g*0.4,co.b*0.4],i*3); v.set([(Math.random()-0.5)*c.speed,(Math.random()-0.5)*c.speed,(Math.random()-0.5)*c.speed],i*3);} g.setAttribute('position',new THREE.BufferAttribute(p,3)); g.setAttribute('color',new THREE.BufferAttribute(col,3)); g.setAttribute('velocity',new THREE.BufferAttribute(v,3)); floatMesh=new THREE.Points(g,new THREE.PointsMaterial({size:c.size,blending:THREE.AdditiveBlending,vertexColors:true,transparent:true,opacity:0.5,depthWrite:false})); scene.add(floatMesh); floatingParticles.push(floatMesh);}
+function createLoveElements(){ const tc=CONFIG.particles.texts, ec=CONFIG.particles.emojis;
+  for(let i=0;i<tc.count;i++){const c=tc.colors[i%tc.colors.length]; const cv=document.createElement('canvas'); cv.width=1536; cv.height=512; const ctx=cv.getContext('2d'); ctx.font='84px "Patrick Hand", cursive'; ctx.fillStyle=c.fill; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.shadowColor=c.shadow; ctx.shadowBlur=3; const w=tc.content[i%tc.content.length].split(' '); let l=[], cur=w[0]; for(let j=1;j<w.length;j++){const t=cur+' '+w[j]; if(ctx.measureText(t).width>1436&&cur.length>0){l.push(cur); cur=w[j];}else cur=t;} l.push(cur); const sy=256-(l.length-1)*50; l.forEach((ln,idx)=>ctx.fillText(ln,768,sy+idx*100)); const tex=new THREE.CanvasTexture(cv); tex.needsUpdate=true; const m=new THREE.Mesh(new THREE.PlaneGeometry(tc.width,tc.height),new THREE.MeshPhongMaterial({map:tex,transparent:true,alphaTest:0.1,emissive:c.fill,emissiveIntensity:1.2,depthWrite:false})); setPos(m); galaxyGroup.add(m); loveTexts.push(m);}
+  const tl=new THREE.TextureLoader(); for(let i=0;i<ec.count;i++){const u=ec.content[i%ec.content.length]; const t=tl.load(u,tx=>{tx.colorSpace=THREE.SRGBColorSpace;}); const s=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthWrite:false})); s.scale.set(ec.size,ec.size,1); setPos(s); galaxyGroup.add(s); loveImages.push(s);}}
+function setPos(el){ const min=40,max=140,sep=22; let v=false,att=0, p={x:0,y:0,z:0}; while(!v&&att<40){att++; const r=min+Math.random()*(max-min), th=Math.random()*Math.PI*2, y=(Math.random()-0.5)*20, x=r*Math.cos(th), z=r*Math.sin(th); v=true; for(let op of occupiedPositions) if(Math.hypot(x-op.x,y-op.y,z-op.z)<sep){v=false;break;} if(v)p={x,y,z};} el.position.set(p.x,p.y,p.z); occupiedPositions.push(p);}
+function updateFloatingParticles(){ if(floatMesh&&frameCount%CONFIG.performance.floatUpdateInterval===0){const p=floatMesh.geometry.attributes.position, v=floatMesh.geometry.attributes.velocity; for(let i=0;i<p.count;i++) p.setXYZ(i,p.getX(i)+v.getX(i),p.getY(i)+v.getY(i),p.getZ(i)+v.getZ(i)); p.needsUpdate=true;}}
+function updateBackgroundStars(){ if(bgStarsMesh&&frameCount%CONFIG.performance.floatUpdateInterval===0){const p=bgStarsMesh.geometry.attributes.position, v=bgStarsMesh.geometry.attributes.velocity, r=CONFIG.particles.backgroundStars.radius; for(let i=0;i<p.count;i++){let x=p.getX(i)+v.getX(i), y=p.getY(i)+v.getY(i), z=p.getZ(i)+v.getZ(i); if(Math.abs(x)>r)x=-Math.sign(x)*r*0.98; if(Math.abs(y)>r)y=-Math.sign(y)*r*0.98; if(Math.abs(z)>r)z=-Math.sign(z)*r*0.98; p.setXYZ(i,x,y,z);} p.needsUpdate=true;}}
+function animate(){ requestAnimationFrame(animate); frameCount++; const t=clock.getElapsedTime(); galaxyGroup.rotation.y=t*CONFIG.galaxy.rotationSpeed; if(blackHoleMesh)blackHoleMesh.rotation.y=t*0.05; if(frameCount%CONFIG.performance.updateInterval===0)orbitalParticles.forEach(r=>{r.rotation.y=t*r.userData.speed+r.userData.offset;}); updateFloatingParticles(); updateBackgroundStars(); loveTexts.forEach(x=>x.lookAt(camera.position)); loveImages.forEach(x=>x.lookAt(camera.position)); if(CONFIG.shootingStars.enabled&&Math.random()<CONFIG.shootingStars.spawnProbability){const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.BufferAttribute(new Float32Array([0,0,0]),3)); const s=new THREE.Points(g,new THREE.PointsMaterial({color:0xffffff,size:1.8,blending:THREE.AdditiveBlending,transparent:true,depthWrite:false})); s.position.set(THREE.MathUtils.randFloatSpread(1000),THREE.MathUtils.randFloat(150,400),THREE.MathUtils.randFloatSpread(1000)); s.userData.velocity=new THREE.Vector3((Math.random()<0.5?-1:1)*CONFIG.shootingStars.speed,-CONFIG.shootingStars.speed*0.5,(Math.random()-0.5)*2); s.userData.life=0; shootingStars.push(s); scene.add(s);} for(let i=shootingStars.length-1;i>=0;i--){const s=shootingStars[i]; s.position.add(s.userData.velocity); s.userData.life++; if(s.userData.life>350){scene.remove(s); shootingStars.splice(i,1);}} controls.update(); composer.render();}
 
-// Flujo de carga
-(async () => {
-  const loaded = await loadPersonalization();
-  if (!loaded) { showError(); return; }
-  window.initGalaxy();
-  document.getElementById('entry-screen').addEventListener('click', () => {
-    const m = document.getElementById('background-music');
-    m.volume = 0.5; m.play().catch(()=>{});
-    document.getElementById('entry-screen').style.display = 'none';
-  });
-})();
+// INICIALIZACIÓN
+loadCustomData();
+document.getElementById('entry-screen').addEventListener('click',()=>{
+  if(window.hasError)return;
+  const m=document.getElementById('bg-music'); m.volume=0.5; m.play().catch(()=>{});
+  document.getElementById('entry-screen').style.display='none';
+});
 </script>
 </body>
 </html>
