@@ -28,10 +28,11 @@
     .error-card{background:rgba(255,255,255,.08);padding:35px;border-radius:24px;max-width:480px;width:90%;border:2px solid #E8A2A8;box-shadow:0 10px 40px rgba(217,127,136,.3);backdrop-filter:blur(8px)}
     .error-card h2{font-size:2.5em;color:#E8A2A8;text-shadow:0 0 20px #D97F88;margin-bottom:15px}
     .error-card p{font-size:1.2em;line-height:1.6;opacity:.9;margin:15px 0}
-    .error-card .btn{display:inline-block;margin:12px 8px;padding:14px 30px;background:linear-gradient(135deg,#E8A2A8,#D97F88);color:white;border:none;border-radius:50px;font-family:inherit;font-size:1.1em;cursor:pointer;text-decoration:none;transition:transform .3s,box-shadow .3s;box-shadow:0 4px 15px rgba(217,127,136,.4)}
+    .error-card .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin:12px 8px;padding:14px 30px;background:linear-gradient(135deg,#E8A2A8,#D97F88);color:white;border:none;border-radius:50px;font-family:inherit;font-size:1.1em;cursor:pointer;text-decoration:none;transition:transform .3s,box-shadow .3s;box-shadow:0 4px 15px rgba(217,127,136,.4)}
     .error-card .btn:hover{transform:scale(1.05);box-shadow:0 6px 20px rgba(217,127,136,.6)}
     .error-card .btn-whatsapp{background:linear-gradient(135deg,#25D366,#128C7E)}
     .error-card .btn-whatsapp:hover{background:linear-gradient(135deg,#128C7E,#075E54)}
+    .error-card .logo{width:22px;height:22px;filter:brightness(0) invert(1);}
     #loading{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;background:#000;z-index:9998;color:#F6D1D5;font-size:1.5em;flex-direction:column;gap:20px}
     .spinner{width:50px;height:50px;border:4px solid rgba(232,162,168,.3);border-top-color:#E8A2A8;border-radius:50%;animation:spin 1s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
@@ -47,7 +48,10 @@
       <p>Lo sentimos, esta galaxia no existe o el enlace ha expirado.</p>
       <p>Puedes crear una nueva o contactarme para ayudarte:</p>
       <a href="panel.html" class="btn">✨ Crear mi galaxia</a>
-      <a href="https://wa.me/51930569195" target="_blank" class="btn btn-whatsapp">💬 WhatsApp: 930569195</a>
+      <a href="https://wa.me/51930569195" target="_blank" class="btn btn-whatsapp">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" class="logo" alt="WhatsApp">
+        WhatsApp: 930569195
+      </a>
     </div>
   </div>
   <h1 id="main-title">Cargando...</h1>
@@ -81,6 +85,7 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    // ✅ Música por defecto original
     const DEFAULT_MUSIC = "https://github.com/BerMatCode/Archivos/raw/refs/heads/main/Multimedia/TikVid.io_7471239338752363781.mp3";
 
     const DEFAULT = {
@@ -131,7 +136,8 @@
             ...DEFAULT,
             ...d,
             phrases: Array.isArray(d.phrases) && d.phrases.length ? d.phrases.slice(0,15) : DEFAULT.phrases,
-            musicUrl: d.musicUrl || DEFAULT_MUSIC
+            // ✅ Si no hay música en Firebase, usar la por defecto
+            musicUrl: d.musicUrl && d.musicUrl.trim() ? d.musicUrl : DEFAULT_MUSIC
           };
           applyCfg();
           init();
@@ -144,12 +150,14 @@
       document.getElementById('credits').textContent = USER_CFG.credits || DEFAULT.credits;
       CONFIG.blackHole.imageUrl = USER_CFG.nucleusImage || DEFAULT.nucleusImage;
       CONFIG.particles.texts.content = USER_CFG.phrases || DEFAULT.phrases;
+      
+      // ✅ Música: siempre tiene un valor válido
       const music = document.getElementById('background-music');
       const musicSrc = USER_CFG.musicUrl || DEFAULT_MUSIC;
       if (music.src !== musicSrc) {
         music.src = musicSrc;
         music.volume = 0.75;
-        music.load();
+        music.load(); // Precargar para respuesta inmediata
       }
     }
 
@@ -165,9 +173,17 @@
       scene = new THREE.Scene();
       clock = new THREE.Clock();
       camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 1000);
-      renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('galaxy-canvas'), antialias: true, powerPreference: "high-performance" });
-      renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); // ✅ Optimización: limitar pixel ratio
+      
+      // ✅ Optimización WebGL
+      renderer = new THREE.WebGLRenderer({ 
+        canvas: document.getElementById('galaxy-canvas'), 
+        antialias: true, 
+        powerPreference: "high-performance",
+        alpha: false
+      });
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); // Limitar para rendimiento
       renderer.setSize(innerWidth, innerHeight);
+      renderer.setClearColor(0x000000, 1);
       
       controls = new OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true; controls.dampingFactor = 0.05;
@@ -192,7 +208,7 @@
       galaxyGroup = new THREE.Group();
       scene.add(galaxyGroup);
       
-      // === Creación de elementos (optimizada) ===
+      // Crear elementos
       createBlackHole();
       createAccretionDiskParticles();
       createOrbitalRings();
@@ -222,18 +238,27 @@
     function onWindowResize() { const w=innerWidth,h=innerHeight; renderer.setSize(w,h); composer.setSize(w,h); camera.aspect=w/h; camera.position.set(0,35,w<768?150:120); camera.updateProjectionMatrix(); }
     function animate() { requestAnimationFrame(animate); const et=clock.getElapsedTime(); galaxyGroup.rotation.y=et*CONFIG.galaxy.rotationSpeed; if(blackHoleMesh)blackHoleMesh.rotation.y=et*.05; orbitalParticles.forEach(r=>{r.rotation.y=et*r.userData.speed+r.userData.offset;}); floatingParticles.forEach(fp=>{const pos=fp.geometry.attributes.position,vel=fp.geometry.attributes.velocity;for(let i=0;i<pos.count;i++)pos.setXYZ(i,pos.getX(i)+vel.getX(i),pos.getY(i)+vel.getY(i),pos.getZ(i)+vel.getZ(i));pos.needsUpdate=true;}); const bg=scene.children.find(c=>c.userData?.isBackground); if(bg){const pos=bg.geometry.attributes.position,vel=bg.geometry.attributes.velocity;for(let i=0;i<pos.count;i++){let x=pos.getX(i)+vel.getX(i),y=pos.getY(i)+vel.getY(i),z=pos.getZ(i)+vel.getZ(i);const r=CONFIG.particles.backgroundStars.radius;if(Math.abs(x)>r)x=-Math.sign(x)*r*.95;if(Math.abs(y)>r)y=-Math.sign(y)*r*.95;if(Math.abs(z)>r)z=-Math.sign(z)*r*.95;pos.setXYZ(i,x,y,z);}pos.needsUpdate=true;} loveTexts.forEach(t=>t.lookAt(camera.position)); loveImages.forEach(i=>i.lookAt(camera.position)); if(CONFIG.shootingStars.enabled&&Math.random()<CONFIG.shootingStars.spawnProbability)createShootingStar(); shootingStars.forEach((star,idx)=>{star.position.add(star.userData.velocity);star.userData.life++;if(star.userData.life>300){scene.remove(star);shootingStars.splice(idx,1);}}); controls.update(); composer.render(); }
 
-    // ✅ Audio optimizado
+    // ✅ Música: se reproduce al tocar pantalla (garantizado)
     document.getElementById('entry-screen').addEventListener('click', async () => {
       const screen = document.getElementById('entry-screen');
       screen.style.opacity = '0';
       setTimeout(() => screen.style.display = 'none', 600);
+      
       if (!musicPlayed) {
         const music = document.getElementById('background-music');
-        if (music.src) {
-          try {
-            await music.play();
-            musicPlayed = true;
-          } catch (err) { console.warn('Audio:', err); }
+        // ✅ Asegurar que src está seteado
+        if (!music.src || music.src === location.href) {
+          music.src = USER_CFG.musicUrl || DEFAULT_MUSIC;
+          music.load();
+        }
+        try {
+          await music.play();
+          musicPlayed = true;
+          console.log('✅ Música reproduciéndose:', music.src);
+        } catch (err) {
+          console.warn('⚠️ Audio play error:', err);
+          // Reintentar con user gesture
+          music.addEventListener('canplay', () => music.play().catch(()=>{}), { once: true });
         }
       }
     }, { passive: true });
