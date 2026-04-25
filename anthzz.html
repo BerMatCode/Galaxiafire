@@ -1,347 +1,725 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>👑 Admin - BerMatCode</title>
-  <meta name="theme-color" content="#D97F88">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#D97F88" />
+  <title>𖤍BerMatCode𖤍 — Admin Galaxia</title>
   <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    :root{--p:#E8A2A8;--pd:#D97F88;--l:#F6D1D5;--s:#F2B9BF;--bg:#fff9fb;--txt:#5a3a42;--sh:0 4px 20px rgba(217,127,136,.25)}
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:'Patrick Hand',cursive;background:linear-gradient(135deg,#fff5f7,#fde8ea);color:var(--txt);min-height:100vh;padding:20px}
-    .container{max-width:1200px;margin:0 auto}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --bg:#fff9fb;--surface:#ffffff;--card:#fde8ea;--card-hover:#fdd4d9;
+      --primary:#E8A2A8;--primary-dark:#D97F88;--primary-light:#F6D1D5;
+      --glow:rgba(217,127,136,.25);
+      --text:#5a3a42;--text-sec:#7a5a62;--text-muted:#a88a92;
+      --border:#f2b9bf;--danger:#d9534f;--danger-bg:rgba(217,83,79,.12);
+      --success:#25D366;--success-bg:rgba(37,211,102,.12);
+      --warn:#f59e0b;--warn-bg:rgba(245,158,11,.12);
+      --radius:20px;--shadow:0 4px 24px rgba(217,127,136,.15);
+      --shadow-lg:0 12px 48px rgba(217,127,136,.25);
+      --transition:all .25s cubic-bezier(.4,0,.2,1);
+    }
+    body{font-family:'Patrick Hand',cursive;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px}
+    ::-webkit-scrollbar{width:5px}
+    ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{background:var(--border);border-radius:8px}
+
+    /* LOGIN */
+    .login-page{position:fixed;inset:0;background:linear-gradient(140deg,#fff9fb 0%,#fde8ea 50%,#fff9fb 100%);display:flex;align-items:center;justify-content:center;z-index:9999}
+    .login-page.hide{display:none}
+    .login-card{background:var(--surface);border-radius:24px;padding:48px 40px;width:400px;max-width:90vw;box-shadow:0 20px 60px var(--glow);text-align:center;animation:fadeUp .5s ease;border:2px solid var(--primary)}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+    .login-icon{width:68px;height:68px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 22px;font-size:1.6rem;color:#fff;box-shadow:0 10px 35px var(--glow)}
+    .login-card h1{font-size:1.5rem;font-weight:700;margin-bottom:4px;color:var(--primary-dark)}
+    .login-card p{color:var(--text-muted);font-size:.9rem;margin-bottom:26px}
+    .login-input{width:100%;padding:14px 18px;background:var(--card);border:2px solid var(--border);border-radius:14px;color:var(--text);font-size:.95rem;outline:none;transition:var(--transition);text-align:center;font-family:'Patrick Hand',cursive}
+    .login-input:focus{border-color:var(--primary);box-shadow:0 0 0 4px var(--glow)}
+    .login-btn{width:100%;margin-top:14px;padding:14px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border:none;border-radius:14px;font-size:.95rem;font-weight:600;cursor:pointer;transition:var(--transition);font-family:'Patrick Hand',cursive}
+    .login-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px var(--glow)}
+    .login-btn:active{transform:translateY(0)}
+    .login-err{color:var(--danger);font-size:.8rem;margin-top:10px;min-height:16px}
+
+    /* APP */
+    .app{display:none}.app.active{display:block}
+
+    /* HEADER */
+    .header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:2px solid var(--border)}
+    .header-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 24px}
+    .brand{font-weight:700;font-size:1.2rem;color:var(--primary-dark);letter-spacing:-.5px}
+    .header-right{display:flex;align-items:center;gap:8px}
+    .auto-badge{font-size:.75rem;color:var(--text-muted);display:flex;align-items:center;gap:5px;padding:6px 12px;background:var(--card);border-radius:10px;border:1.5px solid var(--border);font-family:'Patrick Hand',cursive}
+    .dot{width:7px;height:7px;background:var(--success);border-radius:50%;animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+    /* BUTTONS */
+    .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border:none;border-radius:12px;font-size:.85rem;font-weight:500;cursor:pointer;transition:var(--transition);font-family:'Patrick Hand',cursive;white-space:nowrap}
+    .btn:active{transform:scale(.96)}
+    .btn-g{background:transparent;color:var(--text-sec);border:2px solid var(--border)}
+    .btn-g:hover{border-color:var(--primary);color:var(--primary);background:var(--card)}
+    .btn-p{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff}
+    .btn-p:hover{box-shadow:0 4px 18px var(--glow)}
+    .btn-d{background:var(--danger-bg);color:var(--danger)}
+    .btn-d:hover{background:rgba(217,83,79,.2)}
+    .btn-s{background:var(--success-bg);color:var(--success)}
+    .btn-s:hover{background:rgba(37,211,102,.2)}
+    .btn-i{background:var(--card);color:var(--primary);border:2px solid var(--border)}
+    .btn-i:hover{border-color:var(--primary);background:var(--card-hover)}
+
+    /* CENTER CONTAINER */
+    .container{max-width:720px;margin:0 auto;padding:28px 20px 80px;display:flex;flex-direction:column;align-items:center}
+
+    /* SEARCH */
+    .search-wrap{width:100%;margin-bottom:24px;position:relative}
+    .search-wrap>i{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:.9rem}
+    .search-inp{width:100%;padding:13px 16px 13px 42px;background:var(--surface);border:2px solid var(--border);border-radius:14px;color:var(--text);font-size:.9rem;outline:none;transition:var(--transition);font-family:'Patrick Hand',cursive}
+    .search-inp:focus{border-color:var(--primary);box-shadow:0 0 0 4px var(--glow)}
+
+    /* CARDS */
+    .list{width:100%;display:flex;flex-direction:column;gap:12px}
+    .card{background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;align-items:center;justify-content:space-between;gap:16px;transition:var(--transition);width:100%}
+    .card:hover{box-shadow:var(--shadow-lg);border-color:var(--primary)}
+    .card-left{flex:1;min-width:0}
+    .card-left h3{font-size:1rem;font-weight:600;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--primary-dark)}
+    .card-left .meta{font-size:.8rem;color:var(--text-muted);display:flex;align-items:center;gap:10px;margin-bottom:7px}
+    .card-left .meta>i{font-size:.55rem;color:var(--primary)}
+    .card-left .prev{font-size:.88rem;color:var(--text-sec);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
     
-    /* Login */
-    #loginScreen{display:flex;justify-content:center;align-items:center;min-height:80vh}
-    .login-card{background:white;border-radius:24px;padding:40px;max-width:400px;width:100%;box-shadow:var(--sh);border:2px solid var(--p);text-align:center}
-    .login-card h2{color:var(--pd);margin-bottom:20px;font-size:2em}
-    .login-card input{width:100%;padding:12px 15px;margin:10px 0;border:2px solid var(--s);border-radius:12px;font-family:inherit;font-size:1.1em}
-    .login-card input:focus{outline:none;border-color:var(--p)}
-    .login-card .btn{width:100%;padding:14px;margin-top:15px;border:none;border-radius:50px;font-family:inherit;font-size:1.2em;cursor:pointer;background:linear-gradient(135deg,var(--p),var(--pd));color:white;transition:transform .3s}
-    .login-card .btn:hover{transform:translateY(-3px)}
-    #loginErr{color:#d9534f;margin-top:10px;display:none}
+    /* TAGS - ETIQUETAS PERSISTENTES */
+    .tags{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+    .tag{font-size:.72rem;padding:5px 12px;border-radius:22px;border:2px solid var(--border);background:var(--surface);color:var(--text-muted);cursor:pointer;transition:var(--transition);display:inline-flex;align-items:center;gap:4px;user-select:none;font-weight:500;font-family:'Patrick Hand',cursive}
+    .tag:hover{transform:translateY(-1px);box-shadow:0 2px 8px rgba(217,127,136,.2)}
     
-    /* Dashboard */
-    #dashboard{display:none}
-    header{display:flex;justify-content:space-between;align-items:center;padding:20px 0;margin-bottom:25px;border-bottom:2px solid var(--s)}
-    header h1{color:var(--pd);font-size:2em}
-    .logout-btn{padding:10px 25px;background:white;border:2px solid var(--p);border-radius:50px;font-family:inherit;color:var(--txt);cursor:pointer;transition:.3s}
-    .logout-btn:hover{background:var(--p);color:white}
+    /* Estado NEUTRO */
+    .tag.neutral{background:var(--surface);border-color:var(--border);color:var(--text-muted)}
+    .tag.neutral:hover{border-color:var(--primary);color:var(--primary);background:var(--card)}
     
-    /* Stats */
-    .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-bottom:25px}
-    .stat-card{background:white;padding:20px;border-radius:16px;box-shadow:var(--sh);border-left:4px solid var(--p);text-align:center}
-    .stat-card .num{font-size:2em;color:var(--pd);font-weight:bold}
-    .stat-card .label{opacity:.8;font-size:.95em}
+    /* Estado 24h - ROJO */
+    .tag.is-24h{background:var(--danger-bg);border-color:var(--danger);color:var(--danger);font-weight:600}
+    .tag.is-24h:hover{background:rgba(217,83,79,.2)}
     
-    /* Table */
-    .table-container{background:white;border-radius:20px;box-shadow:var(--sh);overflow:hidden}
-    table{width:100%;border-collapse:collapse}
-    th{background:linear-gradient(135deg,var(--p),var(--pd));color:white;padding:15px;text-align:left;font-weight:bold}
-    td{padding:12px 15px;border-bottom:1px solid var(--s)}
-    tr:hover{background:#fff5f7}
-    .actions{display:flex;gap:8px}
-    .btn-sm{padding:6px 12px;border:none;border-radius:8px;font-family:inherit;font-size:.9em;cursor:pointer;transition:.2s}
-    .btn-view{background:var(--l);color:var(--txt)}
-    .btn-edit{background:var(--p);color:white}
-    .btn-delete{background:#ff6b6b;color:white}
-    .btn-sm:hover{transform:scale(1.05)}
+    /* Estado Permanente - VERDE */
+    .tag.is-permanent{background:var(--success-bg);border-color:var(--success);color:var(--success);font-weight:600}
+    .tag.is-permanent:hover{background:rgba(37,211,102,.2)}
     
-    /* Modal */
-    .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);justify-content:center;align-items:center;z-index:1000;backdrop-filter:blur(6px)}
-    .modal.active{display:flex;animation:fadeIn .3s}
-    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-    .modal-content{background:white;padding:30px;border-radius:20px;max-width:600px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.25);border:3px solid var(--p)}
-    .modal-content h3{color:var(--pd);margin-bottom:20px;font-size:1.6em}
-    .modal-content .field{margin:15px 0}
-    .modal-content label{display:block;font-weight:bold;color:var(--pd);margin-bottom:5px}
-    .modal-content input,.modal-content textarea{width:100%;padding:10px;border:2px solid var(--s);border-radius:10px;font-family:inherit}
-    .modal-content textarea{min-height:100px;resize:vertical}
-    .modal-buttons{display:flex;gap:12px;justify-content:flex-end;margin-top:25px}
-    .modal-buttons button{padding:10px 25px;border:none;border-radius:50px;font-family:inherit;font-size:1em;cursor:pointer}
-    .modal-buttons .save{background:var(--p);color:white}
-    .modal-buttons .cancel{background:#e8e8e8;color:var(--txt)}
+    .tag i{font-size:.65rem}
     
-    /* Responsive */
-    @media(max-width:768px){table{font-size:.9em}th,td{padding:10px 8px}.actions{flex-direction:column}}
+    .card-right{display:flex;flex-direction:column;gap:6px;min-width:110px}
+    .card-right .btn{width:100%;justify-content:center;font-size:.8rem;padding:8px 12px}
+    .empty{text-align:center;padding:70px 20px;color:var(--text-muted)}
+    .empty i{font-size:3rem;margin-bottom:16px;display:block;opacity:.15;color:var(--primary)}
+
+    /* MODALS */
+    .ov{position:fixed;inset:0;background:rgba(90,58,66,.45);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:all .25s ease}
+    .ov.on{opacity:1;visibility:visible}
+    .m-box{background:var(--surface);border:2.5px solid var(--border);border-radius:22px;width:540px;max-width:94vw;max-height:85vh;overflow-y:auto;transform:translateY(20px) scale(.97);transition:all .3s cubic-bezier(.4,0,.2,1);box-shadow:0 20px 60px rgba(217,127,136,.25)}
+    .ov.on .m-box{transform:translateY(0) scale(1)}
+    .m-head{padding:18px 22px;border-bottom:2px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+    .m-head h3{font-size:1rem;font-weight:600;display:flex;align-items:center;gap:8px;color:var(--primary-dark)}
+    .m-head h3>i{color:var(--primary)}
+    .m-x{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:none;border-radius:10px;background:transparent;color:var(--text-muted);font-size:1.1rem;cursor:pointer;transition:var(--transition)}
+    .m-x:hover{background:var(--card);color:var(--text)}
+    .m-body{padding:22px}
+    .m-foot{padding:14px 22px;border-top:2px solid var(--border);display:flex;justify-content:flex-end;gap:8px}
+
+    /* FORM */
+    .fg{margin-bottom:18px}
+    .fg label{display:block;font-size:.8rem;font-weight:600;color:var(--primary-dark);margin-bottom:7px;text-transform:uppercase;letter-spacing:.4px}
+    .fi,.ft{width:100%;padding:12px 15px;background:var(--card);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:.9rem;font-family:'Patrick Hand',cursive;outline:none;transition:var(--transition)}
+    .fi:focus,.ft:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--glow)}
+    .ft{min-height:100px;resize:vertical;line-height:1.6}
+    .hint{font-size:.76rem;color:var(--text-muted);margin-top:5px}
+
+    /* DETAIL VIEW */
+    .detail-hero{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border-radius:16px;padding:22px;margin-bottom:20px;text-align:center;box-shadow:0 8px 25px var(--glow)}
+    .detail-hero h2{font-size:1.25rem;font-weight:700;margin-bottom:8px}
+    .detail-hero .time{font-size:.85rem;opacity:.95;display:flex;align-items:center;justify-content:center;gap:6px}
+    .detail-hero .time i{font-size:.75rem}
+    .detail-status{display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+    .detail-status .tag{cursor:default;font-size:.75rem;padding:5px 14px}
+
+    .d-block{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px}
+    .d-block .d-label{font-size:.75rem;font-weight:700;color:var(--primary-dark);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+    .d-block .d-label i{font-size:.75rem}
+    .d-block .d-val{font-size:.9rem;line-height:1.65;color:var(--text-sec);word-break:break-word}
+    .d-block .d-val.msg{white-space:pre-line;max-height:200px;overflow-y:auto}
+    .d-block .d-val a{color:var(--primary);text-decoration:none}
+    .d-block .d-val a:hover{text-decoration:underline}
+
+    .d-link-box{background:var(--card);border:2.5px solid var(--primary);border-radius:14px;padding:14px;text-align:center}
+    .d-link-box .d-label{justify-content:center;margin-bottom:8px}
+    .d-link-box a{color:var(--primary);font-size:.85rem;word-break:break-all;text-decoration:none}
+
+    /* CONFIRM */
+    .confirm-body{text-align:center;padding:32px 22px}
+    .confirm-body>i{font-size:2.5rem;margin-bottom:16px;display:block}
+    .confirm-body h4{font-size:1.1rem;margin-bottom:8px;color:var(--text)}
+    .confirm-body p{font-size:.88rem;color:var(--text-muted)}
+    .confirm-foot{display:flex;gap:8px;justify-content:center;padding:0 22px 22px}
+    .confirm-foot .btn{padding:10px 26px;font-size:.88rem}
+
+    /* SETTINGS */
+    .set-wrap{position:relative}
+    .set-drop{position:absolute;top:calc(100% + 8px);right:0;width:240px;background:var(--surface);border:2.5px solid var(--border);border-radius:16px;box-shadow:0 12px 40px rgba(217,127,136,.2);padding:6px;opacity:0;visibility:hidden;transform:translateY(-8px);transition:all .2s ease;z-index:60}
+    .set-drop.open{opacity:1;visibility:visible;transform:translateY(0)}
+    .set-item{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:12px;font-size:.88rem;color:var(--text-sec);cursor:pointer;transition:var(--transition);border:none;background:none;width:100%;text-align:left;font-family:'Patrick Hand',cursive}
+    .set-item:hover{background:var(--card);color:var(--primary)}
+    .set-item>i{width:18px;text-align:center;font-size:.9rem}
+    .set-item.danger{color:var(--danger)}
+    .set-item.danger:hover{background:var(--danger-bg)}
+    .set-div{height:1px;background:var(--border);margin:4px 8px}
+
+    /* TOAST */
+    .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--surface);border:2.5px solid var(--border);color:var(--text);padding:12px 22px;border-radius:14px;font-size:.88rem;font-weight:500;z-index:5000;transition:all .3s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;gap:8px;box-shadow:0 10px 35px rgba(217,127,136,.25);opacity:0;pointer-events:none;font-family:'Patrick Hand',cursive}
+    .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+    .toast.ts{border-color:var(--success);color:var(--success)}
+    .toast.te{border-color:var(--danger);color:var(--danger)}
+    .toast.ti{border-color:var(--primary);color:var(--primary)}
+
+    /* LOADER */
+    .loader-page{position:fixed;inset:0;background:var(--bg);z-index:5000;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .3s}
+    .loader-page.hide{opacity:0;pointer-events:none}
+    .l-ring{width:42px;height:42px;border:3.5px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:sp .7s linear infinite;margin-bottom:14px}
+    @keyframes sp{to{transform:rotate(360deg)}}
+    .loader-page span{font-size:.88rem;color:var(--text-muted);font-family:'Patrick Hand',cursive}
+
+    /* PROCESSING OVERLAY */
+    .proc-overlay{position:absolute;inset:0;background:rgba(255,255,255,.94);backdrop-filter:blur(4px);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:22px;z-index:10;opacity:0;visibility:hidden;transition:all .2s ease}
+    .proc-overlay.active{opacity:1;visibility:visible}
+    .proc-overlay .p-ring{width:38px;height:38px;border:3.5px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:sp .7s linear infinite;margin-bottom:12px}
+    .proc-overlay span{font-size:.9rem;font-weight:600;color:var(--primary);font-family:'Patrick Hand',cursive}
+
+    /* FIXED CREDITS */
+    .credits{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-top:2px solid var(--border);text-align:center;padding:14px 20px;font-size:.85rem;color:var(--text-muted);z-index:40;font-family:'Patrick Hand',cursive}
+    .credits strong{color:var(--primary-dark);font-weight:700}
+    .credits .dev{font-size:.75rem;margin-top:3px;color:var(--text-sec)}
+
+    /* SETTINGS MODAL */
+    .s-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:2px solid var(--border)}
+    .s-row:last-child{border:none}
+    .s-row .s-label{font-size:.88rem;font-weight:500;color:var(--text);display:flex;align-items:center;gap:8px;font-family:'Patrick Hand',cursive}
+    .s-row .s-label>i{color:var(--primary);width:18px;text-align:center}
+    .s-row .s-val{font-size:.85rem;color:var(--text-muted);text-align:right}
+
+    @media(max-width:600px){
+      .card{flex-direction:column;align-items:flex-start}
+      .card-right{flex-direction:row;width:100%;min-width:0}
+      .header-inner{padding:0 16px}
+      .container{padding:20px 16px 60px}
+      .tags{margin-top:8px}
+      .m-box{width:94vw}
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Login -->
-    <div id="loginScreen">
-      <div class="login-card">
-        <h2>👑 Acceso Admin</h2>
-        <p style="opacity:.8;margin-bottom:20px">Ingresa la contraseña para gestionar galaxias</p>
-        <input type="password" id="adminPass" placeholder="••••••" maxlength="10">
-        <p id="loginErr">❌ Contraseña incorrecta</p>
-        <button class="btn" id="loginBtn">🔐 Ingresar</button>
-      </div>
+
+  <!-- LOADER -->
+  <div class="loader-page" id="loader"><div class="l-ring"></div><span>Conectando a la galaxia... ✨</span></div>
+
+  <!-- LOGIN -->
+  <div class="login-page" id="loginPage">
+    <div class="login-card">
+      <div class="login-icon"><i class="fas fa-shield-halved"></i></div>
+      <h1>𖤍BerMatCode𖤍 Admin</h1>
+      <p>Panel de administración de galaxias</p>
+      <input class="login-input" type="password" id="loginPw" placeholder="Ingresa la clave maestra" autocomplete="off">
+      <button class="login-btn" id="loginBtn"><i class="fas fa-arrow-right-to-bracket"></i> Ingresar</button>
+      <div class="login-err" id="loginErr"></div>
     </div>
+  </div>
 
-    <!-- Dashboard -->
-    <div id="dashboard">
-      <header>
-        <h1>👑 Panel de Administración</h1>
-        <button class="logout-btn" id="logoutBtn">Cerrar Sesión</button>
-      </header>
-
-      <div class="stats">
-        <div class="stat-card"><div class="num" id="totalGalaxies">0</div><div class="label">Galaxias Creadas</div></div>
-        <div class="stat-card"><div class="num" id="todayGalaxies">0</div><div class="label">Hoy</div></div>
-        <div class="stat-card"><div class="num" id="withMusic">0</div><div class="label">Con Música</div></div>
+  <!-- APP -->
+  <div class="app" id="app">
+    <header class="header">
+      <div class="header-inner">
+        <div class="brand">𖤍𝐆𝐚𝐥𝐚𝐱𝐢𝐚 𝐀𝐝𝐦𝐢𝐧𖤍</div>
+        <div class="header-right">
+          <div class="auto-badge"><div class="dot"></div>Auto 5s</div>
+          <div class="set-wrap">
+            <button class="btn btn-g" id="setBtn"><i class="fas fa-gear"></i></button>
+            <div class="set-drop" id="setDrop">
+              <button class="set-item" onclick="doOpenSettings()"><i class="fas fa-sliders"></i> Opciones</button>
+              <button class="set-item" onclick="doLoadData()"><i class="fas fa-arrows-rotate"></i> Actualizar datos</button>
+              <div class="set-div"></div>
+              <button class="set-item" onclick="doExport()"><i class="fas fa-download"></i> Exportar backup</button>
+              <div class="set-div"></div>
+              <button class="set-item danger" onclick="doAskLogout()"><i class="fas fa-right-from-bracket"></i> Cerrar sesión</button>
+            </div>
+          </div>
+        </div>
       </div>
+    </header>
 
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Título</th>
-              <th>Frases</th>
-              <th>Música</th>
-              <th>Creado</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="galaxyTable"></tbody>
-        </table>
+    <div class="container">
+      <div class="search-wrap">
+        <i class="fas fa-magnifying-glass"></i>
+        <input class="search-inp" type="text" id="searchInput" placeholder="Buscar por título o frases...">
+      </div>
+      <div class="list" id="msgList"></div>
+    </div>
+  </div>
+
+  <!-- FIXED CREDITS -->
+  <div class="credits" id="credits" style="display:none">
+    <div><strong>𖤍ADMIN GALAXIA𖤍</strong></div>
+    <div class="dev">By AnthZz Berrocal - Todos los derechos reservados 🌹</div>
+  </div>
+
+  <!-- VIEW MODAL -->
+  <div class="ov" id="ovView">
+    <div class="m-box">
+      <div class="m-head">
+        <h3><i class="fas fa-eye"></i> Detalle de Galaxia</h3>
+        <button class="m-x" onclick="cm('ovView')"><i class="fas fa-xmark"></i></button>
+      </div>
+      <div class="m-body" id="viewBody"></div>
+      <div class="m-foot">
+        <button class="btn btn-g" onclick="cm('ovView')"><i class="fas fa-xmark"></i> Cerrar</button>
       </div>
     </div>
   </div>
 
-  <!-- Modal Editar -->
-  <div class="modal" id="editModal">
-    <div class="modal-content">
-      <h3>✏️ Editar Galaxia</h3>
-      <input type="hidden" id="editId">
-      <div class="field">
-        <label>Título</label>
-        <input type="text" id="editTitle" maxlength="100">
+  <!-- EDIT MODAL -->
+  <div class="ov" id="ovEdit">
+    <div class="m-box" style="position:relative">
+      <div class="proc-overlay" id="editProc"><div class="p-ring"></div><span>Guardando cambios... ✨</span></div>
+      <div class="m-head">
+        <h3><i class="fas fa-pen-to-square"></i> Editar Galaxia</h3>
+        <button class="m-x" onclick="cm('ovEdit')"><i class="fas fa-xmark"></i></button>
       </div>
-      <div class="field">
-        <label>Frases (una por línea, máx 15)</label>
-        <textarea id="editPhrases" maxlength="500"></textarea>
+      <div class="m-body">
+        <div class="fg"><label>Título Principal</label><input class="fi" id="eTitle" placeholder="Ej: Te Amo Yorchi"></div>
+        <div class="fg"><label>Frases de Amor (separadas por coma)</label><textarea class="ft" id="ePhrases" placeholder="Siempre contigo, Eres mi calma, Me haces feliz..."></textarea><div class="hint">Máximo 15 frases. Sepáralas con coma</div></div>
+        <div class="fg"><label>Música (URL MP3 directo)</label><input class="fi" id="eMusic" placeholder="https://.../cancion.mp3"></div>
+        <div class="fg"><label>Imagen Núcleo (URL)</label><input class="fi" id="eNucleus" placeholder="https://.../imagen.png"></div>
+        <div class="fg"><label>Créditos</label><input class="fi" id="eCredits" placeholder="𖤍BerMatCode𖤍"></div>
       </div>
-      <div class="field">
-        <label>Música (URL MP3)</label>
-        <input type="url" id="editMusic" maxlength="500">
-      </div>
-      <div class="field">
-        <label>Imagen Núcleo (URL)</label>
-        <input type="url" id="editNucleus" maxlength="500">
-      </div>
-      <div class="field">
-        <label>Créditos</label>
-        <input type="text" id="editCredits" maxlength="60">
-      </div>
-      <div class="modal-buttons">
-        <button class="cancel" id="editCancel">Cancelar</button>
-        <button class="save" id="editSave">💾 Guardar Cambios</button>
+      <div class="m-foot">
+        <button class="btn btn-g" onclick="cm('ovEdit')"><i class="fas fa-xmark"></i> Cancelar</button>
+        <button class="btn btn-p" id="saveBtn"><i class="fas fa-check"></i> Guardar Cambios</button>
       </div>
     </div>
   </div>
 
-  <!-- Modal Loading -->
-  <div class="modal" id="loadModal">
-    <div class="modal-content" style="text-align:center">
-      <div style="width:40px;height:40px;border:4px solid var(--s);border-top-color:var(--p);border-radius:50%;margin:20px auto;animation:spin 1s linear infinite"></div>
-      <p>Cargando...</p>
+  <!-- CONFIRM DELETE -->
+  <div class="ov" id="ovDel">
+    <div class="m-box" style="width:420px;position:relative">
+      <div class="proc-overlay" id="delProc"><div class="p-ring"></div><span>Eliminando galaxia... ✨</span></div>
+      <div class="confirm-body">
+        <i class="fas fa-triangle-exclamation" style="color:var(--warn)"></i>
+        <h4>¿Eliminar esta Galaxia?</h4>
+        <p>Esta acción no se puede deshacer. El enlace dejará de funcionar.</p>
+      </div>
+      <div class="confirm-foot">
+        <button class="btn btn-g" onclick="cm('ovDel')">Cancelar</button>
+        <button class="btn btn-d" id="confirmDelBtn"><i class="fas fa-trash"></i> Eliminar</button>
+      </div>
     </div>
   </div>
-  <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+
+  <!-- CONFIRM LOGOUT -->
+  <div class="ov" id="ovLogout">
+    <div class="m-box" style="width:420px">
+      <div class="confirm-body">
+        <i class="fas fa-right-from-bracket" style="color:var(--primary)"></i>
+        <h4>¿Cerrar sesión?</h4>
+        <p>Se te pedirá la clave maestra para volver a ingresar.</p>
+      </div>
+      <div class="confirm-foot">
+        <button class="btn btn-g" onclick="cm('ovLogout')">Cancelar</button>
+        <button class="btn btn-p" id="confirmLogoutBtn"><i class="fas fa-right-from-bracket"></i> Cerrar Sesión</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS MODAL -->
+  <div class="ov" id="ovSettings">
+    <div class="m-box">
+      <div class="m-head">
+        <h3><i class="fas fa-sliders"></i> Opciones del Sistema</h3>
+        <button class="m-x" onclick="cm('ovSettings')"><i class="fas fa-xmark"></i></button>
+      </div>
+      <div class="m-body">
+        <div class="s-row">
+          <div class="s-label"><i class="fas fa-clock"></i> Actualización</div>
+          <div class="s-val">Cada 5 segundos</div>
+        </div>
+        <div class="s-row">
+          <div class="s-label"><i class="fas fa-database"></i> Base de datos</div>
+          <div class="s-val">Firebase Firestore</div>
+        </div>
+        <div class="s-row">
+          <div class="s-label"><i class="fas fa-project-diagram"></i> Proyecto</div>
+          <div class="s-val">galaxia-2026</div>
+        </div>
+        <div class="s-row">
+          <div class="s-label"><i class="fas fa-code"></i> Desarrollador</div>
+          <div class="s-val">BerMatCode<br><span style="font-size:.76rem">AnthZz Berrocal</span></div>
+        </div>
+        <div class="s-row">
+          <div class="s-label"><i class="fas fa-copyright"></i> Licencia</div>
+          <div class="s-val">Gratuito &copy; 2026</div>
+        </div>
+      </div>
+      <div class="m-foot">
+        <button class="btn btn-g" onclick="cm('ovSettings')"><i class="fas fa-xmark"></i> Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, doc, deleteDoc, updateDoc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAVQn_t-gwbA75W6c1FLLP7OnzuU2jhbs0",
-      authDomain: "galaxia-2026.firebaseapp.com",
-      projectId: "galaxia-2026",
-      storageBucket: "galaxia-2026.firebasestorage.app",
-      messagingSenderId: "30252830415",
-      appId: "1:30252830415:web:463fbdc73c3fb730d671ba",
-      measurementId: "G-XCSVYH6KEG"
-    };
-    const app = initializeApp(firebaseConfig);
+    const app = initializeApp({
+      apiKey:"AIzaSyAVQn_t-gwbA75W6c1FLLP7OnzuU2jhbs0",
+      authDomain:"galaxia-2026.firebaseapp.com",
+      projectId:"galaxia-2026",
+      storageBucket:"galaxia-2026.firebasestorage.app",
+      messagingSenderId:"30252830415",
+      appId:"1:30252830415:web:463fbdc73c3fb730d671ba",
+      measurementId:"G-XCSVYH6KEG"
+    });
     const db = getFirestore(app);
+    window.__db = db;
+    window.__items = [];
+    window.__editId = null;
+    window.__delId = null;
+    
+    // 🔹 CONFIGURACIÓN DE ETIQUETAS PERSISTENTES
+    const TAGS_KEY = "galaxia_admin_tags";
+    const BASE_LINK = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '') + '/index.html';
 
-    const VALID_PASS = "101123";
-    const loginScreen = document.getElementById('loginScreen');
-    const dashboard = document.getElementById('dashboard');
-    const adminPass = document.getElementById('adminPass');
-    const loginBtn = document.getElementById('loginBtn');
-    const loginErr = document.getElementById('loginErr');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const galaxyTable = document.getElementById('galaxyTable');
-    const totalGalaxies = document.getElementById('totalGalaxies');
-    const todayGalaxies = document.getElementById('todayGalaxies');
-    const withMusic = document.getElementById('withMusic');
-    const editModal = document.getElementById('editModal');
-    const editId = document.getElementById('editId');
-    const editTitle = document.getElementById('editTitle');
-    const editPhrases = document.getElementById('editPhrases');
-    const editMusic = document.getElementById('editMusic');
-    const editNucleus = document.getElementById('editNucleus');
-    const editCredits = document.getElementById('editCredits');
-    const editCancel = document.getElementById('editCancel');
-    const editSave = document.getElementById('editSave');
-    const loadModal = document.getElementById('loadModal');
+    /* ==== GESTIÓN DE ETIQUETAS EN LOCALSTORAGE ==== */
+    function loadTagsState() {
+      try {
+        const raw = localStorage.getItem(TAGS_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch(e) { console.warn("Error cargando etiquetas:", e); return {}; }
+    }
+    function saveTagsState(state) {
+      try { localStorage.setItem(TAGS_KEY, JSON.stringify(state)); return true; }
+      catch(e) { console.warn("Error guardando etiquetas:", e); return false; }
+    }
+    function getProjectTagState(projectId) {
+      const state = loadTagsState();
+      return state[projectId] || null;
+    }
+    function toggleProjectTag(projectId, type) {
+      const state = loadTagsState();
+      const current = state[projectId] || null;
+      if (current === type) { delete state[projectId]; }
+      else { state[projectId] = type; }
+      saveTagsState(state);
+      return state[projectId];
+    }
+    function getTagClass(projectId, type) {
+      const state = getProjectTagState(projectId);
+      if (state === type) { return type === '24h' ? 'is-24h' : 'is-permanent'; }
+      return 'neutral';
+    }
+    function getTagIcon(type) { return type === '24h' ? 'fa-clock' : 'fa-infinity'; }
 
-    // Login
-    loginBtn.onclick = () => {
-      if (adminPass.value.trim() === VALID_PASS) {
-        loginScreen.style.display = 'none';
-        dashboard.style.display = 'block';
-        loadGalaxies();
+    /* ---- AUTH ---- */
+    window.__doLogin = function() {
+      const pw = document.getElementById("loginPw").value;
+      if (pw === "BerMatCode") {
+        localStorage.setItem("galaxia_admin", "1");
+        document.getElementById("loginPage").classList.add("hide");
+        document.getElementById("app").classList.add("active");
+        document.getElementById("credits").style.display = "block";
+        document.getElementById("loginErr").textContent = "";
+        doLoadData();
+        toast("✨ Bienvenido al panel de galaxias", "success");
       } else {
-        loginErr.style.display = 'block';
-        adminPass.value = '';
+        document.getElementById("loginErr").textContent = "❌ Clave incorrecta";
+        document.getElementById("loginPw").value = "";
+        document.getElementById("loginPw").focus();
       }
     };
-    adminPass.onkeypress = e => { if (e.key === 'Enter') loginBtn.click(); };
-    logoutBtn.onclick = () => { location.reload(); };
 
-    // Cargar galaxias
-    async function loadGalaxies() {
-      loadModal.classList.add('active');
-      try {
-        const snap = await getDocs(collection(db, "galaxies"));
-        const galaxies = [];
-        snap.forEach(doc => { galaxies.push({ id: doc.id, ...doc.data() }); });
-        
-        // Ordenar por fecha (más reciente primero)
-        galaxies.sort((a,b) => (b.createdAt||0) - (a.createdAt||0));
-        
-        // Stats
-        totalGalaxies.textContent = galaxies.length;
-        const today = new Date().toDateString();
-        todayGalaxies.textContent = galaxies.filter(g => new Date(g.createdAt||0).toDateString() === today).length;
-        withMusic.textContent = galaxies.filter(g => g.musicUrl && g.musicUrl !== "https://github.com/BerMatCode/Archivos/raw/refs/heads/main/Multimedia/TikVid.io_7471239338752363781.mp3").length;
-        
-        // Render table
-        renderTable(galaxies);
-      } catch (err) {
-        console.error('Error cargando galaxias:', err);
-        alert('❌ Error al cargar datos');
-      } finally {
-        loadModal.classList.remove('active');
+    function checkSession() {
+      if (localStorage.getItem("galaxia_admin") === "1") {
+        document.getElementById("loginPage").classList.add("hide");
+        document.getElementById("app").classList.add("active");
+        document.getElementById("credits").style.display = "block";
+        doLoadData();
+      } else {
+        document.getElementById("loader").classList.add("hide");
       }
     }
 
-    function renderTable(galaxies) {
-      galaxyTable.innerHTML = '';
-      if (galaxies.length === 0) {
-        galaxyTable.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:30px;opacity:.7">No hay galaxias creadas aún</td></tr>';
+    /* ---- FIREBASE ---- */
+    window.doLoadData = async function() {
+      try {
+        const q = query(collection(db, "galaxies"), orderBy("createdAt", "desc"));
+        const snap = await getDocs(q);
+        window.__items = [];
+        snap.forEach(d => window.__items.push({ id: d.id, ...d.data() }));
+        renderList();
+      } catch(e) { toast("Error: " + e.message, "error"); }
+    };
+
+    /* ---- RENDER LISTA CON ETIQUETAS PERSISTENTES ---- */
+    window.renderList = function() {
+      const term = (document.getElementById("searchInput").value || "").toLowerCase();
+      const list = document.getElementById("msgList");
+      const filtered = window.__items.filter(i =>
+        (i.title || "").toLowerCase().includes(term) || 
+        ((i.phrases || []).join(" ").toLowerCase().includes(term))
+      );
+      
+      if (!filtered.length) {
+        list.innerHTML = '<div class="empty"><i class="fas fa-star"></i><p>No hay galaxias creadas aún</p></div>';
         return;
       }
       
-      galaxies.forEach(g => {
-        const tr = document.createElement('tr');
-        const created = g.createdAt ? new Date(g.createdAt).toLocaleString('es-PE', {dateStyle:'short',timeStyle:'short'}) : '-';
-        const phrasesCount = Array.isArray(g.phrases) ? g.phrases.length : 0;
-        const hasCustomMusic = g.musicUrl && !g.musicUrl.includes('TikVid.io');
+      list.innerHTML = filtered.map(i => {
+        const t = i.createdAt?.toDate ? i.createdAt.toDate() : new Date(i.createdAt);
+        const ds = t.toLocaleDateString("es",{day:"2-digit",month:"short",year:"numeric"}) + " " + t.toLocaleTimeString("es",{hour:"2-digit",minute:"2-digit"});
+        const phrasesPreview = (i.phrases || []).slice(0, 3).join(" • ");
         
-        tr.innerHTML = `
-          <td><strong>${escapeHtml(g.title||'Sin título')}</strong></td>
-          <td>${phrasesCount}/15</td>
-          <td>${hasCustomMusic ? '✅ Personalizada' : '🎵 Por defecto'}</td>
-          <td style="font-size:.9em;opacity:.85">${created}</td>
-          <td class="actions">
-            <button class="btn-sm btn-view" data-id="${g.id}">👁️ Ver</button>
-            <button class="btn-sm btn-edit" data-id="${g.id}">✏️</button>
-            <button class="btn-sm btn-delete" data-id="${g.id}">🗑️</button>
-          </td>
-        `;
-        galaxyTable.appendChild(tr);
-      });
+        const tag24hClass = getTagClass(i.id, '24h');
+        const tagPermClass = getTagClass(i.id, 'permanent');
+        
+        return `
+        <div class="card">
+          <div class="card-left">
+            <h3>${esc(i.title || "Sin título")}</h3>
+            <div class="meta"><i class="fas fa-circle"></i>${ds}</div>
+            <div class="prev">${phrasesPreview ? esc(phrasesPreview) + (i.phrases?.length > 3 ? "..." : "") : "Sin frases"}</div>
+            
+            <!-- ETIQUETAS PERSISTENTES -->
+            <div class="tags">
+              <span class="tag ${tag24hClass}" onclick="handleTagClick('${i.id}','24h')" title="🔴 24 horas: eliminar manualmente">
+                <i class="fas ${getTagIcon('24h')}"></i> 24h
+              </span>
+              <span class="tag ${tagPermClass}" onclick="handleTagClick('${i.id}','permanent')" title="🟢 Permanente: no eliminar">
+                <i class="fas ${getTagIcon('permanent')}"></i> Permanente
+              </span>
+            </div>
+          </div>
+          <div class="card-right">
+            <button class="btn btn-i" onclick="viewItem('${i.id}')"><i class="fas fa-eye"></i> Ver</button>
+            <button class="btn btn-s" onclick="editItem('${i.id}')"><i class="fas fa-pen"></i> Editar</button>
+            <button class="btn btn-g" onclick="copyLnk('${i.id}')"><i class="fas fa-link"></i> Copiar</button>
+            <button class="btn btn-d" onclick="askDel('${i.id}')"><i class="fas fa-trash"></i> Eliminar</button>
+          </div>
+        </div>`;
+      }).join("");
+    };
+
+    /* ---- MANEJO DE CLICK EN ETIQUETAS ---- */
+    window.handleTagClick = function(projectId, type) {
+      const newState = toggleProjectTag(projectId, type);
+      const msg = type === '24h' 
+        ? (newState === '24h' ? '🔴 Marcado para eliminar en 24h' : '⚪ Etiqueta 24h removida')
+        : (newState === 'permanent' ? '🟢 Marcado como PERMANENTE' : '⚪ Etiqueta permanente removida');
+      toast(msg, newState ? 'info' : 'success');
+      renderList();
+    };
+
+    /* ---- VIEW ---- */
+    window.viewItem = function(id) {
+      const i = window.__items.find(x => x.id === id);
+      if (!i) return;
+      const t = i.createdAt?.toDate ? i.createdAt.toDate() : new Date(i.createdAt);
+      const ts = t.toLocaleDateString("es",{weekday:"long",year:"numeric",month:"long",day:"numeric"}) + " — " + t.toLocaleTimeString("es",{hour:"2-digit",minute:"2-digit"});
+      const tagState = getProjectTagState(id);
       
-      // Event listeners para acciones
-      galaxyTable.querySelectorAll('.btn-view').forEach(btn => {
-        btn.onclick = e => {
-          const id = e.target.dataset.id;
-          const url = `${location.origin}/index.html?id=${id}`;
-          window.open(url, '_blank');
-        };
-      });
-      galaxyTable.querySelectorAll('.btn-edit').forEach(btn => {
-        btn.onclick = e => openEditModal(e.target.dataset.id, galaxies.find(g => g.id === e.target.dataset.id));
-      });
-      galaxyTable.querySelectorAll('.btn-delete').forEach(btn => {
-        btn.onclick = e => confirmDelete(e.target.dataset.id);
-      });
-    }
+      document.getElementById("viewBody").innerHTML = `
+        <div class="detail-hero">
+          <h2>${esc(i.title || "Sin título")}</h2>
+          <div class="time"><i class="fas fa-calendar-days"></i>${ts}</div>
+          <div class="detail-status">
+            <span class="tag ${tagState === '24h' ? 'is-24h' : 'neutral'}" style="cursor:default">
+              <i class="fas fa-clock"></i> ${tagState === '24h' ? '✓ 24h' : '24h'}
+            </span>
+            <span class="tag ${tagState === 'permanent' ? 'is-permanent' : 'neutral'}" style="cursor:default">
+              <i class="fas fa-infinity"></i> ${tagState === 'permanent' ? '✓ Permanente' : 'Permanente'}
+            </span>
+          </div>
+        </div>
+        
+        <div class="d-block">
+          <div class="d-label"><i class="fas fa-heart"></i> Frases de Amor (${(i.phrases||[]).length}/15)</div>
+          <div class="d-val msg">${(i.phrases||[]).map(p => `• ${esc(p)}`).join("<br>") || "Sin frases"}</div>
+        </div>
+        <div class="d-block">
+          <div class="d-label"><i class="fas fa-music"></i> Música</div>
+          <div class="d-val">${i.musicUrl ? `<a href="${esc(i.musicUrl)}" target="_blank">${esc(i.musicUrl)}</a>` : "Música por defecto"}</div>
+        </div>
+        <div class="d-block">
+          <div class="d-label"><i class="fas fa-image"></i> Imagen Núcleo</div>
+          <div class="d-val">${i.nucleusImage ? `<a href="${esc(i.nucleusImage)}" target="_blank">${esc(i.nucleusImage)}</a>` : "Imagen por defecto"}</div>
+        </div>
+        <div class="d-block">
+          <div class="d-label"><i class="fas fa-signature"></i> Créditos</div>
+          <div class="d-val">${esc(i.credits || "𖤍BerMatCode𖤍")}</div>
+        </div>
+        <div class="d-link-box">
+          <div class="d-label"><i class="fas fa-link"></i> Link de acceso</div>
+          <a href="${BASE_LINK}?id=${i.id}" target="_blank">${BASE_LINK}?id=${i.id}</a>
+        </div>`;
+      om("ovView");
+    };
 
-    function escapeHtml(str) {
-      const div = document.createElement('div');
-      div.textContent = str;
-      return div.innerHTML;
-    }
+    /* ---- EDIT ---- */
+    window.editItem = function(id) {
+      const i = window.__items.find(x => x.id === id);
+      if (!i) return;
+      window.__editId = id;
+      document.getElementById("eTitle").value = i.title || "";
+      document.getElementById("ePhrases").value = (i.phrases || []).join(", ");
+      document.getElementById("eMusic").value = i.musicUrl || "";
+      document.getElementById("eNucleus").value = i.nucleusImage || "";
+      document.getElementById("eCredits").value = i.credits || "𖤍BerMatCode𖤍";
+      om("ovEdit");
+    };
 
-    // Modal Editar
-    function openEditModal(id, data) {
-      editId.value = id;
-      editTitle.value = data.title || '';
-      editPhrases.value = Array.isArray(data.phrases) ? data.phrases.join('\n') : '';
-      editMusic.value = data.musicUrl || '';
-      editNucleus.value = data.nucleusImage || '';
-      editCredits.value = data.credits || '';
-      editModal.classList.add('active');
-    }
-    editCancel.onclick = () => editModal.classList.remove('active');
-    
-    editSave.onclick = async () => {
-      const id = editId.value;
+    document.getElementById("saveBtn").addEventListener("click", async function() {
+      const id = window.__editId;
       if (!id) return;
       
-      const phrases = editPhrases.value.split('\n').map(p => p.trim()).filter(p => p).slice(0,15);
-      if (phrases.length === 0) return alert('⚠️ Agrega al menos una frase');
+      const phrasesRaw = document.getElementById("ePhrases").value;
+      const phrases = phrasesRaw.split(",").map(s => s.trim()).filter(Boolean).slice(0, 15);
       
-      loadModal.classList.add('active');
+      const data = {
+        title: document.getElementById("eTitle").value.trim(),
+        phrases: phrases,
+        musicUrl: document.getElementById("eMusic").value.trim(),
+        nucleusImage: document.getElementById("eNucleus").value.trim(),
+        credits: document.getElementById("eCredits").value.trim(),
+        updatedAt: serverTimestamp()
+      };
+      
+      if (!data.title) { toast("El título no puede estar vacío", "error"); return; }
+      if (phrases.length === 0) { toast("Agrega al menos una frase", "error"); return; }
+      
+      document.getElementById("editProc").classList.add("active");
       try {
-        await updateDoc(doc(db, "galaxies", id), {
-          title: editTitle.value.trim(),
-          phrases: phrases,
-          musicUrl: editMusic.value.trim(),
-          nucleusImage: editNucleus.value.trim(),
-          credits: editCredits.value.trim(),
-          updatedAt: Date.now()
-        });
-        editModal.classList.remove('active');
-        alert('✅ Cambios guardados');
-        loadGalaxies();
-      } catch (err) {
-        alert('❌ Error: ' + err.message);
-        console.error(err);
-      } finally {
-        loadModal.classList.remove('active');
+        await updateDoc(doc(db, "galaxies", id), data);
+      } catch(e) { toast("Error: " + e.message, "error"); }
+      setTimeout(() => {
+        document.getElementById("editProc").classList.remove("active");
+        cm("ovEdit");
+        doLoadData();
+        toast("✨ Galaxia actualizada correctamente", "success");
+      }, 2000);
+    });
+
+    /* ---- DELETE CON PROTECCIÓN DE ETIQUETAS ---- */
+    window.askDel = function(id) {
+      const tagState = getProjectTagState(id);
+      if (tagState === 'permanent') {
+        if (!confirm("⚠️ ⚠️ ⚠️\n\nEsta galaxia está marcada como 🟢 PERMANENTE.\n\n¿Estás 100% seguro de eliminarla?\n\nEl enlace dejará de funcionar para siempre.")) {
+          return;
+        }
       }
+      if (tagState === '24h') {
+        if (!confirm("🔴 Esta galaxia está marcada para eliminar en 24h.\n\n¿Confirmas la eliminación ahora?")) {
+          return;
+        }
+      }
+      window.__delId = id;
+      document.getElementById("delProc").classList.remove("active");
+      om("ovDel");
     };
 
-    // Eliminar
-    async function confirmDelete(id) {
-      if (!confirm('⚠️ ¿Estás seguro de eliminar esta galaxia?\nEsta acción no se puede deshacer.')) return;
-      
-      loadModal.classList.add('active');
+    document.getElementById("confirmDelBtn").addEventListener("click", async function() {
+      const id = window.__delId;
+      if (!id) return;
+      document.getElementById("delProc").classList.add("active");
       try {
         await deleteDoc(doc(db, "galaxies", id));
-        alert('✅ Galaxia eliminada');
-        loadGalaxies();
-      } catch (err) {
-        alert('❌ Error: ' + err.message);
-      } finally {
-        loadModal.classList.remove('active');
-      }
-    }
+        const tagsState = loadTagsState();
+        if (tagsState[id]) { delete tagsState[id]; saveTagsState(tagsState); }
+        window.__items = window.__items.filter(x => x.id !== id);
+        renderList();
+      } catch(e) { toast("Error: " + e.message, "error"); }
+      setTimeout(() => {
+        document.getElementById("delProc").classList.remove("active");
+        cm("ovDel");
+        toast("✨ Galaxia eliminada correctamente", "success");
+      }, 2000);
+      window.__delId = null;
+    });
 
-    // Prevenir salida accidental
-    window.onbeforeunload = e => {
-      if (dashboard.style.display === 'block') {
-        e.preventDefault();
-        e.returnValue = '';
-      }
+    /* ---- UTILS ---- */
+    window.copyLnk = function(id) {
+      const link = `${BASE_LINK}?id=${id}`;
+      navigator.clipboard.writeText(link)
+        .then(() => toast("🔗 Link copiado al portapapeles", "info"))
+        .catch(() => toast("❌ No se pudo copiar el link", "error"));
     };
+
+    window.doAskLogout = function() { closeSettings(); om("ovLogout"); };
+    document.getElementById("confirmLogoutBtn").addEventListener("click", function() {
+      localStorage.removeItem("galaxia_admin");
+      location.reload();
+    });
+    window.doOpenSettings = function() { closeSettings(); om("ovSettings"); };
+
+    window.doExport = function() {
+      const tagsState = loadTagsState();
+      const data = { 
+        exportDate: new Date().toISOString(), 
+        tagsState: tagsState,
+        galaxies: window.__items.map(m => ({...m, createdAt: m.createdAt?.toDate?.toISOString() || m.createdAt || null})) 
+      };
+      const blob = new Blob([JSON.stringify(data,null,2)], {type:"application/json"});
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `galaxia-backup-${new Date().toISOString().split("T")[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+      toast("📦 Backup exportado con etiquetas", "success");
+      closeSettings();
+    };
+
+    function esc(t) { const d = document.createElement("div"); d.textContent = t || ""; return d.innerHTML; }
+    window.om = function(id) { document.getElementById(id).classList.add("on"); };
+    window.cm = function(id) { document.getElementById(id).classList.remove("on"); };
+
+    window.toast = function(msg, type) {
+      const el = document.getElementById("toast");
+      el.textContent = msg;
+      el.className = "toast show";
+      if (type) el.classList.add("t" + type[0]);
+      clearTimeout(el._t);
+      el._t = setTimeout(() => {
+        el.classList.remove("show");
+        el.classList.remove("ts", "te", "ti");
+      }, 2800);
+    };
+
+    // Event listeners
+    document.getElementById("searchInput").addEventListener("input", () => renderList());
+    document.getElementById("loginPw").addEventListener("keydown", e => { if (e.key === "Enter") window.__doLogin(); });
+    document.getElementById("loginBtn").addEventListener("click", window.__doLogin);
+    document.querySelectorAll(".ov").forEach(ov => { 
+      ov.addEventListener("click", e => { if (e.target === ov) ov.classList.remove("on"); }); 
+    });
+
+    // Dropdown settings
+    const setBtn = document.getElementById("setBtn");
+    const setDrop = document.getElementById("setDrop");
+    setBtn.addEventListener("click", e => { e.stopPropagation(); setDrop.classList.toggle("open"); });
+    document.addEventListener("click", e => { if (!setDrop.contains(e.target) && e.target !== setBtn) setDrop.classList.remove("open"); });
+    window.closeSettings = function() { setDrop.classList.remove("open"); };
+
+    // Auto-refresh cada 5 segundos
+    setInterval(() => { 
+      if (localStorage.getItem("galaxia_admin") === "1") doLoadData(); 
+    }, 5000);
+
+    // Inicialización
+    checkSession();
+    document.getElementById("loader").classList.add("hide");
   </script>
 </body>
 </html>
