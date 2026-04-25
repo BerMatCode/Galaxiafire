@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>✨ Crea tu Galaxia</title>
+  <title>Galaxia-BerMatCode</title>
   <meta name="theme-color" content="#D97F88">
   <meta name="apple-mobile-web-app-status-bar-style" content="#D97F88">
   <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
@@ -11,6 +11,7 @@
     :root {
       --p: #E8A2A8; --pd: #D97F88; --l: #F6D1D5; --s: #F2B9BF;
       --bg: #fff9fb; --txt: #5a3a42; --sh: 0 4px 20px rgba(217,127,136,.25);
+      --tiktok: #000; --tiktok-gradient: linear-gradient(135deg, #00f2ea, #ff0050, #00f2ea);
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
@@ -45,14 +46,30 @@
     .btn {
       padding:14px 35px; border:none; border-radius:50px; font-family:inherit; font-size:1.2em;
       cursor:pointer; transition:all .3s; font-weight:bold; box-shadow:var(--sh); margin:10px 5px;
-      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      display:inline-flex; align-items:center; justify-content:center; gap:10px; position:relative; overflow:hidden;
     }
     .btn-primary { background:linear-gradient(135deg,var(--p),var(--pd)); color:white; }
     .btn-outline { background:white; border:2px solid var(--p); color:var(--txt); }
     .btn:hover { transform:translateY(-3px); box-shadow:0 6px 25px rgba(217,127,136,.4); }
     .btn:disabled { opacity:.6; cursor:not-allowed; transform:none; }
     
-    .btn-tiktok { background:#000; color:#fff; border:2px solid #fff; }
+    /* ✅ TikTok Button - CSS Only Logo */
+    .btn-tiktok {
+      background:var(--tiktok); color:#fff; border:2px solid #fff;
+      position:relative; overflow:hidden;
+    }
+    .btn-tiktok::before {
+      content:""; display:inline-block; width:24px; height:24px;
+      background:var(--tiktok-gradient);
+      -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23000"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>') center/contain no-repeat;
+      mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23000"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>') center/contain no-repeat;
+      margin-right:8px;
+    }
+    .btn-tiktok:hover {
+      background:linear-gradient(135deg, #1a1a1a, #000);
+      box-shadow:0 6px 25px rgba(0,242,234,.4), 0 6px 25px rgba(255,0,80,.4);
+    }
+    
     .btn-whatsapp { background:#25D366; color:#fff; }
     
     .advanced-visible {
@@ -79,6 +96,7 @@
     .modal-content {
       background:white; padding:30px; border-radius:20px; max-width:440px; width:90%;
       text-align:center; box-shadow:0 10px 40px rgba(0,0,0,.3); border:3px solid var(--p);
+      position:relative; overflow:hidden;
     }
     .modal-content h3 { color:var(--pd); margin-bottom:12px; font-size:1.5em; }
     .modal-content p { margin:10px 0; font-size:1.05em; }
@@ -95,19 +113,70 @@
     .modal-buttons .ok { background:var(--p); color:white; }
     .modal-buttons .cancel { background:#e8e8e8; color:var(--txt); }
     
-    .logo { width:24px; height:24px; vertical-align:middle; }
+    /* ✅ Loading state styles */
+    .modal-loading { text-align:center; padding:20px; }
+    .modal-loading .spinner {
+      width:50px; height:50px; border:4px solid var(--s); border-top-color:var(--p);
+      border-radius:50%; margin:20px auto; animation:spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    
+    /* ✅ Success state styles */
+    .modal-success { text-align:center; padding:10px; animation:slideUp .4s ease; }
+    @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    
+    /* ✅ Profile Circle Image */
+    .profile-circle {
+      width:75px; height:75px; border-radius:50%;
+      background:linear-gradient(135deg,var(--p),var(--pd));
+      margin:0 auto 18px; display:flex; align-items:center; justify-content:center;
+      padding:3px; box-shadow:0 8px 25px rgba(217,127,136,.4);
+      animation:popIn .5s ease;
+    }
+    @keyframes popIn { 0% { transform:scale(0); } 70% { transform:scale(1.2); } 100% { transform:scale(1); } }
+    .profile-circle img {
+      width:100%; height:100%; border-radius:50%; object-fit:cover;
+      border:3px solid white; box-shadow:0 2px 10px rgba(0,0,0,.2);
+    }
+    
+    /* ✅ Small profile circle for TikTok modal */
+    .profile-circle-small {
+      width:45px; height:45px; border-radius:50%;
+      background:linear-gradient(135deg,var(--p),var(--pd));
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:2px; box-shadow:0 4px 15px rgba(217,127,136,.3);
+      margin-right:12px; flex-shrink:0;
+    }
+    .profile-circle-small img {
+      width:100%; height:100%; border-radius:50%; object-fit:cover;
+      border:2px solid white;
+    }
     
     .link-box {
       background:#f8f4f5; padding:15px; border-radius:12px; margin:15px 0;
       word-break:break-all; font-family:monospace; font-size:.95em; border-left:4px solid var(--p);
+      position:relative;
     }
+    
+    /* ✅ Copy button animation */
+    .btn-copy {
+      background:var(--l); color:var(--txt); border:2px solid var(--p);
+      padding:10px 20px; border-radius:50px; font-family:inherit; font-size:1em;
+      cursor:pointer; transition:all .3s; display:inline-flex; align-items:center; gap:8px;
+    }
+    .btn-copy:hover { background:var(--p); color:white; transform:translateY(-2px); }
+    .btn-copy.copied {
+      background:linear-gradient(135deg,#25D366,#128C7E); color:white; border-color:#128C7E;
+      animation:shake .3s ease;
+    }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+    .btn-copy.copied::before { content:"✅"; }
     
     .notice-24h {
       background:linear-gradient(135deg,#fff3cd,#ffe8a1);
       color:#856404; padding:12px 15px; border-radius:10px; margin:15px 0;
       font-size:.95em; border:1px solid #ffc107; display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:center;
     }
-    .notice-24h .logo { width:20px; height:20px; }
     
     .counter { text-align:right; font-size:.9em; color:var(--pd); margin-top:5px; }
     
@@ -117,13 +186,15 @@
       .btn { width:100%; margin:8px 0; }
       .modal-buttons { flex-direction:column; }
       .modal-buttons button, .modal-buttons a { width:100%; }
+      .profile-circle { width:65px; height:65px; }
+      .profile-circle-small { width:40px; height:40px; }
     }
   </style>
 </head>
 <body>
   <div class="card">
-    <h1>✨ Tu Galaxia de Amor</h1>
-    <p class="sub">Personaliza y genera tu enlace único 🌹</p>
+    <h1>Panel de Galaxia</h1>
+    <p class="sub">🥵Personaliza y genera tu enlace único🌹</p>
     
     <div class="field">
       <label for="title">💌 Título Principal (arriba)</label>
@@ -144,8 +215,8 @@
     </div>
     
     <div class="field">
-      <label>🔐 Opciones Avanzadas</label>
-      <button class="btn btn-outline" id="unlockBtn" style="width:100%; margin-top:10px;">🔑 Ingresar Key para desbloquear</button>
+      <label>🔐 Opciones Beta</label>
+      <button class="btn btn-outline" id="unlockBtn" style="width:100%; margin-top:10px;">🔑 Ingresa tu Key</button>
       
       <div class="advanced-visible locked" id="advanced">
         <label for="nucleus" style="margin-top:0;">🌌 Imagen del Núcleo (URL)</label>
@@ -156,7 +227,7 @@
       </div>
     </div>
     
-    <button class="btn btn-primary" id="generate" style="width:100%; margin-top:20px;">✨ Generar mi Galaxia</button>
+    <button class="btn btn-primary" id="generate" style="width:100%; margin-top:20px;">Generar mi Galaxia</button>
   </div>
 
   <!-- Modal Key -->
@@ -175,15 +246,17 @@
 
   <!-- Modal TikTok -->
   <div class="modal" id="tiktokModal">
-    <div class="modal-content">
-      <h3>🎵 ¡Casi listo!</h3>
+    <div class="modal-content" id="tiktokContent">
+      <h3>¡Casi listo!</h3>
       <p>Para generar tu enlace de galaxia:</p>
-      <p style="color:var(--pd); font-weight:bold; margin:15px 0; display:flex; align-items:center; justify-content:center; gap:8px;">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/TikTok_logo.svg" class="logo" alt="TikTok">
-        Sigue al desarrollador en TikTok
+      <p style="color:var(--pd); font-weight:bold; margin:15px 0; display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap;">
+        <!-- ✅ Foto del desarrollador en círculo pequeño -->
+        <span class="profile-circle-small">
+          <img src="https://raw.githubusercontent.com/BerMatCode/Galafire/main/Multimedia/Screenshot_20260225-092058.jpg" alt="Desarrollador" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%23E8A2A8%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2230%22%3E👤%3C/text%3E%3C/svg%3E'">
+        </span>
+        <span>Sigue al desarrollador en TikTok</span>
       </p>
-      <a href="https://www.tiktok.com/@bermat_code?_r=1&_t=ZS-95olpLnfpiv" target="_blank" class="btn btn-tiktok" id="tiktokBtn">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/TikTok_logo.svg" class="logo" alt="TikTok">
+      <a href="https://www.tiktok.com/@bermat_code?_r=1&_t=ZS-95olpLnfpiv" target="_blank" class="btn btn-tiktok" id="tiktokBtn" style="margin:10px auto;">
         Seguir en TikTok
       </a>
       <p style="font-size:.95em; opacity:.8; margin-top:15px;">
@@ -194,35 +267,40 @@
 
   <!-- Modal Loading -->
   <div class="modal" id="loadModal">
-    <div class="modal-content">
-      <div style="width:40px; height:40px; border:4px solid var(--s); border-top-color:var(--p); border-radius:50%; margin:20px auto; animation:spin 1s linear infinite;"></div>
+    <div class="modal-content modal-loading">
+      <div class="spinner"></div>
       <p style="font-size:1.2em;" id="loadText">✨ Generando tu galaxia...</p>
     </div>
   </div>
-  <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 
-  <!-- Modal Resultado -->
-  <div class="modal" id="resultModal">
-    <div class="modal-content">
-      <h3>🎉 ¡Listo!</h3>
-      <p>Tu galaxia está creada</p>
+  <!-- Modal Success -->
+  <div class="modal" id="successModal">
+    <div class="modal-content modal-success">
+      <!-- ✅ Foto del desarrollador en círculo grande -->
+      <div class="profile-circle">
+        <img src="https://raw.githubusercontent.com/BerMatCode/Galafire/main/Multimedia/Screenshot_20260225-092058.jpg" alt="Desarrollador" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%23E8A2A8%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2230%22%3E👤%3C/text%3E%3C/svg%3E'">
+      </div>
       
-      <!-- Aviso 24h + WhatsApp para permanente -->
+      <h3>FELICIDADES</h3>
+      <p style="color:var(--pd); font-weight:bold; margin:10px 0;">Tu link ha sido generado con éxito</p>
+      
+      <!-- ✅ Texto mejorado sobre enlace permanente -->
       <div class="notice-24h">
         <span>⏰ Tu enlace estará disponible por 24 horas</span>
         <br>
-        <span style="margin-top:8px;">¿Lo quieres permanente?</span>
-        <a href="https://wa.me/51930569195" target="_blank" class="btn btn-whatsapp" style="margin:8px auto 0; padding:10px 20px; font-size:1em;">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" class="logo" alt="WhatsApp" style="filter:brightness(0) invert(1);">
-          Contactar por WhatsApp
+        <span style="margin-top:8px; font-weight:500;">Si quieres obtener el link permanente</span>
+        <span style="margin-top:4px; font-size:.9em;">Contacta al desarrollador para activarlo</span>
+        <a href="https://wa.me/51930569195" target="_blank" class="btn btn-whatsapp" style="margin:10px auto 0; padding:10px 20px; font-size:.95em;">
+          💬 Contactar por WhatsApp
         </a>
       </div>
       
       <div class="link-box" id="shareLink"></div>
-      <button class="btn btn-outline" id="copyBtn" style="margin:5px;">📋 Copiar</button>
-      <a id="openLink" href="#" target="_blank" class="btn btn-primary" style="margin:5px; text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:8px;">👁️ Abrir</a>
+      <button class="btn-copy" id="copyBtn">📋 Copiar enlace</button>
       <br>
-      <button class="btn btn-outline" id="newBtn" style="margin-top:15px; font-size:1em;">✨ Crear otra</button>
+      <a id="openLink" href="#" target="_blank" class="btn btn-primary" style="margin:10px auto; text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:8px;">Abrir mi galaxia</a>
+      <br>
+      <button class="btn btn-outline" id="newBtn" style="margin-top:15px; font-size:1em;">Crear otra</button>
     </div>
   </div>
 
@@ -275,10 +353,11 @@
     
     const tiktokModal = document.getElementById('tiktokModal');
     const tiktokBtn = document.getElementById('tiktokBtn');
+    const tiktokContent = document.getElementById('tiktokContent');
     
     const loadModal = document.getElementById('loadModal');
     const loadText = document.getElementById('loadText');
-    const resultModal = document.getElementById('resultModal');
+    const successModal = document.getElementById('successModal');
     const shareLink = document.getElementById('shareLink');
     const copyBtn = document.getElementById('copyBtn');
     const openLink = document.getElementById('openLink');
@@ -339,15 +418,23 @@
       tiktokModal.classList.add('active');
     };
 
-    // ✅ Cuando el usuario regresa de TikTok, generar automáticamente
+    // ✅ Flow TikTok: al regresar, esperar 2s y mostrar éxito
     let tiktokOpened = false;
     tiktokBtn.onclick = () => { tiktokOpened = true; };
     
-    document.addEventListener('visibilitychange', () => {
+    document.addEventListener('visibilitychange', async () => {
       if (document.visibilityState === 'visible' && tiktokOpened && tiktokModal.classList.contains('active')) {
         tiktokOpened = false;
         tiktokModal.classList.remove('active');
-        setTimeout(() => generateGalaxy(), 1000); // Esperar 1s antes de generar
+        
+        // ✅ Mostrar loading por 2 segundos
+        loadText.textContent = '✨ Generando tu link de galaxia...';
+        loadModal.classList.add('active');
+        
+        await new Promise(res => setTimeout(res, 2000)); // ✅ 2 segundos de espera
+        
+        // ✅ Generar y mostrar éxito
+        await generateGalaxy();
       }
     });
 
@@ -355,14 +442,11 @@
     const genId = () => 'gal_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
 
     async function generateGalaxy() {
-      loadText.textContent = '✨ Generando tu galaxia...';
-      loadModal.classList.add('active');
-      
       try {
         const t = title.value.trim();
         const validPhrases = phrases.filter(p => p.trim()).map(p => p.trim()).slice(0, MAX_PHRASES);
         const m = music.value.trim();
-        const finalMusic = m || DEFAULT_MUSIC; // ✅ Si está vacío, usa la música por defecto
+        const finalMusic = m || DEFAULT_MUSIC;
         
         let config = { title: t, phrases: validPhrases, musicUrl: finalMusic, createdAt: Date.now() };
         
@@ -373,8 +457,6 @@
           config.credits = c || '𖤍BerMatCode𖤍';
         }
         
-        await new Promise(res => setTimeout(res, 1000)); // Efecto visual de generación
-        
         const id = genId();
         await setDoc(doc(db, "galaxies", id), config);
         
@@ -382,14 +464,20 @@
         
         loadModal.classList.remove('active');
         
+        // ✅ Mostrar modal de éxito
         shareLink.textContent = url;
         openLink.href = url;
-        resultModal.classList.add('active');
+        successModal.classList.add('active');
         
+        // ✅ Copy button con animación
         copyBtn.onclick = () => {
           navigator.clipboard.writeText(url).then(() => {
-            const orig = copyBtn.textContent; copyBtn.textContent = '✅ Copiado';
-            setTimeout(() => copyBtn.textContent = orig, 1500);
+            copyBtn.classList.add('copied');
+            copyBtn.textContent = 'Copiado';
+            setTimeout(() => {
+              copyBtn.classList.remove('copied');
+              copyBtn.textContent = '📋 Copiar enlace';
+            }, 2000);
           });
         };
       } catch (err) {
@@ -400,13 +488,16 @@
     }
 
     newBtn.onclick = () => {
-      resultModal.classList.remove('active');
+      successModal.classList.remove('active');
       tiktokModal.classList.remove('active');
+      loadModal.classList.remove('active');
       title.value = "Te Amo Yorchi"; music.value = ""; nucleus.value = ""; credits.value = "𖤍BerMatCode𖤍";
       phrases = ["Siempre contigo","Eres mi calma","Me haces feliz","Tu sonrisa brilla","Qué bonito coincidir","Mi lugar favorito","Contigo todo mejora","Tu luz me inspira","Eres increíble","Gracias por existir","Mi corazón te elige","Qué suerte tenerte","Eres mi paz"];
       renderPhrases();
       unlocked = false; advanced.classList.add('locked'); nucleus.disabled = true; credits.disabled = true;
       unlockBtn.textContent = '🔑 Ingresar Key para desbloquear'; unlockBtn.disabled = false;
+      copyBtn.classList.remove('copied');
+      copyBtn.textContent = '📋 Copiar enlace';
     };
 
     window.onbeforeunload = e => {
